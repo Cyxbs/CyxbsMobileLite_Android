@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="11">
+      <module name="build-logic.dependencies.android" target="17" />
+      <module name="build-logic.dependencies.android.main" target="17" />
+      <module name="build-logic.dependencies.android.test" target="17" />
+      <module name="build-logic.dependencies.base" target="17" />
+      <module name="build-logic.dependencies.base.main" target="17" />
+      <module name="build-logic.dependencies.base.test" target="17" />
+      <module name="build-logic.dependencies.module" target="17" />
+      <module name="build-logic.dependencies.module.components" target="17" />
+      <module name="build-logic.dependencies.module.components.main" target="17" />
+      <module name="build-logic.dependencies.module.components.test" target="17" />
+      <module name="build-logic.dependencies.module.features" target="17" />
+      <module name="build-logic.dependencies.module.features.main" target="17" />
+      <module name="build-logic.dependencies.module.features.test" target="17" />
+      <module name="build-logic.dependencies.module.frameworks" target="17" />
+      <module name="build-logic.dependencies.module.frameworks.main" target="17" />
+      <module name="build-logic.dependencies.module.frameworks.test" target="17" />
+      <module name="build-logic.dependencies.module.main" target="17" />
+      <module name="build-logic.dependencies.module.test" target="17" />
+      <module name="build-logic.dependencies.others" target="17" />
+      <module name="build-logic.dependencies.others.main" target="17" />
+      <module name="build-logic.dependencies.others.test" target="17" />
+      <module name="build-logic.dependencies.thirdparty" target="17" />
+      <module name="build-logic.dependencies.thirdparty.main" target="17" />
+      <module name="build-logic.dependencies.thirdparty.test" target="17" />
+      <module name="build-logic.module.applications" target="17" />
+      <module name="build-logic.module.applications.main" target="17" />
+      <module name="build-logic.module.applications.test" target="17" />
+      <module name="build-logic.module.components" target="17" />
+      <module name="build-logic.module.components.main" target="17" />
+      <module name="build-logic.module.components.test" target="17" />
+      <module name="build-logic.module.cyxbs.features" target="17" />
+      <module name="build-logic.module.cyxbs.features.main" target="17" />
+      <module name="build-logic.module.cyxbs.features.test" target="17" />
+      <module name="build-logic.module.cyxbs.frameworks" target="17" />
+      <module name="build-logic.module.cyxbs.frameworks.main" target="17" />
+      <module name="build-logic.module.cyxbs.frameworks.test" target="17" />
+      <module name="build-logic.module.features" target="17" />
+      <module name="build-logic.module.features.main" target="17" />
+      <module name="build-logic.module.features.test" target="17" />
+      <module name="build-logic.module.frameworks" target="17" />
+      <module name="build-logic.module.frameworks.main" target="17" />
+      <module name="build-logic.module.frameworks.test" target="17" />
+      <module name="build-logic.module.lib" target="17" />
+      <module name="build-logic.module.lib.main" target="17" />
+      <module name="build-logic.module.lib.test" target="17" />
+      <module name="build-logic.plugin.checker" target="17" />
+      <module name="build-logic.plugin.checker.main" target="17" />
+      <module name="build-logic.plugin.checker.test" target="17" />
+      <module name="build-logic.plugins.databinding" target="17" />
+      <module name="build-logic.plugins.databinding.main" target="17" />
+      <module name="build-logic.plugins.databinding.test" target="17" />
+      <module name="build-logic.plugins.module-creator" target="17" />
+      <module name="build-logic.plugins.module-creator.main" target="17" />
+      <module name="build-logic.plugins.module-creator.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

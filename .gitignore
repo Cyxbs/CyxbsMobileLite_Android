@@ -1,0 +1,17 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+# 防止新建模块没有忘记忽略，但以后就不允许有名字为 build 的文件夹
+build/
+out/
+/captures
+.externalNativeBuild
+.cxx
+local.properties

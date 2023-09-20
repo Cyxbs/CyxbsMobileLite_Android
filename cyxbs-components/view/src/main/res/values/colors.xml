@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--分割线颜色-->
+    <color name="view_default_divide_line_color">#19f8f9fc</color>
+</resources>

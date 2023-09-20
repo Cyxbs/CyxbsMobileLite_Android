@@ -1,0 +1,29 @@
+import config.CyxbsComponentsConfigImpl
+import config.SingleModuleConfig
+import org.gradle.api.Project
+import org.gradle.api.tasks.SourceSetContainer
+import utils.androidBase
+
+/**
+ * .
+ *
+ * @author 985892345
+ * 2023/9/5 23:34
+ */
+object CyxbsComponentsGroup {
+
+  fun config(project: Project, isSingleModule: Boolean = false) {
+    val config = createConfig(project)
+    if (isSingleModule) {
+      SingleModule.config(config)
+    } else {
+      LibraryModule.config(config)
+    }
+  }
+
+  private fun createConfig(project: Project): SingleModuleConfig {
+    return when (project.name) {
+      else -> CyxbsComponentsConfigImpl(project)
+    }
+  }
+}

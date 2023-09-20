@@ -1,0 +1,20 @@
+package config
+
+import org.gradle.api.Project
+
+/**
+ * .
+ *
+ * @author 985892345
+ * 2023/9/5 23:32
+ */
+open class CyxbsComponentsConfigImpl(override val project: Project) : SingleModuleConfig {
+
+  override fun getNamespace(): String {
+    return "com.cyxbs.components.${project.name}"
+  }
+
+  override fun getApplicationId(): String {
+    return "com.cyxbs.components.${project.name}"
+  }
+}
