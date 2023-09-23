@@ -21,6 +21,9 @@ object SingleModule {
           }
         }
       }
+      dependLibrary {
+        dependAutoService()
+      }
     }
   }
 }

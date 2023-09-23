@@ -12,9 +12,13 @@ subprojects.filter {
     val moduleNames = cyxbs.rootDir.parentFile.resolve("cyxbs-${cyxbs.name}")
       .listFiles { file ->
         file.resolve("build.gradle.kts").exists()
-      }?.map { file ->
-        // 如果存在 api 模块则替换为 api 模块
-        file.resolve("api-${file.name}").let { if (it.exists()) it else file }
+      }?.mapNotNull { file ->
+        when (cyxbs.name) {
+          "components" -> file
+          "functions" -> file.resolve("api-${file.name}").let { if (it.exists()) it else file }
+          "pages" -> file.resolve("api-${file.name}").let { if (it.exists()) it else null }
+          else -> null
+        }
       } ?: emptyList()
     inputs.property("moduleNames", moduleNames.map { it.name })
     val outputDir = cyxbs.buildDir.resolve("generated")
