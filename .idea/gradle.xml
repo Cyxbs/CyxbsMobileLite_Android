@@ -50,7 +50,7 @@
             <option value="$PROJECT_DIR$/build-logic/plugins" />
             <option value="$PROJECT_DIR$/build-logic/plugins/checker" />
             <option value="$PROJECT_DIR$/cyxbs-applications" />
-            <option value="$PROJECT_DIR$/cyxbs-applications/cyxbs-lite" />
+            <option value="$PROJECT_DIR$/cyxbs-applications/lite" />
             <option value="$PROJECT_DIR$/cyxbs-components" />
             <option value="$PROJECT_DIR$/cyxbs-components/base" />
             <option value="$PROJECT_DIR$/cyxbs-components/config" />

@@ -20,10 +20,12 @@ subprojects.filter {
           else -> null
         }
       } ?: emptyList()
-    inputs.property("moduleNames", moduleNames.map { it.name })
     val outputDir = cyxbs.buildDir.resolve("generated")
       .resolve("sources")
       .resolve("depend")
+    // inputs 用于缓存 task
+    inputs.property("moduleNames", moduleNames.map { it.name })
+    // outputs 会作为 srcDir
     outputs.dir(outputDir)
     doLast {
       val text = moduleNames.joinToString("\n") { file ->

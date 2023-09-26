@@ -12,7 +12,7 @@ object CyxbsApplicationsGroup {
 
   fun config(project: Project) {
     val config: ApplicationConfig = when (project.name) {
-      "cyxbs-lite" -> CyxbsLiteConfigImpl(project)
+      "lite" -> CyxbsLiteConfigImpl(project)
       else -> error("未知 cyxbs-applications 子模块，请实现自己的 ApplicationConfig 接口")
     }
     ApplicationModule.config(config)

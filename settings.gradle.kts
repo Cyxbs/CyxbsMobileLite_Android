@@ -39,25 +39,20 @@ rootDir.listFiles { file ->
 }!!.map {
   it.listFiles()!!.toList()
 }.flatten().filter {
-  // 以部分文件来过滤出那些时模块
+  // 以部分文件来过滤出那些是模块
   it.isDirectory
       && it.resolve("build.gradle.kts").exists()
       && !it.resolve("settings.gradle.kts").exists()
-}.filter {
-  // 排除不需要的模块
-  !excludeList.contains(it.name)
-      && !excludeList.contains(it.parentFile.name) // 忽略父模块时也得同步忽略子模块
-}.map {
-  // 映射为模块路径
-  val parentFile = it.parentFile
-  if (parentFile.parentFile == rootDir) {
-    ":${parentFile.name}:${it.name}"
-  } else {
-    // 目前路径最多只有三级，第一级为最外层的模块分组，第二级为父模块，第三级为 api 子模块
-    ":${parentFile.parentFile.name}:${parentFile.name}:${it.name}"
-  }
 }.forEach {
-  include(it)
+  if (!excludeList.contains(it.name)) {
+    include(":${it.parentFile.name}:${it.name}")
+    val apiFile = it.resolve("api-${it.name}")
+    if (!excludeList.contains(apiFile.name)) {
+      if (apiFile.exists() && apiFile.resolve("build.gradle.kts").exists()) {
+        include(":${it.parentFile.name}:${it.name}:${apiFile.name}")
+      }
+    }
+  }
 }
 /**
  * 如果你使用 AS 自带的模块模版，他会自动添加 include()，请删除掉，因为上面会自动读取
