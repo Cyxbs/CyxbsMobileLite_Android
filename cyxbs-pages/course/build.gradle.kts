@@ -8,18 +8,9 @@ dependModule {
   dependRouter()
   dependUtils()
   dependView()
+//  dependNetwork()
 }
 
 dependLibrary {
-}
-
-kotlin {
-  compilerOptions {
-    freeCompilerArgs
-  }
-}
-
-ktProvider {
-
 }
 

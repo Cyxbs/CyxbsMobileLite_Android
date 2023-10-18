@@ -58,6 +58,8 @@
             <option value="$PROJECT_DIR$/cyxbs-components/view" />
             <option value="$PROJECT_DIR$/cyxbs-functions" />
             <option value="$PROJECT_DIR$/cyxbs-functions/debug" />
+            <option value="$PROJECT_DIR$/cyxbs-functions/network" />
+            <option value="$PROJECT_DIR$/cyxbs-functions/network/api-network" />
             <option value="$PROJECT_DIR$/cyxbs-functions/script" />
             <option value="$PROJECT_DIR$/cyxbs-pages" />
             <option value="$PROJECT_DIR$/cyxbs-pages/course" />

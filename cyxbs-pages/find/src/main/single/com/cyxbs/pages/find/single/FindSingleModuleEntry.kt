@@ -7,6 +7,6 @@ import com.g985892345.provider.annotation.SingleImplProvider
 object FindSingleModuleEntry : ISingleModuleEntry {
 
   override fun getPage(): ISingleModuleEntry.Page {
-    TODO("返回一个启动 Activity 的 Intent 或者 Fragment")
+    throw NotImplementedError()
   }
 }

@@ -13,7 +13,6 @@ dependencyResolutionManagement {
     mavenCentral()
     mavenLocal() // maven 默认的本地依赖位置：用户名/.m2/repository 中
     google()
-    maven("https://jitpack.io")
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // mavenCentral 快照仓库
   }
   // 开启 versionCatalogs 功能
