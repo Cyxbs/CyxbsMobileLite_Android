@@ -24,5 +24,7 @@ https://www.processon.com/view/link/650a6e022e87a366062e0479
 
 ## 进度
 - [x] 基础框架的搭建
-- [ ] idea 配套模块构建工具 (开发中, [项目链接](https://github.com/Cyxbs/CyxbsIdeaPlugin))
+- [x] idea 配套模块构建工具 ([项目链接](https://github.com/Cyxbs/CyxbsIdeaPlugin))
+- [x] 服务提供框架 (路由框架) ([KtProvider](https://github.com/985892345/KtProvider))
+- [x] 单模块功能搭建
 - [ ] 数据源层搭建
