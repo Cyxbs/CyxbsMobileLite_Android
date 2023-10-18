@@ -1,5 +1,6 @@
 import config.CyxbsComponentsConfigImpl
 import config.SingleModuleConfig
+import config.SingleModuleConfigImpl
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSetContainer
 import utils.androidBase
@@ -23,6 +24,7 @@ object CyxbsComponentsGroup {
 
   private fun createConfig(project: Project): SingleModuleConfig {
     return when (project.name) {
+      "singlemodule" -> SingleModuleConfigImpl(project)
       else -> CyxbsComponentsConfigImpl(project)
     }
   }

@@ -23,6 +23,11 @@ sealed interface AndroidConfig {
    */
   fun getNamespace(): String
 
+  /**
+   * 在应用插件后调用
+   */
+  fun config() {}
+
   companion object {
     val resourcesExclude = listOf(
       "LICENSE.txt",

@@ -31,6 +31,7 @@ interface ApplicationConfig : AndroidConfig {
     val mainProject = project
     mainProject.project(":cyxbs-components").subprojects {
       when (name) {
+        "singlemodule" -> Unit // singlemodule 不依赖
         else -> dependChildModules(mainProject, this)
       }
     }

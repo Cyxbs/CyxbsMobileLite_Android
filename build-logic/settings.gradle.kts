@@ -1,20 +1,20 @@
 pluginManagement {
   includeBuild(".")
   repositories {
-    google()
     mavenCentral()
+    mavenLocal()
+    google()
     gradlePluginPortal()
   }
 }
 
 dependencyResolutionManagement {
   repositories {
-    google()
     mavenCentral()
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // mavenCentral 快照仓库
-    maven("https://jitpack.io")
-    jcenter() // 部分依赖需要
     mavenLocal() // maven 默认的本地依赖位置：用户名/.m2/repository 中
+    google()
+    maven("https://jitpack.io")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // mavenCentral 快照仓库
   }
   // 开启 versionCatalogs 功能
   versionCatalogs {
@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 rootProject.name = "build-logic"
 
 // dependencies
-include(":dependencies:library")
+include(":dependencies")
 
 // module
 include(":module:api")

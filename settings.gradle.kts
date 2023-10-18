@@ -1,20 +1,20 @@
 pluginManagement {
   includeBuild("build-logic")
   repositories {
-    google()
     mavenCentral()
+    mavenLocal()
+    google()
     gradlePluginPortal()
   }
 }
 dependencyResolutionManagement {
   repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
   repositories {
-    google()
     mavenCentral()
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // mavenCentral 快照仓库
-    maven("https://jitpack.io")
-    jcenter() // 部分依赖需要
     mavenLocal() // maven 默认的本地依赖位置：用户名/.m2/repository 中
+    google()
+    maven("https://jitpack.io")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // mavenCentral 快照仓库
   }
 }
 
@@ -26,6 +26,7 @@ rootProject.name = "CyxbsMobileLite_Android"
 
 // 需要删除模块时写这里面，将不再进行 include，直接写模块名即可
 val excludeList: List<String> = listOf(
+  "singlemodule"
 )
 
 rootDir.listFiles { file ->
@@ -54,6 +55,7 @@ rootDir.listFiles { file ->
     }
   }
 }
+include(":cyxbs-components:singlemodule")
 /**
  * 如果你使用 AS 自带的模块模版，他会自动添加 include()，请删除掉，因为上面会自动读取
  * 请注意:

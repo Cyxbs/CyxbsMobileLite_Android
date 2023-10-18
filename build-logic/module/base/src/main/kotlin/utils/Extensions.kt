@@ -37,11 +37,11 @@ fun Project.androidBase(
   extensions.configure("android", configure)
 }
 
-fun Project.kotlin(configure: KotlinAndroidProjectExtension.() -> Unit) {
+fun Project.kotlinBlock(configure: KotlinAndroidProjectExtension.() -> Unit) {
   extensions.configure(configure)
 }
 
-fun CommonExtension<*, *, *, *, *>.kotlinOptions(configure: KotlinJvmOptions.() -> Unit) {
+fun CommonExtension<*, *, *, *, *>.kotlinOptionsBlock(configure: KotlinJvmOptions.() -> Unit) {
   (this as ExtensionAware).extensions.configure(configure)
 }
 

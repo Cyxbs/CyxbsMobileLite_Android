@@ -7,7 +7,7 @@ import com.g985892345.android.base.databinding.ui.BaseBindFragment
  * .
  *
  * @author 985892345
- * 2023/9/7 00:05
+ * @date 2023/9/7 00:05
  */
 abstract class CyxbsDataBindFragment<VB : ViewBinding> : BaseBindFragment<VB>() {
 }

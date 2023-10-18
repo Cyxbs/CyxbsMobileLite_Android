@@ -16,7 +16,15 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
    * 单模块依赖配置
    */
   override fun dependModules() {
-    reverseDependencies(project, project, mutableSetOf(), mutableSetOf())
+    // 因为为了隔绝对其他模块的依赖，所以使用第三方模块采用 implementation 去依赖实现模块(singlemodule 模块已经自动被依赖)
+    // 为什么不使用 runtimeOnly 呢？因为 runtimeOnly 不会加入编译环境(会编译，但不能找到依赖关系)，只能运行时加载模块启动类
+    val singleModuleProject = project.project(":cyxbs-components:singlemodule")
+    reverseDependencies(
+      singleModuleProject,
+      project,
+      mutableSetOf(singleModuleProject, project),
+      mutableSetOf(singleModuleProject, project)
+    )
   }
 
   companion object {
@@ -29,13 +37,13 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
      *
      * 目前 api 模块的实现模块有且只能有父模块一个 !!!
      *
-     * @param debugProject 当前处于单模块调试的模块
-     * @param project [debugProject] 间接或直接依赖的模块
+     * @param singleModuleProject 用于依赖其他模块的模块
+     * @param project [singleModuleProject] 间接或直接依赖的模块
      * @param dependedProject 已经反向依赖了的 Project 集合
      * @param observedProject 已经进行观察了的 Project 集合
      */
     private fun reverseDependencies(
-      debugProject: Project,
+      singleModuleProject: Project,
       project: Project,
       dependedProject: MutableSet<Project>,
       observedProject: MutableSet<Project>,
@@ -59,7 +67,7 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
               val dependencyProject = dependency.dependencyProject
               if (!dependedProject.contains(dependencyProject)) {
                 observeDependOtherProject(
-                  debugProject,
+                  singleModuleProject,
                   dependedProject,
                   observedProject,
                   dependencyProject
@@ -73,7 +81,7 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
 
     // 观察一个 Project 依赖的其他 Project
     private fun observeDependOtherProject(
-      debugProject: Project,
+      singleModuleProject: Project,
       dependedProject: MutableSet<Project>,
       observedProject: MutableSet<Project>,
       dependencyProject: Project,
@@ -82,7 +90,7 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
         dependencyProject.name.startsWith("api-") -> {
           val parentProject = dependencyProject.parent
           if (parentProject == null) {
-            debugProject.logger.warn(
+            singleModuleProject.logger.warn(
               "${dependencyProject.name} 模块不存在父模块，" +
                   "按照规定: api 模块的实现模块有且只能有父模块一个\n" +
                   "如果不遵守将导致单模块出错 !!!"
@@ -90,9 +98,10 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
           } else {
             // 对于单模块调试，需要反向依赖 api 的实现模块，不然未加入编译，无法生成路由文件
             dependedProject.add(parentProject) // 记录已经依赖，必须先于 dependencies 调用
-            debugProject.dependencies {
+            singleModuleProject.dependencies {
               // 将 api 模块的父模块加入编译
-              "runtimeOnly"(parentProject)
+              // 这里不能使用 runtimeOnly，因为 runtimeOnly 不会触发 kcp 中
+              "implementation"(parentProject)
             }
           }
         }
@@ -101,7 +110,7 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
           if (!observedProject.contains(dependencyProject)) {
             // 对于其他模块递归寻找 api 依赖
             reverseDependencies(
-              debugProject,
+              singleModuleProject,
               dependencyProject,
               dependedProject,
               observedProject

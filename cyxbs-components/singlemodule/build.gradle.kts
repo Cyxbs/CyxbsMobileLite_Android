@@ -2,6 +2,8 @@ plugins {
   id("module-manager")
 }
 
-dependencies {
-  implementation(project(":cyxbs-components:base"))
+dependModule {
+  dependBase()
+  dependConfig()
+  dependRouter()
 }

@@ -2,7 +2,6 @@
 // 是否禁止单模块
 val isBanSingleModule: Boolean = when {
   name.startsWith("api-") -> false
-  name.startsWith("cyxbs-") -> false
   else -> {
     // gradle 执行命令判断
     gradle.startParameter.taskNames.any {

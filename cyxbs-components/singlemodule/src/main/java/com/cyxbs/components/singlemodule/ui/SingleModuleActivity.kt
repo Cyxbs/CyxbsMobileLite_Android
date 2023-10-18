@@ -1,38 +1,59 @@
 package com.cyxbs.components.singlemodule.ui
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
 import com.cyxbs.components.base.ui.CyxbsBaseActivity
+import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.components.singlemodule.ISingleModuleEntry
 import com.g985892345.android.extensions.android.lazyUnlock
-import com.g985892345.android.extensions.android.toast
-import java.util.ServiceLoader
 
 /**
- * .
+ * 用于单模块调试启动的 activity
  *
  * @author 985892345
- * 2023/9/7 00:13
+ * @date 2023/9/7 00:13
  */
 class SingleModuleActivity : CyxbsBaseActivity() {
 
   private val mSingleModuleEntry by lazyUnlock {
-    ServiceLoader.load(ISingleModuleEntry::class.java).single()
+    ServiceManager.getImplOrNull(ISingleModuleEntry::class)
   }
 
   override val isCancelStatusBar: Boolean
-    get() = mSingleModuleEntry.isCancelStatusBar
+    get() = mSingleModuleEntry?.isCancelStatusBar ?: super.isCancelStatusBar
 
   override val isPortraitScreen: Boolean
-    get() = mSingleModuleEntry.isPortraitScreen
+    get() = mSingleModuleEntry?.isPortraitScreen ?: super.isPortraitScreen
 
+  @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    when (val page = mSingleModuleEntry.getPage()) {
-      is Intent -> startActivity(page)
-      is Fragment -> replaceFragment(android.R.id.content) { page }
-      else -> toast("getPage() 返回了未知类型：${page.javaClass.name}")
+    when (val page = mSingleModuleEntry?.getPage()) {
+      is ISingleModuleEntry.ActivityPage -> {
+        startActivity(page.intent)
+      }
+      is ISingleModuleEntry.FragmentPage -> {
+        replaceFragment(android.R.id.content) { page.fragment.invoke() }
+      }
+      null -> {
+        setContentView(
+          FrameLayout(this).also { layout ->
+            layout.addView(TextView(this).apply {
+              text = "单模块加载失败\n未找到对应的 ISingleModuleEntry 实现类\n" +
+                  "请联系 @985892345 进行维护"
+              gravity = Gravity.CENTER
+            }, FrameLayout.LayoutParams(
+              FrameLayout.LayoutParams.WRAP_CONTENT,
+              FrameLayout.LayoutParams.WRAP_CONTENT,
+              Gravity.CENTER
+            ))
+          }
+        )
+      }
     }
   }
 }

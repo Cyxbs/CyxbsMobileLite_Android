@@ -3,8 +3,9 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import utils.androidBase
-import utils.kotlin
-import utils.kotlinOptions
+import utils.kotlinBlock
+import utils.kotlinOptionsBlock
+import utils.libsPlugin
 import utils.libsVersion
 
 /**
@@ -20,10 +21,13 @@ internal object AndroidModule {
     AndroidProjectChecker.config(config.project)
     with(config.project) {
       apply(plugin = "kotlin-android")
+      // KtProvider 路由框架，使用 ir 插桩实现，默认给所有模块引入
+      // 虽然有些模块不包含注解，但是 kotlin 的缓存做得比较好，支持增量编译，所以除了第一次外，后续对编译时间影响不大
+      apply(plugin = libsPlugin("ktProvider").pluginId)
       // 配置 android 闭包
       configAndroid(config)
       // 配置 kotlin 闭包
-      kotlin {
+      kotlinBlock {
         jvmToolchain(libsVersion("kotlinJvmTarget").requiredVersion.toInt())
       }
       // 默认依赖
@@ -34,6 +38,7 @@ internal object AndroidModule {
         _dependLifecycleKtx()
       }
     }
+    config.config()
   }
 
   private fun Project.configAndroid(config: AndroidConfig) {
@@ -85,7 +90,7 @@ internal object AndroidModule {
         targetCompatibility = JavaVersion.toVersion(javaVersion)
       }
 
-      kotlinOptions {
+      kotlinOptionsBlock {
         jvmTarget = libsVersion("kotlinJvmTarget").requiredVersion
       }
     }
