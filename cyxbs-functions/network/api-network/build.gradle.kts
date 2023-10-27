@@ -12,4 +12,5 @@ dependLibrary {
   dependOkHttp()
   dependRetrofit()
   dependSerializationJson()
+  dependCoroutines2Rx()
 }

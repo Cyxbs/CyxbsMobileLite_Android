@@ -3,7 +3,7 @@ package com.cyxbs.components.router
 import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import com.g985892345.android.extensions.android.appContext
+import com.g985892345.android.utils.context.appContext
 import com.g985892345.provider.manager.KtProviderManager
 import kotlin.reflect.KClass
 
@@ -23,7 +23,7 @@ object ServiceManager {
    * ```
    * 还有更简单的写法：
    * ```
-   * IAccountService::class.impl
+   * IAccountService::class.impl // 但需要 IAccountService 实现 IService 接口
    *   .isLogin()
    * ```
    */
@@ -87,4 +87,34 @@ object ServiceManager {
    */
   fun <T : Any> getKClassOrThrow(name: String): KClass<out T> =
     KtProviderManager.getKClassOrThrow(name)
+
+  /**
+   * 获取 @NewImplProvider 中 clazz 参数为 [clazz] 的所有实现类
+   * @return 返回 () -> T 用于延迟初始化，每次 invoke 后都是新的实例
+   */
+  fun <T : Any> getAllNewImpl(clazz: KClass<T>?): Map<String, () -> T> =
+    KtProviderManager.getAllNewImpl(clazz)
+
+  /**
+   * 获取 @SingleImplProvider 中 clazz 参数为 [clazz] 的所有实现类
+   * @return 返回 () -> T 用于延迟初始化，每次 invoke 后都是同一个实例
+   */
+  fun <T : Any> getAllSingleImpl(clazz: KClass<T>?): Map<String, () -> T> =
+    KtProviderManager.getAllSingleImpl(clazz)
 }
+
+
+interface IService
+
+/**
+ * 便捷写法
+ * ```
+ * interface INetworkService : IService
+ *
+ * // 之后可以这样写
+ * IAccountService::class.impl
+ *   .getStuNum()
+ * ```
+ */
+inline val <reified T : IService> KClass<T>.impl: T
+  get() = ServiceManager(T::class)

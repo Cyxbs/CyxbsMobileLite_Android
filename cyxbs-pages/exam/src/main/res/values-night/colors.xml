@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="exam_rv_item_day_remain">#0BCCF0</color>
+    <color name="exam_rv_item_shape_round_bg">#813A3A3A</color>
+    <color name="exam_rv_item_text_time">#80F0F0F2</color>
+    <color name="exam_rv_item_divide">#15315B</color>
+</resources>

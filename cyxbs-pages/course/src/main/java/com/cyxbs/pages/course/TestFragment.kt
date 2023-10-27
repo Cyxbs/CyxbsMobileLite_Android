@@ -1,6 +1,7 @@
 package com.cyxbs.pages.course
 
-import com.g985892345.android.base.ui.page.BaseFragment
+import com.cyxbs.components.base.ui.CyxbsBaseFragment
+
 
 /**
  * .
@@ -8,5 +9,5 @@ import com.g985892345.android.base.ui.page.BaseFragment
  * @author 985892345
  * @date 2023/10/16 00:08
  */
-class TestFragment : BaseFragment(R.layout.course_layout_test) {
+class TestFragment : CyxbsBaseFragment(R.layout.course_layout_test) {
 }

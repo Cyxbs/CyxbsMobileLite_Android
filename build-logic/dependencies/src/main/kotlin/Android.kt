@@ -30,16 +30,16 @@ object Android {
 
   // 官方控件库
   const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
-  const val recyclerview = "androidx.recyclerview:recyclerview:1.3.1"
+  const val recyclerview = "androidx.recyclerview:recyclerview:1.3.2"
   const val cardview = "androidx.cardview:cardview:1.0.0"
   const val viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
-  const val material = "com.google.android.material:material:1.9.0"
+  const val material = "com.google.android.material:material:1.10.0"
   const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
   const val flexbox = "com.google.android.flexbox:flexbox:3.0.0"
 
   // 官方扩展库
   // https://developer.android.google.cn/kotlin/ktx?hl=zh_cn#core
-  const val `core-ktx` = "androidx.core:core-ktx:1.10.1"
+  const val `core-ktx` = "androidx.core:core-ktx:1.12.0"
 
   // https://developer.android.google.cn/kotlin/ktx/extensions-list#dependency_4
   const val `collection-ktx` = "androidx.collection:collection-ktx:1.2.0"
@@ -48,7 +48,7 @@ object Android {
   const val `fragment-ktx` = "androidx.fragment:fragment-ktx:1.6.1"
 
   // // https://developer.android.google.cn/kotlin/ktx/extensions-list#androidxactivity
-  const val `activity-ktx` = "androidx.activity:activity-ktx:1.7.2"
+  const val `activity-ktx` = "androidx.activity:activity-ktx:1.8.0"
 }
 
 /**

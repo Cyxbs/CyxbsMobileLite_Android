@@ -25,7 +25,7 @@ interface ApplicationConfig : AndroidConfig {
   /**
    * 设置 application 模块的依赖
    *
-   * 如果你的 applications 子模块依赖有特殊要求，请重新该方法
+   * 如果你的 applications 子模块依赖有特殊要求，请重些该方法
    */
   fun dependModules() {
     val mainProject = project

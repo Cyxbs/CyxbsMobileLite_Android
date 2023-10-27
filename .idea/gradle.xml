@@ -52,6 +52,7 @@
             <option value="$PROJECT_DIR$/cyxbs-components" />
             <option value="$PROJECT_DIR$/cyxbs-components/base" />
             <option value="$PROJECT_DIR$/cyxbs-components/config" />
+            <option value="$PROJECT_DIR$/cyxbs-components/init" />
             <option value="$PROJECT_DIR$/cyxbs-components/router" />
             <option value="$PROJECT_DIR$/cyxbs-components/singlemodule" />
             <option value="$PROJECT_DIR$/cyxbs-components/utils" />
@@ -62,10 +63,18 @@
             <option value="$PROJECT_DIR$/cyxbs-functions/network/api-network" />
             <option value="$PROJECT_DIR$/cyxbs-functions/script" />
             <option value="$PROJECT_DIR$/cyxbs-pages" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/affair" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/affair/api-affair" />
             <option value="$PROJECT_DIR$/cyxbs-pages/course" />
             <option value="$PROJECT_DIR$/cyxbs-pages/course/api-course" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/exam" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/exam/api-exam" />
             <option value="$PROJECT_DIR$/cyxbs-pages/find" />
             <option value="$PROJECT_DIR$/cyxbs-pages/find/api-find" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/main" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/main/api-main" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/source" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/source/api-source" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -12,6 +12,7 @@ dependencies {
 
 
 ///////////  生成 depend* 方法  /////////////
+
 // 用于排除模块，写模块名即可
 val include: List<String> = listOf(
 )
@@ -49,12 +50,21 @@ val taskProvider = tasks.register("generateCyxbsDepend") {
     outputDirFile.mkdirs()
     moduleFiles.forEach { pair ->
       val text = pair.second.joinToString("\n") { file ->
-        val name = file.name.split("-").joinToString("") { it.capitalized() }
+        val functionName = file.name
+          .split("-")
+          .joinToString("", "DependModuleScope.depend") {
+            it.capitalized()
+          }
+        val projectPath = if (file.name.startsWith("api-")) {
+          ":${pair.first.name}:${file.parentFile.name}:${file.name}"
+        } else {
+          ":${pair.first.name}:${file.name}"
+        }
         """
         
-        fun DependModuleScope.depend$name() {
+        fun $functionName() {
           dependencies {
-            "implementation"(project(":${pair.first.name}:${file.name}"))
+            "implementation"(project("$projectPath"))
           }
         }
       """.trimIndent()

@@ -18,8 +18,7 @@ class SingleModuleApp : CyxbsBaseApp() {
     private const val TAG = "SingleModuleApp"
   }
 
-  override fun onCreate() {
-    super.onCreate()
+  override fun initRouter() {
     try {
       val ktProviderInitializer = Class.forName(ktProviderEntryClassName)
         .getField("INSTANCE")

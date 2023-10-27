@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.dependencies
 @Suppress("MemberVisibilityCanBePrivate", "ObjectPropertyName", "SpellCheckingInspection")
 object Room {
   // https://developer.android.com/jetpack/androidx/releases/room?hl=en
-  const val room_version = "2.5.2"
+  const val room_version = "2.6.0"
   
   const val `room-runtime` = "androidx.room:room-runtime:$room_version"
   const val `room-compiler` = "androidx.room:room-compiler:$room_version"
@@ -28,6 +28,8 @@ fun DependLibraryScope.dependRoom() {
   apply(plugin = "com.google.devtools.ksp")
   extensions.configure<KspExtension> {
     arg("room.schemaLocation", "${project.projectDir}/schemas") // room 的架构导出目录
+    // https://developer.android.com/jetpack/androidx/releases/room#compiler-options
+    // 启用 Gradle 增量注释处理器
     arg("room.incremental", "true")
   }
   dependencies {

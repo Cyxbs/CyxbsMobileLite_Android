@@ -1,6 +1,8 @@
 package com.cyxbs.functions.network
 
+import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.functions.api.network.INetworkService
+import com.cyxbs.functions.api.network.IOkHttpService
 import com.cyxbs.functions.api.network.utils.getBaseUrl
 import com.g985892345.provider.annotation.SingleImplProvider
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -21,7 +23,9 @@ import kotlin.reflect.KClass
 @SingleImplProvider(INetworkService::class)
 object NetworkServiceImpl : INetworkService {
   
-  private val retrofit = createRetrofit(true)
+  private val retrofit = createRetrofitInternal(main = true, isNeedCookie = true)
+
+  private val mOkHttpServiceAllSingleImpl = ServiceManager.getAllSingleImpl(IOkHttpService::class)
   
   override fun <T : Any> getApiService(clazz: KClass<T>): T {
     return retrofit.create(clazz.java)
@@ -30,13 +34,25 @@ object NetworkServiceImpl : INetworkService {
   override fun createRetrofit(
     isNeedCookie: Boolean,
     config: (OkHttpClient.Builder.() -> Unit)?
+  ): Retrofit = createRetrofitInternal(false, isNeedCookie, config)
+
+  private fun createRetrofitInternal(
+    main: Boolean,
+    isNeedCookie: Boolean,
+    config: (OkHttpClient.Builder.() -> Unit)? = null,
   ): Retrofit {
     return Retrofit
       .Builder()
       .baseUrl(getBaseUrl())
       .client(OkHttpClient().newBuilder().run {
-        config?.invoke(this)
-        defaultOkhttpConfig(isNeedCookie)
+        defaultOkhttpConfig(isNeedCookie).also {
+          mOkHttpServiceAllSingleImpl.forEach {
+            if (main) {
+              it.value.invoke().onCreateMainOkHttp(this)
+            } else it.value.invoke().onCreateCustomOkHttp(this)
+          }
+          config?.invoke(this)
+        }
       })
       // https://github.com/square/retrofit/tree/master/retrofit-converters/kotlinx-serialization
       .addConverterFactory(Json.asConverterFactory("application/json; charset=UTF8".toMediaType()))

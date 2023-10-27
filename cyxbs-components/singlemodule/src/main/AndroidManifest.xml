@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <application
     android:name=".app.SingleModuleApp"
+    android:label="${single_module_app_name}"
     android:allowBackup="true"
     android:supportsRtl="true"
     android:theme="@style/ConfigAppTheme">

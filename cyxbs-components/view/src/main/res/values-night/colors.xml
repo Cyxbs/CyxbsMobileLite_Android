@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+  <!--分割线颜色-->
+  <color name="view_default_divide_line_color">#72DEDEDE</color>
+
+  <!--ChooseDialog 的按钮颜色-->
+  <color name="view_choose_dialog_btn_positive">#4A44E4</color>
+  <color name="view_choose_dialog_btn_negative">#CC5A5A5A</color>
+
+  <!--    公共dialog背景-->
+  <color name="view_dialog_bg">#2C2C2C</color>
+
 </resources>

@@ -4,6 +4,11 @@ plugins {
   id("module-manager")
 }
 
+dependModule {
+  dependInit()
+  dependRouter()
+}
+
 dependLibrary {
   dependCoroutines()
   dependRxjava()

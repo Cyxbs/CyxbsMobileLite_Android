@@ -8,9 +8,11 @@ dependModule {
   dependRouter()
   dependUtils()
   dependView()
-//  dependNetwork()
+  dependApiNetwork()
+  dependApiSource()
 }
 
 dependLibrary {
+  dependSerializationJson()
 }
 

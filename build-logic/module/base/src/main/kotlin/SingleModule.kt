@@ -25,6 +25,10 @@ object SingleModule {
             java.srcDir("src/main/single")
           }
         }
+        defaultConfig {
+          // 设置单模块安装包名字
+          manifestPlaceholders["single_module_app_name"] = "cyxbs.${project.name}"
+        }
       }
       dependModule {
         dependSinglemodule()

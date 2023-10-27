@@ -1,15 +1,15 @@
 package com.cyxbs.components.base.ui
 
 import androidx.annotation.LayoutRes
-import com.g985892345.android.base.ui.page.BaseFragment
+import com.g985892345.android.base.ui.page.GxrBaseFragment
 
 /**
- * 注释往父类 [BaseFragment] 查看
+ * 注释往父类 [GxrBaseFragment] 查看
  *
  * @author 985892345
  * @date 2023/9/6 23:55
  */
-abstract class CyxbsBaseFragment : BaseFragment {
+abstract class CyxbsBaseFragment : GxrBaseFragment {
 
   constructor() : super()
 

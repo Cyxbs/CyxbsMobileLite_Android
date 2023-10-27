@@ -10,6 +10,8 @@ import com.cyxbs.components.base.ui.CyxbsBaseActivity
 import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.components.singlemodule.ISingleModuleEntry
 import com.g985892345.android.extensions.android.lazyUnlock
+import com.g985892345.android.extensions.android.mainHandler
+import com.g985892345.android.extensions.android.postDelay
 
 /**
  * 用于单模块调试启动的 activity
@@ -32,9 +34,13 @@ class SingleModuleActivity : CyxbsBaseActivity() {
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    when (val page = mSingleModuleEntry?.getPage()) {
+    when (val page = mSingleModuleEntry?.getPage(this)) {
       is ISingleModuleEntry.ActivityPage -> {
         startActivity(page.intent)
+        mainHandler.postDelay(3000) {
+          // 防止另一个 activity 还没有完全打开
+          finish()
+        }
       }
       is ISingleModuleEntry.FragmentPage -> {
         replaceFragment(android.R.id.content) { page.fragment.invoke() }

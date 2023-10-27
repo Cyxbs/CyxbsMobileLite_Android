@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--课表可上拉下拉标识小块背景-->
+  <color name="course_tip_color">#E2EDFB</color>
+</resources>

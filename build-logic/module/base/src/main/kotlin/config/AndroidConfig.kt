@@ -16,7 +16,7 @@ sealed interface AndroidConfig {
     get() = 24
 
   val compileSdk: Int
-    get() = 33
+    get() = 34
 
   /**
    * 得到 namespace，即 R 文件的包名

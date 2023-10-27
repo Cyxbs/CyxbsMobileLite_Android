@@ -1,5 +1,6 @@
 package com.cyxbs.components.singlemodule
 
+import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 
@@ -14,7 +15,7 @@ interface ISingleModuleEntry {
   /**
    * 返回一个 Intent 或者 Fragment 对象，返回其他对象则抛出异常
    */
-  fun getPage(): Page
+  fun getPage(context: Context): Page
 
   /**
    * 是否锁定竖屏
