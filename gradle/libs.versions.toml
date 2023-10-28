@@ -1,5 +1,5 @@
-# 写在这里的目的是为了让整个项目的 build.gradle.kts 和 build_-ogic 的都能统一设置版本号
-# 如果是只有模块使用的话，建议写在 build-logic/core/versions/ 里面，一定要写好对应依赖的链接!!!
+# 写在这里的目的是为了让整个项目的 build.gradle.kts 和 build_logic 的都能统一设置版本号
+# 如果是只有模块使用的话，建议写在 build-logic/dependencies/ 里面，一定要写好对应依赖的链接!!!
 # https://github.com/android/nowinandroid/blob/main/gradle/libs.versions.toml
 
 [versions]
@@ -10,7 +10,7 @@ kotlin = "1.9.10"
 ksp = "1.9.10-1.0.13" # ksp 版本与 kotlin 版本强绑定，升级 kotlin 记得去更 ksp (https://github.com/google/ksp/releases)
 javaTarget = "11"
 kotlinJvmTarget = "11"
-ktProvider = "1.0.1-alpha82-SNAPSHOT" # 985892345 的服务提供库 (https://github.com/985892345/KtProvider)
+ktProvider = "1.1.0-alpha01-SNAPSHOT" # 985892345 的服务提供库 (https://github.com/985892345/KtProvider)
 androidWheel = "0.0.1-alpha13-SNAPSHOT" # 985892345 的 Android 轮子库 (https://github.com/985892345/AndroidWheel)
 constraintlayout = "2.1.4"
 

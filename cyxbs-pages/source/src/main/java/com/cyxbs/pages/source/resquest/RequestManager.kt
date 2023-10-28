@@ -86,7 +86,7 @@ object RequestManager {
           error = e.message
         }
       } finally {
-        db.requestDao.changeOrInsert(
+        db.requestDao.change(
           content.copy(
             response = response,
             error = error,

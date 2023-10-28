@@ -4,6 +4,7 @@ pluginManagement {
     mavenCentral()
     mavenLocal()
     google()
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // mavenCentral 快照仓库
     gradlePluginPortal()
   }
 }

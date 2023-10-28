@@ -23,7 +23,7 @@ class SingleModuleApp : CyxbsBaseApp() {
       val ktProviderInitializer = Class.forName(ktProviderEntryClassName)
         .getField("INSTANCE")
         .get(null) as KtProviderInitializer
-      ktProviderInitializer.initKtProvider()
+      ktProviderInitializer.tryInitKtProvider()
     } catch (e: Exception) {
       toastLong("单模块初始化失败\n详细请查看 log")
       Log.e(TAG, "单模块初始化失败，可能是因为开启单模块调试的模块未生成 KtProviderInitializer 实现类\n" +

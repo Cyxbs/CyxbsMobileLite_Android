@@ -13,14 +13,6 @@ import kotlinx.coroutines.Dispatchers
  */
 class SetRequestViewModel : CyxbsBaseViewModel() {
 
-  fun changeOrInsertContent(newContentEntity: RequestContentEntity) {
-    launch(Dispatchers.IO) {
-      SourceDataBase.INSTANCE
-        .requestDao
-        .changeOrInsert(newContentEntity)
-    }
-  }
-
   fun removeContent(content: RequestContentEntity) {
     launch(Dispatchers.IO) {
       SourceDataBase.INSTANCE

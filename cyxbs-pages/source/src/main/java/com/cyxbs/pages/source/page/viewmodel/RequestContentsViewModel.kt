@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cyxbs.components.base.ui.CyxbsBaseViewModel
-import com.cyxbs.pages.source.data.RequestContentItemData
 import com.cyxbs.pages.source.data.RequestItemContentsData
 import com.cyxbs.pages.source.room.SourceDataBase
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
-import com.g985892345.android.extensions.android.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapNotNull
@@ -34,7 +32,10 @@ class RequestContentsViewModel(
       .mapNotNull { it }
       .distinctUntilChanged()
       .collectLaunch { entity ->
-        _contentsData.value = RequestItemContentsData(entity.item, entity.contents)
+        _contentsData.value = RequestItemContentsData(
+          entity.item,
+          entity.contents.sortedBy { entity.item.sort.indexOf(it.id) }
+        )
       }
   }
 
@@ -52,10 +53,15 @@ class RequestContentsViewModel(
   }
 
   fun swapContentEntity(content1: RequestContentEntity, content2: RequestContentEntity): Boolean {
-    val item = contentsData.value?.item ?: return false
+    val value = contentsData.value ?: return false
+    val item = value.item
     val index1 = item.sort.indexOf(content1.id)
     val index2 = item.sort.indexOf(content2.id)
     if (index1 >= 0 && index2 >= 0) {
+      _contentsData.value = value.copy(contents = value.contents.toMutableList().apply {
+        set(index1, content2)
+        set(index2, content1)
+      })
       viewModelScope.launch(Dispatchers.IO) {
         SourceDataBase.INSTANCE
           .requestDao

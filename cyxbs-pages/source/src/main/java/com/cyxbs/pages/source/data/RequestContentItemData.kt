@@ -1,6 +1,5 @@
 package com.cyxbs.pages.source.data
 
-import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
 import com.cyxbs.pages.source.room.entity.RequestItemEntity
 import java.io.Serializable
@@ -15,20 +14,4 @@ data class RequestContentItemData(
   val item: RequestItemEntity,
   val content: RequestContentEntity,
 ) : Serializable {
-
-  companion object : ItemCallback<RequestContentItemData>() {
-    override fun areItemsTheSame(
-      oldItem: RequestContentItemData,
-      newItem: RequestContentItemData
-    ): Boolean {
-      return oldItem.content.id == newItem.content.id
-    }
-
-    override fun areContentsTheSame(
-      oldItem: RequestContentItemData,
-      newItem: RequestContentItemData
-    ): Boolean {
-      return oldItem == newItem
-    }
-  }
 }

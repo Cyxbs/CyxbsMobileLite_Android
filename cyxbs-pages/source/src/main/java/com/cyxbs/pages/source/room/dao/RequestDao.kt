@@ -27,22 +27,19 @@ abstract class RequestDao {
   abstract fun change(requestItemEntity: RequestItemEntity)
 
   @Transaction
-  open fun changeOrInsert(requestContentEntity: RequestContentEntity) {
-    if (requestContentEntity.id == 0L) {
-      val item = findItemByName(requestContentEntity.name)
-        ?: throw IllegalArgumentException("不存在 name = ${requestContentEntity.name} 的 RequestContentEntity")
-      change(item.copy(sort = item.sort + requestContentEntity.id)) // 维护排序
-      insertInternal(requestContentEntity)
-    } else {
-      changeInternal(requestContentEntity)
-    }
+  open fun insert(requestContentEntity: RequestContentEntity) {
+    val item = findItemByName(requestContentEntity.name)
+      ?: throw IllegalArgumentException("不存在 name = ${requestContentEntity.name} 的 RequestContentEntity")
+    val id = insertInternal(requestContentEntity)
+    change(item.copy(sort = item.sort + id)) // 维护排序
+    requestContentEntity.id = id
   }
 
   @Update
-  protected abstract fun changeInternal(requestContentEntity: RequestContentEntity)
+  abstract fun change(requestContentEntity: RequestContentEntity)
 
   @Insert
-  protected abstract fun insertInternal(requestContentEntity: RequestContentEntity)
+  protected abstract fun insertInternal(requestContentEntity: RequestContentEntity): Long
 
   @Query("SELECT * FROM request_item")
   abstract fun getItems(): List<RequestItemEntity>
@@ -69,6 +66,9 @@ abstract class RequestDao {
 
   @Query("SELECT * FROM request_item WHERE name = :name")
   abstract fun observeItem(name: String): Flow<RequestItemEntity?>
+
+  @Query("SELECT * FROM request_item")
+  abstract fun observeItems(): Flow<List<RequestItemEntity>>
 
   @Transaction
   @Query("SELECT * FROM request_item WHERE name = :name")

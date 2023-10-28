@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cyxbs.pages.source.R
-import com.cyxbs.pages.source.data.RequestItemContentsData
+import com.cyxbs.pages.source.data.RequestItemData
 import com.cyxbs.pages.source.page.ItemContentsActivity
 import com.g985892345.android.extensions.android.color
 import com.g985892345.android.extensions.android.setOnSingleClickListener
@@ -19,7 +20,20 @@ import com.g985892345.android.extensions.android.setOnSingleClickListener
  * @author 985892345
  * @date 2023/10/19 09:13
  */
-class SourceAdapter : ListAdapter<RequestItemContentsData, SourceAdapter.SourceVH>(RequestItemContentsData) {
+class SourceAdapter : ListAdapter<RequestItemData, SourceAdapter.SourceVH>(
+  object : DiffUtil.ItemCallback<RequestItemData>() {
+    override fun areItemsTheSame(oldItem: RequestItemData, newItem: RequestItemData): Boolean {
+      return oldItem.item.name == newItem.item.name
+    }
+
+    override fun areContentsTheSame(oldItem: RequestItemData, newItem: RequestItemData): Boolean {
+      // 根据使用情况来决定内容是否改变，没必要直接比对全部数据
+      return oldItem.item.sort == newItem.item.sort
+          && oldItem.item.isSuccess == newItem.item.isSuccess
+          && oldItem.item.requestTimestamp == newItem.item.requestTimestamp
+    }
+  }
+) {
 
   inner class SourceVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tvName: TextView = itemView.findViewById(R.id.source_tv_list_item_source_name)
@@ -48,9 +62,9 @@ class SourceAdapter : ListAdapter<RequestItemContentsData, SourceAdapter.SourceV
     }
   }
 
-  private fun setState(holder: SourceVH, data: RequestItemContentsData) {
+  private fun setState(holder: SourceVH, data: RequestItemData) {
     holder.apply {
-      if (data.contents.isEmpty()) {
+      if (data.item.sort.isEmpty()) {
         tvState.text = "未设置"
         tvState.setTextColor(android.R.color.holo_orange_dark.color)
       } else {
@@ -73,7 +87,7 @@ class SourceAdapter : ListAdapter<RequestItemContentsData, SourceAdapter.SourceV
   }
 
   @SuppressLint("SetTextI18n")
-  private fun setRequest(holder: SourceVH, data: RequestItemContentsData) {
+  private fun setRequest(holder: SourceVH, data: RequestItemData) {
     holder.apply {
       if (data.item.requestTimestamp == null) {
         tvRequestTime.text = "未请求过"

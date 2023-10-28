@@ -36,7 +36,7 @@ data class RequestItemEntity(
   val requestTimestamp: Long?, // 每次发起请求的时间
   val responseTimestamp: Long?, // 最后请求成功时的时间戳
   val isSuccess: Boolean?, // 上一次请求是否成功, null: 请求中或者未设置请求体或者第一次设置时未请求
-  val sort: List<Long>, // 请求顺序
+  val sort: List<Long>, // 请求顺序, RequestContentEntity 的 id
   val parameters: List<Pair<String, String>>, // 参数名+描述
 ) : Serializable {
   class ListIntConverter {

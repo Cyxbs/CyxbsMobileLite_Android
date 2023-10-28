@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG
@@ -74,9 +75,7 @@ class ItemContentsActivity : CyxbsBaseActivity(R.layout.source_activity_item_con
       mEtInterval.setText(it.item.interval.toString())
     }
     mEtInterval.setOnEditorActionListener { v, action, event ->
-      android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-        "action = $action   event = $event")
-      if (event != null) {
+      if (action == EditorInfo.IME_ACTION_DONE) {
         mViewModel.changeInterval(v.text.toString().toFloat())
         toast("设置成功")
         return@setOnEditorActionListener true
@@ -122,7 +121,7 @@ class ItemContentsActivity : CyxbsBaseActivity(R.layout.source_activity_item_con
 
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
       }
-    })
+    }).apply { attachToRecyclerView(mRecyclerview) }
   }
 
   private fun initFloatBtn() {

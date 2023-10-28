@@ -11,9 +11,13 @@ import com.cyxbs.components.view.view.JToolbar
 import com.cyxbs.components.view.view.ScaleScrollEditText
 import com.cyxbs.pages.source.R
 import com.cyxbs.pages.source.page.viewmodel.SetRequestViewModel
+import com.cyxbs.pages.source.room.SourceDataBase
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
+import com.g985892345.android.extensions.android.launch
 import com.g985892345.android.extensions.android.setOnSingleClickListener
 import com.g985892345.android.extensions.android.toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * .
@@ -99,12 +103,13 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
       端上传递请求参数规则:
         端上可以传递参数到 url 和 js 上
         引用规则: 
-          以 {TEXT} 的方式进行引用, 在请求会进行字符串替换
+          以 {TEXT} 的方式进行引用, 在请求前会进行字符串替换
         例子:
           比如端上设置参数为: stu_num, 取值为: abc
           则对于如下 url: https://test/{stu_num}
           会被替换为: https://test/abc
           js 同样如此，但请注意这只是简单的替换字符串
+        并不是所有请求都会有参数，是否存在参数请点击 TEST 按钮进行查看
         
       该面板支持双指放大缩小
     """.trimIndent()
@@ -113,9 +118,16 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
 
   private fun initBtn() {
     mBtnOk.setOnSingleClickListener {
-      createNewContent()?.let {
-        mViewModel.changeOrInsertContent(it)
-        finish()
+      createNewContent()?.let { content ->
+        launch(Dispatchers.IO) {
+          SourceDataBase.INSTANCE
+            .requestDao
+            .insert(content)
+          // 在 activity 中插入数据，确保数据插入完才允许 finish
+          withContext(Dispatchers.Main) {
+            finish()
+          }
+        }
       }
     }
     mBtnTest.setOnSingleClickListener {

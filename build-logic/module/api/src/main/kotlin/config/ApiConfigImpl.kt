@@ -11,6 +11,6 @@ import org.gradle.api.Project
 open class ApiConfigImpl(override val project: Project) : LibraryConfig {
 
   override fun getNamespace(): String {
-    return "com.cyxbs.api.${project.name.replace("-", ".")}"
+    return "com.cyxbs.api.${project.name.substringAfterLast("-")}"
   }
 }

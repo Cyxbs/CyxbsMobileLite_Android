@@ -96,11 +96,11 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
                   "如果不遵守将导致单模块出错 !!!"
             )
           } else {
-            // 对于单模块调试，需要反向依赖 api 的实现模块，不然未加入编译，无法生成路由文件
+            // 对于单模块调试，需要反向依赖 api 的实现模块，不然未加入编译
             dependedProject.add(parentProject) // 记录已经依赖，必须先于 dependencies 调用
             singleModuleProject.dependencies {
               // 将 api 模块的父模块加入编译
-              // 这里不能使用 runtimeOnly，因为 runtimeOnly 不会触发 kcp 中
+              // 这里不能使用 runtimeOnly，因为 runtimeOnly 无法引用模块内的类
               "implementation"(parentProject)
             }
           }

@@ -3,7 +3,7 @@ package com.cyxbs.pages.source.page.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cyxbs.components.base.ui.CyxbsBaseViewModel
-import com.cyxbs.pages.source.data.RequestItemContentsData
+import com.cyxbs.pages.source.data.RequestItemData
 import com.cyxbs.pages.source.room.SourceDataBase
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -15,25 +15,18 @@ import kotlinx.coroutines.flow.distinctUntilChanged
  */
 class SourceViewModel : CyxbsBaseViewModel() {
 
-  private val _requestItemContentsData: MutableLiveData<List<RequestItemContentsData>> = MutableLiveData()
-  val requestItemContentsData: LiveData<List<RequestItemContentsData>> get() = _requestItemContentsData
+  private val _requestItemContentsData: MutableLiveData<List<RequestItemData>> = MutableLiveData()
+  val requestItemContentsData: LiveData<List<RequestItemData>> get() = _requestItemContentsData
 
   init {
     SourceDataBase.INSTANCE
       .requestDao
-      .observeAll()
+      .observeItems()
       .distinctUntilChanged()
       .collectLaunch { entities ->
-        _requestItemContentsData.value =
-          entities.map { entity ->
-            RequestItemContentsData(
-              entity.item,
-              entity.contents.sortedBy {
-                // 按顺序显示
-                entity.item.sort.indexOf(it.id)
-              }
-            )
-          }
+        _requestItemContentsData.value = entities.map {
+          RequestItemData(it)
+        }
       }
   }
 }

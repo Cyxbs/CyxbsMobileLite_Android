@@ -29,20 +29,31 @@
     tools:text="1"
     android:gravity="center"
     android:importantForAutofill="no"
-    android:imeOptions="actionNext"
+    android:imeOptions="actionDone"
     app:layout_constraintStart_toEndOf="@id/source_tv_interval_title"
     app:layout_constraintTop_toTopOf="@id/source_tv_interval_title"
     app:layout_constraintBottom_toBottomOf="@id/source_tv_interval_title"
     tools:ignore="HardcodedText,LabelFor" />
 
   <TextView
+    android:id="@+id/source_tv_hour_title"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="小时"
+    app:layout_constraintBottom_toBottomOf="@id/source_et_interval"
     app:layout_constraintStart_toEndOf="@id/source_et_interval"
     app:layout_constraintTop_toTopOf="@id/source_et_interval"
-    app:layout_constraintBottom_toBottomOf="@id/source_et_interval"
     tools:ignore="HardcodedText" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:text="长按上下移动设置请求顺序"
+    android:textSize="10sp"
+    app:layout_constraintStart_toEndOf="@+id/source_tv_hour_title"
+    app:layout_constraintBottom_toBottomOf="@+id/source_tv_hour_title"
+    tools:ignore="HardcodedText,SmallSp" />
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/source_rv_contents"
