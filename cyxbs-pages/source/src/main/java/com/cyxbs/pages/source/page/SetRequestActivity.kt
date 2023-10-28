@@ -59,9 +59,16 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
   }
 
   private fun initToolbar() {
-    findViewById<JToolbar>(com.cyxbs.components.view.R.id.toolbar).init(
-      this, mRequestContent.name
-    )
+    val toolbar = findViewById<JToolbar>(com.cyxbs.components.view.R.id.toolbar)
+    toolbar.init(this, mRequestContent.name)
+    if (mRequestContent.url != null || mRequestContent.js != null) {
+      toolbar.setRightIcon(R.drawable.source_ic_baseline_delete_outline_24).apply {
+        setOnSingleClickListener {
+          mViewModel.removeContent(mRequestContent)
+          finish()
+        }
+      }
+    }
   }
 
   private fun initEtTitle() {
@@ -76,9 +83,10 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
     mScaleScrollEditTextJs.hint = """
       请输入 js
       
-      请求规则：
-        1. 在只填写 url，不填写 js 时可以发起 GET 请求
-        2. 对于 POST 请求只使用 js 即可
+      规则：
+        1. 只填写 url，会自动获取页面文本，可用于 GET 请求
+        2. 只填写 js，将直接执行，可用 js 发起 POST 请求
+        2. 填写 url 和 js，则在页面加载完后执行 js
       
       与端上交互规则:
         // 调用 success() 返回结果，只允许调用一次

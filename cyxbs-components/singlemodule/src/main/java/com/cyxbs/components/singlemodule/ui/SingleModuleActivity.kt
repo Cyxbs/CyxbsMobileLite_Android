@@ -37,7 +37,7 @@ class SingleModuleActivity : CyxbsBaseActivity() {
     when (val page = mSingleModuleEntry?.getPage(this)) {
       is ISingleModuleEntry.ActivityPage -> {
         startActivity(page.intent)
-        mainHandler.postDelay(3000) {
+        mainHandler.postDelay(1000) {
           // 防止另一个 activity 还没有完全打开
           finish()
         }

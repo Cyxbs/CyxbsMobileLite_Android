@@ -30,7 +30,7 @@ class SourceActivity : CyxbsBaseActivity(R.layout.source_activity_source) {
 
   private fun initToolbar() {
     findViewById<JToolbar>(com.cyxbs.components.view.R.id.toolbar)
-      .init(this, "数据源")
+      .init(this, "数据源", titleOnLeft = false)
   }
 
   private fun initRecyclerView() {

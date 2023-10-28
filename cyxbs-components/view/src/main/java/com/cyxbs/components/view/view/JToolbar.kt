@@ -5,14 +5,19 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.cyxbs.components.view.R
+import com.g985892345.android.extensions.android.drawable
+import com.g985892345.android.extensions.android.size.dp2px
 
 /**
  * 掌邮内统一的 Toolbar，如果视觉给出其他样式，请自己单独实现
@@ -100,6 +105,30 @@ class JToolbar(context: Context, attrs: AttributeSet?) : Toolbar(context, attrs)
     mWithSplitLine = withSplitLine
     invalidate()
   }
+
+  /**
+   * 添加右侧图标
+   *
+   * 点击事件可拿到返回的 View 进行添加
+   */
+  fun setRightIcon(
+    @DrawableRes
+    icon: Int,
+    width: Int = ViewGroup.LayoutParams.WRAP_CONTENT, // 单位 px
+    height: Int = ViewGroup.LayoutParams.WRAP_CONTENT, // 单位 px
+  ) : ImageButton {
+    if (mIbRightIcon != null) {
+      throw IllegalStateException("已经设置，不允许再次调用")
+    }
+    return ImageButton(context).also { button ->
+      mIbRightIcon = button
+      button.background = icon.drawable
+      button.layoutParams = LayoutParams(width, height, Gravity.CENTER_VERTICAL or Gravity.END).also {
+        it.marginEnd = 16.dp2px
+      }
+      addView(button)
+    }
+  }
   
   private var mSplitLinePaint = Paint().apply {
     color = ContextCompat.getColor(context, R.color.view_default_divide_line_color)
@@ -108,6 +137,7 @@ class JToolbar(context: Context, attrs: AttributeSet?) : Toolbar(context, attrs)
   
   private var mTitleTextView: TextView? = null
   private var mSubtitleTextView: TextView? = null
+  private var mIbRightIcon: ImageButton? = null
   
   private var mIsTitleAtLeft = true
   private var mWithSplitLine = true
@@ -147,7 +177,7 @@ class JToolbar(context: Context, attrs: AttributeSet?) : Toolbar(context, attrs)
   
   private fun reLayoutTitleToLeft(title: TextView?) {
     if (title == null) return
-    val ir = getChildAt(0).right
+    val ir = getChildAt(0).right // 拿到左侧箭头 View 的 right
     title.layout(ir, title.top, ir + title.measuredWidth, title.bottom)
   }
   

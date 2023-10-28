@@ -50,6 +50,9 @@ abstract class RequestDao {
   @Delete
   abstract fun removeItem(item: RequestItemEntity)
 
+  @Delete
+  abstract fun removeContent(content: RequestContentEntity)
+
   @Transaction
   @Query("SELECT * FROM request_item WHERE name = :name")
   abstract fun findByName(name: String): RequestItemContentsEntity?

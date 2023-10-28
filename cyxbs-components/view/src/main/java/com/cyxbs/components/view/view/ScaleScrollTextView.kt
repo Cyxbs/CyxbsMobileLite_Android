@@ -71,6 +71,7 @@ open class ScaleScrollTextView(
   fun adjustSlideLine() {
     val textLine = mTvContent.text?.count { it == '\n' }?.plus(1) ?: 0
     val hintLine = mTvContent.hint?.count { it == '\n' }?.plus(1) ?: 0
+    // 即使 hint 没有显示也不建议直接以 text 来计算行数，因为可能出现跳变
     setSideLine(maxOf(textLine, hintLine))
   }
 
@@ -209,15 +210,51 @@ open class ScaleScrollTextView(
     val left = mTvLineNum.measuredWidth + 6.dp2px
     mTvContent.layout(left, 0, left + mTvContent.measuredWidth, mTvContent.measuredHeight)
   }
-  
-  override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-    return true
-  }
-  
+
   private var mInitialX = 0F
   private var mInitialY = 0F
   private var mLastMoveX = 0F
   private var mLastMoveY = 0F
+
+  override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    val x = ev.x
+    val y = ev.y
+    when (ev.actionMasked) {
+      MotionEvent.ACTION_DOWN -> {
+        mInitialX = x
+        mInitialY = y
+        mLastMoveX = x
+        mLastMoveY = y
+      }
+    }
+    // 因为 onInterceptTouchEvent 和 onTouchEvent 事件的不完整性，所以只能在这里处理
+    mScaleGestureDetector.onTouchEvent(ev)
+    return super.dispatchTouchEvent(ev).also {
+      when (ev.actionMasked) {
+        MotionEvent.ACTION_MOVE -> {
+          mLastMoveX = x
+          mLastMoveY = y
+        }
+      }
+    }
+  }
+  
+  override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+    val x = ev.x
+    val y = ev.y
+    when (ev.actionMasked) {
+      MotionEvent.ACTION_POINTER_DOWN -> {
+        return true
+      }
+      MotionEvent.ACTION_MOVE -> {
+        if (abs(mInitialX - x) > mTouchSlop || abs(mInitialY - y) > mTouchSlop) {
+          // 这里使用 mInitialX - x，mLastMoveX - x 会有跳变
+          return true
+        }
+      }
+    }
+    return false
+  }
 
   private var mIsClick = true
 
@@ -232,10 +269,6 @@ open class ScaleScrollTextView(
     val y = event.y
     when (event.actionMasked) {
       MotionEvent.ACTION_DOWN -> {
-        mInitialX = x
-        mInitialY = y
-        mLastMoveX = x
-        mLastMoveY = y
         mIsClick = true
       }
       MotionEvent.ACTION_POINTER_DOWN -> {
@@ -249,8 +282,6 @@ open class ScaleScrollTextView(
         if (mIsClick && (abs(mLastMoveX - x) > mTouchSlop || abs(mLastMoveY - y) > mTouchSlop)) {
           mIsClick = false
         }
-        mLastMoveX = x
-        mLastMoveY = y
       }
       MotionEvent.ACTION_UP -> {
         if (mIsClick && event.eventTime - event.downTime < mLongPressTimeout) {
@@ -260,7 +291,6 @@ open class ScaleScrollTextView(
         }
       }
     }
-    mScaleGestureDetector.onTouchEvent(event)
     return true
   }
   

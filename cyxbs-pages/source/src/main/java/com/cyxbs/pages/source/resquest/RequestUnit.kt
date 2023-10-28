@@ -53,8 +53,6 @@ class RequestUnit(
       mainHandler.removeCallbacks(mTimeoutRunnable)
       mainHandler.post {
         clearWebView()
-        android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-            "resumeWith, result = $result")
         it.resumeWith(result)
         mContinuation = null
       }
@@ -66,7 +64,7 @@ class RequestUnit(
     js: String?,
   ): String = suspendCancellableCoroutine { continuation ->
     if (url == null && js == null) {
-      continuation.resumeWithException(IllegalArgumentException("url 和 js 都不能为 null"))
+      continuation.resumeWithException(IllegalArgumentException("url 和 js 不能都为 null"))
       return@suspendCancellableCoroutine
     }
     mContinuation = continuation
@@ -94,7 +92,6 @@ class RequestUnit(
             view.evaluateJavascript(js, null)
           } else {
             view.evaluateJavascript("""
-              androidBridge.toast('请求成功');
               androidBridge.success(document.body.textContent);
             """.trimIndent(), null)
           }
@@ -124,8 +121,6 @@ class RequestUnit(
 
     @JavascriptInterface
     fun success(result: String) {
-      android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-        "success = $result")
       callback.invoke(Result.success(result))
     }
 

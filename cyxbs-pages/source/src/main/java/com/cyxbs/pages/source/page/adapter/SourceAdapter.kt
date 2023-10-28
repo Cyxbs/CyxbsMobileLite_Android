@@ -64,7 +64,7 @@ class SourceAdapter : ListAdapter<RequestItemContentsData, SourceAdapter.SourceV
             tvState.setTextColor(android.R.color.holo_red_dark.color)
           }
           null -> {
-            tvState.text = "请求中"
+            tvState.text = "未请求"
             tvState.setTextColor(android.R.color.holo_blue_dark.color)
           }
         }
