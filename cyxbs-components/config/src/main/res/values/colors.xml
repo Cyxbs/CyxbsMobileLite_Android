@@ -46,4 +46,7 @@
     <!--    按钮渐变终止颜色-->
     <color name="config_button_gradient_end_color">#5D5DF7</color>
 
+    <!--tabLayout 指示器颜色-->
+    <color name="config_tab_layout_indicator_color">#1AD0F2</color>
+
 </resources>

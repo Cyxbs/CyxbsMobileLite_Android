@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cyxbs.pages.source.R
 import com.cyxbs.pages.source.data.RequestContentItemData
-import com.cyxbs.pages.source.page.SetRequestActivity
+import com.cyxbs.pages.source.page.request.SetRequestActivity
 import com.g985892345.android.extensions.android.color
 import com.g985892345.android.extensions.android.setOnSingleClickListener
 
@@ -50,7 +50,8 @@ class ItemContentsAdapter : ListAdapter<RequestContentItemData, ItemContentsAdap
         SetRequestActivity.start(
           view.context,
           itemContent.content,
-          itemContent.item.parameters
+          itemContent.item.parameters,
+          itemContent.item.output,
         )
       }
     }

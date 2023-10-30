@@ -1,6 +1,8 @@
 package com.cyxbs.pages.source.resquest
 
+import androidx.room.withTransaction
 import com.cyxbs.pages.source.room.SourceDataBase
+import com.cyxbs.pages.source.room.entity.RequestCacheEntity
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
 import com.cyxbs.pages.source.room.entity.RequestItemEntity
 import com.g985892345.android.extensions.android.processLifecycleScope
@@ -30,7 +32,8 @@ object RequestManager {
     item: RequestItemEntity,
     values: List<String>,
   ): String = withContext(Dispatchers.IO) {
-    val dao = SourceDataBase.INSTANCE.requestDao
+    val db = SourceDataBase.INSTANCE
+    val dao = db.requestDao
     val contents = dao.findContentsByName(item.name)
     if (contents.isEmpty()) throw IllegalStateException("未设置请求")
     var response: String? = null
@@ -49,14 +52,18 @@ object RequestManager {
       }
       throw e
     } finally {
-      dao.change(
-        item.copy(
-          response = response,
-          requestTimestamp = requestTimestamp,
-          responseTimestamp = responseTimestamp,
-          isSuccess = isSuccess
+      db.withTransaction {
+        dao.change(
+          item.copy(
+            requestTimestamp = requestTimestamp,
+            responseTimestamp = responseTimestamp,
+            isSuccess = isSuccess
+          )
         )
-      )
+        if (response != null) {
+          dao.changeOrInsertCache(RequestCacheEntity(item.name, values, response))
+        }
+      }
     }
   }
 

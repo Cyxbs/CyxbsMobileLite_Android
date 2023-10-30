@@ -14,8 +14,6 @@ interface IInitialManager {
 
   val currentProcessName: String
 
-  val packageName: String
-
   val isMainProcess: Boolean
-    get() = currentProcessName == packageName
+    get() = currentProcessName == application.packageName
 }

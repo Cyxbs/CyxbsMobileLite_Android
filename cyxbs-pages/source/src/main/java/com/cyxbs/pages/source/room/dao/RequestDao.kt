@@ -3,9 +3,11 @@ package com.cyxbs.pages.source.room.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.cyxbs.pages.source.room.entity.RequestCacheEntity
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
 import com.cyxbs.pages.source.room.entity.RequestItemContentsEntity
 import com.cyxbs.pages.source.room.entity.RequestItemEntity
@@ -59,6 +61,12 @@ abstract class RequestDao {
 
   @Query("SELECT * FROM request_content WHERE name = :name")
   abstract fun findContentsByName(name: String): List<RequestContentEntity>
+
+  @Query("SELECT * FROM request_cache WHERE name = :name AND `values` = :values")
+  abstract fun findCache(name: String, values: List<String>): RequestCacheEntity?
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  abstract fun changeOrInsertCache(cache: RequestCacheEntity)
 
   @Transaction
   @Query("SELECT * FROM request_item")

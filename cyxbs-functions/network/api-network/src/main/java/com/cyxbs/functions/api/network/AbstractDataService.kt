@@ -14,6 +14,7 @@ import kotlinx.coroutines.rx3.asObservable
  */
 abstract class AbstractDataService(
   val parameters: List<Pair<String, String>>,
+  val output: String, // 应该返回的数据格式，建议写成 json
 ) {
 
   private val mSourceService = ServiceManager(ISourceService::class)

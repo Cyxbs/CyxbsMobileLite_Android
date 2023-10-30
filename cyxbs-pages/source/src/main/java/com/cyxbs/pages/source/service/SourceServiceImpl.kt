@@ -37,10 +37,15 @@ object SourceServiceImpl : ISourceService, IInitialService {
     val item = SourceDataBase.INSTANCE
       .requestDao
       .findItemByName(name) ?: throw IllegalStateException("不存在对应的 RequestItemEntity")
-    return if (isForce || item.response == null || item.responseTimestamp == null ||
+    return if (isForce || item.responseTimestamp == null ||
       System.currentTimeMillis() > item.responseTimestamp + item.interval * 60 * 60 * 1000) {
       RequestManager.request(item, values)
-    } else item.response
+    } else {
+      SourceDataBase.INSTANCE
+        .requestDao
+        .findCache(name, values)?.response
+        ?: RequestManager.request(item, values)
+    }
   }
 
   private fun findName(dataSource: AbstractDataService): String {
@@ -53,10 +58,18 @@ object SourceServiceImpl : ISourceService, IInitialService {
   }
 
   override fun onMainProcess(manager: IInitialManager) {
+    android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
+      "onMainProcess")
     processLifecycleScope.launch(Dispatchers.IO) {
+      android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
+        "onMainProcess: launch")
       SourceDataBase.INSTANCE.apply {
         withTransaction {
+          android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
+            "onMainProcess: withTransaction")
           val map = mDataSourceServices.toMutableMap()
+          android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
+            "onMainProcess: map = ${map.map { it.key }}")
           requestDao.getItems().forEach { item ->
             val service = map.remove(item.name)
             if (service != null) {
@@ -71,12 +84,12 @@ object SourceServiceImpl : ISourceService, IInitialService {
             requestDao.insert(RequestItemEntity(
               name = entry.key,
               interval = 12F,
-              response = null,
               requestTimestamp = null,
               responseTimestamp = null,
               isSuccess = null,
               sort = emptyList(),
               parameters = entry.value.parameters,
+              output = entry.value.output,
             ))
           }
         }

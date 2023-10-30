@@ -39,8 +39,8 @@ class InitialManagerImpl(
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
       Application.getProcessName()
     } else {
-      // Android 9 之前无反射限制
       try {
+        // Android 9 之前无反射限制
         @SuppressLint("PrivateApi")
         val declaredMethod = Class
           .forName("android.app.ActivityThread", false, Application::class.java.classLoader)
@@ -56,8 +56,4 @@ class InitialManagerImpl(
       }
     }
   }
-
-  override val packageName: String
-    get() = application.packageName
-
 }

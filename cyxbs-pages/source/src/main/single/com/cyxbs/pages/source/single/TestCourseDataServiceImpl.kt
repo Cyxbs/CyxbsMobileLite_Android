@@ -13,5 +13,8 @@ import com.g985892345.provider.annotation.SingleImplProvider
 object TestCourseDataServiceImpl : AbstractDataService(
   listOf(
     "stu_num" to "学号"
-  )
+  ),
+  """
+    // 用于测试，无返回数据格式显示
+  """.trimIndent()
 )

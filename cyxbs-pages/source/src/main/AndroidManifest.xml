@@ -2,15 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
   <application>
-    <activity android:name=".page.SourceActivity"
+    <activity android:name=".page.source.SourceActivity"
       android:exported="false" />
-    <activity android:name=".page.ItemContentsActivity"
+    <activity android:name=".page.content.ItemContentsActivity"
       android:exported="false"
       android:windowSoftInputMode="adjustPan"/>
-    <activity android:name=".page.SetRequestActivity"
+    <activity android:name=".page.request.SetRequestActivity"
       android:exported="false"
       android:windowSoftInputMode="adjustPan"/>
-    <activity android:name="com.cyxbs.pages.source.page.TestRequestActivity"
+    <activity android:name="com.cyxbs.pages.source.page.test.TestRequestActivity"
       android:exported="false"/>
   </application>
 </manifest>

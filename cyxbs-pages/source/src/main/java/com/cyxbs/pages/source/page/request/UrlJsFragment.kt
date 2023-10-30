@@ -1,16 +1,14 @@
-package com.cyxbs.pages.source.page
+package com.cyxbs.pages.source.page.request
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.activity.viewModels
-import com.cyxbs.components.base.ui.CyxbsBaseActivity
-import com.cyxbs.components.view.view.JToolbar
+import androidx.core.os.bundleOf
+import com.cyxbs.components.base.ui.CyxbsBaseFragment
 import com.cyxbs.components.view.view.ScaleScrollEditText
 import com.cyxbs.pages.source.R
-import com.cyxbs.pages.source.page.viewmodel.SetRequestViewModel
+import com.cyxbs.pages.source.page.test.TestRequestActivity
 import com.cyxbs.pages.source.room.SourceDataBase
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
 import com.g985892345.android.extensions.android.launch
@@ -23,28 +21,24 @@ import kotlinx.coroutines.withContext
  * .
  *
  * @author 985892345
- * @date 2023/10/19 19:35
+ * @date 2023/10/29 21:19
  */
-class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_request) {
+class UrlJsFragment : CyxbsBaseFragment(R.layout.source_fragment_url_js) {
 
   companion object {
-    fun start(
-      context: Context,
+    fun newInstance(
       content: RequestContentEntity,
-      parameters: List<Pair<String, String>>
-    ) {
-      context.startActivity(
-        Intent(context, SetRequestActivity::class.java)
-          .putExtra(SetRequestActivity::mRequestContent.name, content)
-          .putExtra(SetRequestActivity::mParameters.name, ArrayList(parameters))
+      parameters: List<Pair<String, String>>,
+    ): UrlJsFragment = UrlJsFragment().apply {
+      arguments = bundleOf(
+        this::mRequestContent.name to content,
+        this::mParameters.name to parameters,
       )
     }
   }
 
-  private val mRequestContent by intent<RequestContentEntity>()
-  private val mParameters by intent<List<Pair<String, String>>>()
-
-  private val mViewModel: SetRequestViewModel by viewModels()
+  private val mRequestContent by arguments<RequestContentEntity>()
+  private val mParameters by arguments<List<Pair<String, String>>>()
 
   private val mEtTitle: EditText by R.id.source_et_title.view()
   private val mEtUrl: EditText by R.id.source_et_url.view()
@@ -53,26 +47,12 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
   private val mBtnTest: Button by R.id.source_btn_test.view()
   private val mBtnRestore: Button by R.id.source_btn_restore.view()
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    initToolbar()
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     initEtTitle()
     initEtUrl()
     initEtJs()
     initBtn()
-  }
-
-  private fun initToolbar() {
-    val toolbar = findViewById<JToolbar>(com.cyxbs.components.view.R.id.toolbar)
-    toolbar.init(this, mRequestContent.name)
-    if (mRequestContent.url != null || mRequestContent.js != null) {
-      toolbar.setRightIcon(R.drawable.source_ic_baseline_delete_outline_24).apply {
-        setOnSingleClickListener {
-          mViewModel.removeContent(mRequestContent)
-          finish()
-        }
-      }
-    }
   }
 
   private fun initEtTitle() {
@@ -121,18 +101,19 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
       createNewContent()?.let { content ->
         launch(Dispatchers.IO) {
           SourceDataBase.INSTANCE
-            .requestDao
-            .insert(content)
+            .requestDao.apply {
+              if (content.id == 0L) insert(content) else change(content)
+            }
           // 在 activity 中插入数据，确保数据插入完才允许 finish
           withContext(Dispatchers.Main) {
-            finish()
+            requireActivity().finish()
           }
         }
       }
     }
     mBtnTest.setOnSingleClickListener {
       createNewContent()?.let {
-        TestRequestActivity.start(this, it.url, it.js, mParameters)
+        TestRequestActivity.start(requireContext(), it.url, it.js, mParameters)
       }
     }
     mBtnRestore.setOnSingleClickListener {

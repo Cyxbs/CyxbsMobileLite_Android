@@ -1,11 +1,7 @@
 package com.cyxbs.components.base.app
 
-import android.app.ActivityManager
 import android.app.Application
-import android.os.Process
 import com.cyxbs.components.base.app.utils.InitialManagerImpl
-import com.cyxbs.components.router.ServiceManager
-import com.g985892345.android.extensions.android.mainHandler
 
 /**
  * .

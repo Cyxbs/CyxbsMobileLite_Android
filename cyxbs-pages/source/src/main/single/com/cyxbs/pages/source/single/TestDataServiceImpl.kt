@@ -11,6 +11,9 @@ import com.g985892345.provider.annotation.SingleImplProvider
  */
 @SingleImplProvider(AbstractDataService::class, "测试")
 object TestDataServiceImpl : AbstractDataService(
-  listOf()
+  listOf(),
+  """
+    // 用于测试，无返回数据格式显示
+  """.trimIndent()
 ) {
 }

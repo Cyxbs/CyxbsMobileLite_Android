@@ -1,10 +1,11 @@
-package com.cyxbs.pages.source.page
+package com.cyxbs.pages.source.page.content
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG
@@ -19,6 +20,7 @@ import com.cyxbs.components.base.ui.CyxbsBaseActivity
 import com.cyxbs.components.view.view.JToolbar
 import com.cyxbs.pages.source.R
 import com.cyxbs.pages.source.data.RequestContentItemData
+import com.cyxbs.pages.source.page.request.SetRequestActivity
 import com.cyxbs.pages.source.page.adapter.ItemContentsAdapter
 import com.cyxbs.pages.source.page.viewmodel.RequestContentsViewModel
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
@@ -74,9 +76,12 @@ class ItemContentsActivity : CyxbsBaseActivity(R.layout.source_activity_item_con
     mViewModel.contentsData.observe {
       mEtInterval.setText(it.item.interval.toString())
     }
-    mEtInterval.setOnEditorActionListener { v, action, event ->
+    mEtInterval.setOnEditorActionListener { v, action, _ ->
       if (action == EditorInfo.IME_ACTION_DONE) {
         mViewModel.changeInterval(v.text.toString().toFloat())
+        mEtInterval.clearFocus()
+        getSystemService(InputMethodManager::class.java)
+          .hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         toast("设置成功")
         return@setOnEditorActionListener true
       }
@@ -127,16 +132,18 @@ class ItemContentsActivity : CyxbsBaseActivity(R.layout.source_activity_item_con
   private fun initFloatBtn() {
     mFloatBtn.setOnSingleClickListener {
       val itemData = mViewModel.contentsData.value ?: return@setOnSingleClickListener
-      SetRequestActivity.start(this, RequestContentEntity(
-        name = itemData.item.name,
-        title = "${itemData.item.name}${itemData.contents.size}",
-        url = null,
-        js = null,
-        error = null,
-        response = null,
-        requestTimestamp = null,
-        responseTimestamp = null,
-      ), itemData.item.parameters)
+      SetRequestActivity.start(
+        this, RequestContentEntity(
+          name = itemData.item.name,
+          title = "${itemData.item.name}${itemData.contents.size}",
+          url = null,
+          js = null,
+          error = null,
+          response = null,
+          requestTimestamp = null,
+          responseTimestamp = null,
+        ), itemData.item.parameters, itemData.item.output
+      )
     }
   }
 }

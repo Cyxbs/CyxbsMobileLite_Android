@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cyxbs.pages.source.R
 import com.cyxbs.pages.source.data.RequestItemData
-import com.cyxbs.pages.source.page.ItemContentsActivity
+import com.cyxbs.pages.source.page.content.ItemContentsActivity
 import com.g985892345.android.extensions.android.color
 import com.g985892345.android.extensions.android.setOnSingleClickListener
 

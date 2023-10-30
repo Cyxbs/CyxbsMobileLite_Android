@@ -23,4 +23,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--vp2 tabLayout 的 style-->
+    <style name="config_tab_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:unselectedAlpha">0.6</item>
+    </style>
+
 </resources>

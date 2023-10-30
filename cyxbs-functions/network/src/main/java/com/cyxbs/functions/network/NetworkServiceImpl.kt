@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  * @email 2767465918@qq.com
  * @date 2022/5/29 22:30
  */
-@SingleImplProvider(INetworkService::class)
+@SingleImplProvider
 object NetworkServiceImpl : INetworkService {
   
   private val retrofit = createRetrofitInternal(main = true, isNeedCookie = true)

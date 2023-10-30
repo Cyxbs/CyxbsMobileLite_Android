@@ -58,7 +58,7 @@ class ScaleScrollEditText(
       MotionEvent.ACTION_UP -> {
         if (mEnableFocusEditText && event.eventTime - event.downTime < mLongPressTimeout) {
           mTvContent.requestFocus()
-          (context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+          context.getSystemService(InputMethodManager::class.java)
             .showSoftInput(mTvContent, 0)
         }
       }
