@@ -1,16 +1,20 @@
 package com.cyxbs.pages.source.resquest
 
 import androidx.room.withTransaction
+import com.cyxbs.components.router.ServiceManager
+import com.cyxbs.pages.api.source.IDataSourceService
 import com.cyxbs.pages.source.room.SourceDataBase
 import com.cyxbs.pages.source.room.entity.RequestCacheEntity
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
 import com.cyxbs.pages.source.room.entity.RequestItemEntity
-import com.g985892345.android.extensions.android.processLifecycleScope
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.withContext
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * .
@@ -20,18 +24,19 @@ import kotlinx.coroutines.withContext
  */
 object RequestManager {
 
-  private const val CAPACITY = 10
-
-  private val mWaitChanel = Channel<RequestUnit>(CAPACITY).apply {
-    repeat(CAPACITY) {
-      trySend(RequestUnit())
-    }
-  }
-
   suspend fun request(
     item: RequestItemEntity,
     values: List<String>,
   ): String = withContext(Dispatchers.IO) {
+    if (values.size != item.parameters.size) {
+      throw IllegalArgumentException("参数个数不对应，应有 ${item.parameters.size}, 实有: ${values.size}")
+    }
+    val parameterWithValue = buildMap {
+      var index = 0
+      item.parameters.forEach {
+        put(it.first, values[index++])
+      }
+    }
     val db = SourceDataBase.INSTANCE
     val dao = db.requestDao
     val contents = dao.findContentsByName(item.name)
@@ -41,7 +46,7 @@ object RequestManager {
     var responseTimestamp: Long? = null
     var isSuccess: Boolean? = null
     try {
-      response = requestContents(contents, item.parameters.map { it.first }, values)
+      response = requestContents(contents, parameterWithValue)
       responseTimestamp = System.currentTimeMillis()
       isSuccess = true
       return@withContext response
@@ -67,22 +72,23 @@ object RequestManager {
     }
   }
 
+  @OptIn(FlowPreview::class)
   private suspend fun requestContents(
     contents: List<RequestContentEntity>,
-    parameters: List<String>,
-    values: List<String>,
+    parameterWithValue: Map<String, String>,
   ): String {
     val db = SourceDataBase.INSTANCE
     for (content in contents) {
-      val unit = getFreeRequestUnit()
+      val service = ServiceManager
+        .getImplOrThrow(IDataSourceService::class, content.serviceKey)
       var response: String? = null
       val requestTimestamp = System.currentTimeMillis()
       var error: String? = null
       var responseTimestamp: Long? = null
       try {
-        val url = replaceValue(content.url, parameters, values)
-        val js = replaceValue(content.js, parameters, values)
-        response = unit.load(url, js)
+        response = flow {
+          emit(service.request(content.data, parameterWithValue))
+        }.timeout(500.milliseconds).single()
         responseTimestamp = System.currentTimeMillis()
         return response
       } catch (e: Exception) {
@@ -101,36 +107,8 @@ object RequestManager {
             responseTimestamp = responseTimestamp,
           )
         )
-        // 放进缓存池
-        putFreeRequestUnit(unit)
       }
     }
     throw RequestException()
-  }
-
-  private suspend fun getFreeRequestUnit(): RequestUnit {
-    return mWaitChanel.receive()
-  }
-
-  private fun putFreeRequestUnit(unit: RequestUnit) {
-    processLifecycleScope.launch(Dispatchers.IO) {
-      mWaitChanel.send(unit)
-    }
-  }
-
-  fun replaceValue(
-    string: String?,
-    parameters: List<String>,
-    values: List<String>,
-  ): String? {
-    if (parameters.size < values.size) {
-      throw IllegalArgumentException("parameters.size 小于了 value.size")
-    }
-    if (parameters.isEmpty()) return string
-    var result = string ?: return null
-    values.forEachIndexed { index, s ->
-      result = result.replace("{${parameters[index]}}", s)
-    }
-    return result
   }
 }

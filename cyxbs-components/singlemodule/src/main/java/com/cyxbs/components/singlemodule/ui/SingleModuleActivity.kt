@@ -3,7 +3,6 @@ package com.cyxbs.components.singlemodule.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.cyxbs.components.base.ui.CyxbsBaseActivity

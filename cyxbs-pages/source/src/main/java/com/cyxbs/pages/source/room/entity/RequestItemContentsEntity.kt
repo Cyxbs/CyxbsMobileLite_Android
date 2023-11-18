@@ -36,7 +36,7 @@ data class RequestItemEntity(
   val responseTimestamp: Long?, // 最后请求成功时的时间戳
   val isSuccess: Boolean?, // 上一次请求是否成功, null: 请求中或者未设置请求体或者第一次设置时未请求
   val sort: List<Long>, // 请求顺序, RequestContentEntity 的 id
-  val parameters: List<Pair<String, String>>, // 参数名+描述
+  val parameters: List<Pair<String, String>>, // 参数名+描述 (不使用 LinkedHashMap 是因为不支持反序列化)
   val output: String, // js 应该输出的格式，该格式将用于端上处理
 ) : Serializable
 
@@ -55,8 +55,8 @@ data class RequestItemEntity(
 data class RequestContentEntity(
   val name: String,
   val title: String,
-  val url: String?,
-  val js: String?,
+  val serviceKey: String,
+  val data: String,
   val error: String?,
   val response: String?,
   val requestTimestamp: Long?, // 每次请求触发时的时间戳
@@ -104,11 +104,11 @@ class RequestEntityConverter {
     return string.split("&")
   }
   @TypeConverter
-  fun mapToString(map: List<Pair<String, String>>): String {
-    return Json.encodeToString(map)
+  fun listPairToString(pairs: List<Pair<String, String>>): String {
+    return Json.encodeToString(pairs)
   }
   @TypeConverter
-  fun stringToMap(string: String): List<Pair<String, String>> {
+  fun stringToListPair(string: String): List<Pair<String, String>> {
     return Json.decodeFromString(string)
   }
 }

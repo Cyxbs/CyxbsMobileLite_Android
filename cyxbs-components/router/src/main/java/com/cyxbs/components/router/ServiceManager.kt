@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.g985892345.android.utils.context.appContext
+import com.g985892345.provider.init.wrapper.ImplProviderWrapper
+import com.g985892345.provider.init.wrapper.KClassProviderWrapper
 import com.g985892345.provider.manager.KtProviderManager
 import kotlin.reflect.KClass
 
@@ -27,7 +29,7 @@ object ServiceManager {
    *   .isLogin()
    * ```
    */
-  operator fun <T : Any> invoke(serviceClass: KClass<T>): T {
+  operator fun <T : Any> invoke(serviceClass: KClass<out T>): T {
     return KtProviderManager.getImplOrThrow(serviceClass)
   }
 
@@ -43,7 +45,7 @@ object ServiceManager {
   }
 
   fun fragment(servicePath: String): Fragment {
-    return getImplOrThrow(null, servicePath, singleton = false)
+    return getImplOrThrow(null, servicePath)
   }
 
   fun activity(servicePath: String) {
@@ -56,51 +58,49 @@ object ServiceManager {
 
   /**
    * 返回设置了对应 clazz 和 name 的实现类
-   * @param singleton
-   * - false: 返回 @NewImplProvider 实现类；
-   * - true: 返回 @SingleImplProvider 实现类；
-   * - null: 优先返回 @SingleImplProvider，若无，则返回 @NewImplProvider
    */
   fun <T : Any> getImplOrNull(
-    serviceClass: KClass<T>?,
+    serviceClass: KClass<out T>?,
     name: String = "",
-    singleton: Boolean? = null
-  ): T? =  KtProviderManager.getImplOrNull(serviceClass, name, singleton)
+  ): T? =  KtProviderManager.getImplOrNull(serviceClass, name)
 
   /**
    * 注释查看: [getImplOrNull]
    */
   fun <T : Any> getImplOrThrow(
-    serviceClass: KClass<T>?,
+    serviceClass: KClass<out T>?,
     name: String = "",
-    singleton: Boolean? = null
-  ): T =  KtProviderManager.getImplOrThrow(serviceClass, name, singleton)
+  ): T =  KtProviderManager.getImplOrThrow(serviceClass, name)
 
   /**
-   * 返回 name 对应的 KClass
+   * 返回 [clazz] 和 [name] 对应的 KClass
    */
-  fun <T : Any> getKClassOrNull(name: String): KClass<out T>? =
-    KtProviderManager.getKClassOrNull(name)
+  fun <T : Any> getKClassOrNull(
+    clazz: KClass<out T>?,
+    name: String = ""
+  ): KClass<out T>? = KtProviderManager.getKClassOrNull(clazz, name)
 
   /**
-   * 返回 name 对应的 KClass
+   * 返回 [clazz] 和 [name] 对应的 KClass
    */
-  fun <T : Any> getKClassOrThrow(name: String): KClass<out T> =
-    KtProviderManager.getKClassOrThrow(name)
+  fun <T : Any> getKClassOrThrow(
+    clazz: KClass<out T>?,
+    name: String = ""
+  ): KClass<out T> = KtProviderManager.getKClassOrThrow(clazz, name)
 
   /**
-   * 获取 @NewImplProvider 中 clazz 参数为 [clazz] 的所有实现类
-   * @return 返回 () -> T 用于延迟初始化，每次 invoke 后都是新的实例
+   * 获取 @ImplProvider 中 clazz 参数为 [clazz] 的所有实现类
    */
-  fun <T : Any> getAllNewImpl(clazz: KClass<T>?): Map<String, () -> T> =
-    KtProviderManager.getAllNewImpl(clazz)
+  fun <T : Any> getAllImpl(
+    clazz: KClass<out T>?
+  ): Map<String, ImplProviderWrapper<T>> = KtProviderManager.getAllImpl(clazz)
 
   /**
-   * 获取 @SingleImplProvider 中 clazz 参数为 [clazz] 的所有实现类
-   * @return 返回 () -> T 用于延迟初始化，每次 invoke 后都是同一个实例
+   * 获取 @KClassProvider 中 clazz 参数为 [clazz] 的所有实现类
    */
-  fun <T : Any> getAllSingleImpl(clazz: KClass<T>?): Map<String, () -> T> =
-    KtProviderManager.getAllSingleImpl(clazz)
+  fun <T : Any> getAllKClass(
+    clazz: KClass<out T>?
+  ): Map<String, KClassProviderWrapper<T>> = KtProviderManager.getAllKClass(clazz)
 }
 
 

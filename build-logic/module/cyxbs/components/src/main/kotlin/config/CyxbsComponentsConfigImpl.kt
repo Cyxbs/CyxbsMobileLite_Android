@@ -11,10 +11,10 @@ import org.gradle.api.Project
 open class CyxbsComponentsConfigImpl(override val project: Project) : SingleModuleConfig {
 
   override fun getNamespace(): String {
-    return "com.cyxbs.components.${project.name}"
+    return "com.cyxbs.components.${project.name.replace("-", ".")}"
   }
 
   override fun getApplicationId(): String {
-    return "com.cyxbs.components.${project.name}"
+    return "com.cyxbs.components.${project.name.replace("-", ".")}"
   }
 }

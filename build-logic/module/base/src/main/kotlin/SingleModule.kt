@@ -23,6 +23,7 @@ object SingleModule {
           getByName("main") {
             // 将 single 加入编译环境，单模块需要的代码放这里面
             java.srcDir("src/main/single")
+            res.srcDir("src/main/single-res")
           }
         }
         defaultConfig {
@@ -79,17 +80,13 @@ object SingleModule {
     // 拿到 KtProvider 生成 KtProviderInitializer 实现类的 task
     project.tasks.named(KtProviderInitializerGenerator.getTaskName(project)) {
       doLast {
-        val ktProviderException = project.extensions
-          .getByType(KtProviderExtensions::class.java)
         outputDir.get().asFile.apply {
           deleteRecursively()
           mkdirs()
         }.resolve("GetKtProviderEntryClassName.kt")
           .writeText(
-            "// 自动生成，任务为 $name \n" +
-                "internal val ktProviderEntryClassName = " +
-                "\"${ktProviderException.initializerClassPackage}." +
-                "${ktProviderException.initializerClassName}\""
+            "// 自动生成，代码逻辑在 ${this@SingleModule::class.simpleName} \n" +
+                "internal val ktProviderEntryClassName = \"${KtProviderExtensions.getInitializerClass(project)}\""
           )
       }
     }

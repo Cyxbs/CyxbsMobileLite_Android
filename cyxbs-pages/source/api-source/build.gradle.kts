@@ -3,4 +3,6 @@ plugins {
 }
 
 dependModule {
+  dependConfig()
+  dependView()
 }

@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 interface ISingleModuleEntry {
 
   /**
-   * 返回一个 Intent 或者 Fragment 对象，返回其他对象则抛出异常
+   * 返回页面
    */
   fun getPage(context: Context): Page
 

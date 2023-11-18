@@ -1,7 +1,7 @@
 package com.cyxbs.pages.exam.service
 
 import com.cyxbs.functions.api.network.AbstractDataService
-import com.g985892345.provider.annotation.SingleImplProvider
+import com.g985892345.provider.annotation.ImplProvider
 
 /**
  * .
@@ -9,9 +9,9 @@ import com.g985892345.provider.annotation.SingleImplProvider
  * @author 985892345
  * @date 2023/10/28 22:12
  */
-@SingleImplProvider
+@ImplProvider(AbstractDataService::class, "考试")
 object ExamDataServiceImpl : AbstractDataService(
-  listOf(
+  linkedMapOf(
     "stuNum" to "学号"
   ),
   """

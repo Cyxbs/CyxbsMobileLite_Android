@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="source_js_bg">#32ECECEC</color>
+  <color name="source_float_btn_item">#FFFFFF</color>
 </resources>

@@ -8,11 +8,12 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.cyxbs.components.base.ui.CyxbsBaseActivity
+import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.components.view.crash.CrashDialog
 import com.cyxbs.components.view.view.ScaleScrollTextView
+import com.cyxbs.pages.api.source.IDataSourceService
 import com.cyxbs.pages.source.R
-import com.cyxbs.pages.source.resquest.RequestManager
-import com.cyxbs.pages.source.resquest.RequestUnit
+import com.cyxbs.pages.source.room.entity.RequestContentEntity
 import com.g985892345.android.extensions.android.launch
 import com.g985892345.android.extensions.android.setOnSingleClickListener
 import com.g985892345.android.extensions.android.toast
@@ -28,28 +29,27 @@ import kotlinx.coroutines.Job
 class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
 
   companion object {
-    fun start(context: Context, url: String?, js: String?, parameters: List<Pair<String, String>>) {
+    fun start(
+      context: Context,
+      content: RequestContentEntity,
+      parameterWithValue: List<Pair<String, String>>
+    ) {
       context.startActivity(
         Intent(context, TestRequestActivity::class.java)
-          .putExtra(TestRequestActivity::mUrl.name, url)
-          .putExtra(TestRequestActivity::mJs.name, js)
-          .putExtra(TestRequestActivity::mParameters.name, ArrayList(parameters))
+          .putExtra(TestRequestActivity::mRequestContentEntity.name, content)
+          .putExtra(TestRequestActivity::mParameterWithValue.name, ArrayList(parameterWithValue))
       )
     }
-
-    private val TestRequestUnit by lazy { RequestUnit(true) }
   }
 
-  private val mUrl by intentNullable<String>()
-  private val mJs by intentNullable<String>()
-  private val mParameters by intent<List<Pair<String, String>>>()
+  private val mRequestContentEntity by intent<RequestContentEntity>()
+  private val mParameterWithValue by intent<List<Pair<String, String>>>()
   private val mEtParameters = mutableListOf<EditText>()
 
   private val mLlParameter: LinearLayout by R.id.source_ll_test_parameter.view()
   private val mTvResult: ScaleScrollTextView by R.id.source_sstv_test_result.view()
 
   private var mRequestJob: Job? = null
-
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -58,7 +58,7 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
   }
 
   private fun initParameter() {
-    mParameters.forEach {
+    mParameterWithValue.forEach {
       val layout = LayoutInflater.from(this)
         .inflate(R.layout.source_item_parameter, mLlParameter, false)
       val tv: TextView = layout.findViewById(R.id.source_tv_parameter_name)
@@ -78,13 +78,12 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
       } else {
         if (mEtParameters.all { !it.text.isNullOrEmpty() }) {
           mRequestJob = launch {
-            val parameters = mParameters.map { it.first }
-            val values = mEtParameters.map { it.text.toString() }
-            val url = RequestManager.replaceValue(mUrl, parameters, values)
-            val js = RequestManager.replaceValue(mJs, parameters, values)
+            val service = ServiceManager
+              .getImplOrThrow(IDataSourceService::class, mRequestContentEntity.serviceKey)
             try {
               toast("开始测试...")
-              val result = TestRequestUnit.load(url, js)
+              val result = service.request(mRequestContentEntity.data,
+                mParameterWithValue.associate { it })
               mTvResult.text = result
             } catch (e: Exception) {
               if (e is CancellationException) throw e

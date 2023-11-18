@@ -9,7 +9,6 @@ import com.cyxbs.components.init.IInitialManager
 import com.cyxbs.components.init.IInitialService
 import com.cyxbs.components.router.ServiceManager
 
-
 /**
  * .
  *
@@ -21,16 +20,12 @@ class InitialManagerImpl(
 ) : IInitialManager {
 
   fun init() {
-    val allNewImpl = ServiceManager.getAllNewImpl(IInitialService::class)
-      .map { it.value.invoke() }
-    val singleImpl = ServiceManager.getAllSingleImpl(IInitialService::class)
-      .map { it.value.invoke() }
+    val allImpl = ServiceManager.getAllImpl(IInitialService::class)
+      .map { it.value.get() }
     if (isMainProcess) {
-      allNewImpl.forEach { it.onMainProcess(this) }
-      singleImpl.forEach { it.onMainProcess(this) }
+      allImpl.forEach { it.onMainProcess(this) }
     } else {
-      allNewImpl.forEach { it.onOtherProcess(this) }
-      singleImpl.forEach { it.onOtherProcess(this) }
+      allImpl.forEach { it.onOtherProcess(this) }
     }
   }
 

@@ -8,9 +8,4 @@ package config
  */
 interface LibraryConfig : AndroidConfig {
 
-  /**
-   * 是否需要依赖子模块
-   */
-  val isNeedDependChild: Boolean
-    get() = true
 }

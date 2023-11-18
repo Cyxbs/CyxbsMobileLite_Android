@@ -1,4 +1,5 @@
 import config.LibraryConfig
+import extensions.ModuleConfigExtension
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import utils.androidLib
@@ -27,25 +28,19 @@ object LibraryModule {
   }
 
   /**
-   * 依赖子模块
+   * 依赖子模块，默认依赖所有子模块
    */
   fun dependChildModule(config: LibraryConfig) {
     with(config.project) {
-      if (config.isNeedDependChild) {
-        // 自动依赖模块中的 api 模块
-        dependencies {
-          // 根 gradle 中包含的所有子模块
-          val includeProjects = rootProject.subprojects.map { it.name }
-
-          projectDir.listFiles()!!.filter {
-            // 1.是文件夹
-            // 2.以 api- 开头
-            // 3.根 gradle 导入了的模块
-            it.isDirectory
-                && "(api-.+)".toRegex().matches(it.name)
-                && includeProjects.contains(it.name)
-          }.forEach {
-            "implementation"(project("${path}:${it.name}"))
+      val moduleConfig = extensions.getByType(ModuleConfigExtension::class.java)
+      afterEvaluate {
+        // 需要在 afterEvaluate 才能获取到设置的值
+        if (moduleConfig.isNeedDependChild) {
+          // 自动依赖模块中的子模块
+          dependencies {
+            subprojects {
+              "implementation"(this)
+            }
           }
         }
       }

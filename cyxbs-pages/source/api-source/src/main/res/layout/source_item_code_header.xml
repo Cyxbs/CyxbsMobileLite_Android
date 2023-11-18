@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <TextView
+    android:id="@+id/source_tv_header"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    tools:text="设置标题: "
+    android:textColor="@color/config_level_one_font_color"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="HardcodedText" />
+
+  <EditText
+    android:id="@+id/source_et_header"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:textSize="14sp"
+    app:layout_constraintStart_toEndOf="@+id/source_tv_header"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/source_tv_header"
+    app:layout_constraintBottom_toBottomOf="@+id/source_tv_header"
+    tools:ignore="HardcodedText,LabelFor,SpUsage"
+    android:importantForAutofill="no"
+    android:inputType="textUri" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

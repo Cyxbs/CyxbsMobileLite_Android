@@ -4,7 +4,7 @@ import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.functions.api.network.INetworkService
 import com.cyxbs.functions.api.network.IOkHttpService
 import com.cyxbs.functions.api.network.utils.getBaseUrl
-import com.g985892345.provider.annotation.SingleImplProvider
+import com.g985892345.provider.annotation.ImplProvider
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,13 +20,11 @@ import kotlin.reflect.KClass
  * @email 2767465918@qq.com
  * @date 2022/5/29 22:30
  */
-@SingleImplProvider
+@ImplProvider
 object NetworkServiceImpl : INetworkService {
-  
+
   private val retrofit = createRetrofitInternal(main = true, isNeedCookie = true)
 
-  private val mOkHttpServiceAllSingleImpl = ServiceManager.getAllSingleImpl(IOkHttpService::class)
-  
   override fun <T : Any> getApiService(clazz: KClass<T>): T {
     return retrofit.create(clazz.java)
   }
@@ -46,10 +44,10 @@ object NetworkServiceImpl : INetworkService {
       .baseUrl(getBaseUrl())
       .client(OkHttpClient().newBuilder().run {
         defaultOkhttpConfig(isNeedCookie).also {
-          mOkHttpServiceAllSingleImpl.forEach {
+          ServiceManager.getAllImpl(IOkHttpService::class).forEach {
             if (main) {
-              it.value.invoke().onCreateMainOkHttp(this)
-            } else it.value.invoke().onCreateCustomOkHttp(this)
+              it.value.get().onCreateMainOkHttp(this)
+            } else it.value.get().onCreateCustomOkHttp(this)
           }
           config?.invoke(this)
         }

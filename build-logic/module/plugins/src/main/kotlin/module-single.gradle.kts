@@ -15,7 +15,15 @@ if (isBanSingleModule) {
   println("$name 的单模块调试被取消！")
   apply(plugin = "module-manager")
 } else {
-  when (project.projectDir.parentFile.name) {
+  val parentFile: File = project.projectDir.parentFile
+  val cyxbsGroupName = if (name.startsWith(parentFile.name)) {
+    // 子模块
+    parentFile.parentFile.name
+  } else {
+    // 父模块
+    parentFile.name
+  }
+  when (cyxbsGroupName) {
     "cyxbs-components" -> CyxbsComponentsGroup.config(project, true)
     "cyxbs-functions" -> CyxbsFunctionsGroup.config(project, true)
     "cyxbs-pages" -> CyxbsPagesGroup.config(project, true)

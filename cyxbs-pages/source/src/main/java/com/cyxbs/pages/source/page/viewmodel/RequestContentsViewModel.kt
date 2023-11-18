@@ -2,6 +2,7 @@ package com.cyxbs.pages.source.page.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.cyxbs.components.base.ui.CyxbsBaseViewModel
 import com.cyxbs.pages.source.data.RequestItemContentsData
@@ -23,7 +24,7 @@ class RequestContentsViewModel(
 ) : CyxbsBaseViewModel() {
 
   private val _contentsData: MutableLiveData<RequestItemContentsData> = MutableLiveData()
-  val contentsData: LiveData<RequestItemContentsData> get() = _contentsData
+  val contentsData: LiveData<RequestItemContentsData> get() = _contentsData.distinctUntilChanged()
 
   init {
     SourceDataBase.INSTANCE

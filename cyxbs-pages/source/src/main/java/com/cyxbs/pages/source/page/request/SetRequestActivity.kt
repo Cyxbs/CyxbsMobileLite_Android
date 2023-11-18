@@ -3,20 +3,15 @@ package com.cyxbs.pages.source.page.request
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import androidx.viewpager2.widget.ViewPager2
 import com.cyxbs.components.base.ui.CyxbsBaseActivity
 import com.cyxbs.components.view.view.JToolbar
-import com.cyxbs.components.view.view.ScaleScrollEditText
 import com.cyxbs.pages.source.R
-import com.cyxbs.pages.source.page.test.TestRequestActivity
 import com.cyxbs.pages.source.room.SourceDataBase
 import com.cyxbs.pages.source.room.entity.RequestContentEntity
 import com.g985892345.android.extensions.android.color
 import com.g985892345.android.extensions.android.launch
 import com.g985892345.android.extensions.android.setOnSingleClickListener
-import com.g985892345.android.extensions.android.toast
 import com.g985892345.android.utils.adapter.vp.FragmentVpAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -68,7 +63,7 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
       titleOnLeft = false,
       background = com.cyxbs.components.config.R.color.config_white_black.color
     )
-    if (mRequestContent.url != null || mRequestContent.js != null) {
+    if (mRequestContent.data.isNotEmpty()) {
       toolbar.setRightIcon(R.drawable.source_ic_baseline_delete_outline_24).apply {
         setOnSingleClickListener {
           launch(Dispatchers.IO) {
@@ -88,7 +83,7 @@ class SetRequestActivity : CyxbsBaseActivity(R.layout.source_activity_set_reques
   private fun initViewPager() {
     mViewPager.adapter = FragmentVpAdapter(this)
       .add { InputOutputFragment.newInstance(mParameters, mOutput) }
-      .add { UrlJsFragment.newInstance(mRequestContent, mParameters) }
+      .add { CodeFragment.newInstance(mRequestContent, mParameters) }
     TabLayoutMediator(mTabLayout, mViewPager) { tab, position ->
       when (position) {
         0 -> tab.text = "请求格式"

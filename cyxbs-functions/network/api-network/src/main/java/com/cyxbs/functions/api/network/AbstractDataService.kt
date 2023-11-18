@@ -1,7 +1,7 @@
 package com.cyxbs.functions.api.network
 
 import com.cyxbs.components.router.ServiceManager
-import com.cyxbs.functions.api.network.internal.ISourceService
+import com.cyxbs.functions.api.network.internal.IRequestService
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.rx3.asObservable
@@ -13,11 +13,11 @@ import kotlinx.coroutines.rx3.asObservable
  * @date 2023/10/25 20:00
  */
 abstract class AbstractDataService(
-  val parameters: List<Pair<String, String>>,
+  val parameters: LinkedHashMap<String, String>,
   val output: String, // 应该返回的数据格式，建议写成 json
 ) {
 
-  private val mSourceService = ServiceManager(ISourceService::class)
+  private val mSourceService = ServiceManager(IRequestService::class)
 
   /**
    * @param isForce 是否强制重新请求，如果不强制，则在未到更新间时隔会返回缓存值

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ea742800ad53c00d2b492b56d38cc47c",
+    "identityHash": "e329960f1b6a2e6eb6262671970f2c7f",
     "entities": [
       {
         "tableName": "request_item",
@@ -68,7 +68,7 @@
       },
       {
         "tableName": "request_content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `title` TEXT NOT NULL, `url` TEXT, `js` TEXT, `error` TEXT, `response` TEXT, `requestTimestamp` INTEGER, `responseTimestamp` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`name`) REFERENCES `request_item`(`name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `title` TEXT NOT NULL, `serviceKey` TEXT NOT NULL, `data` TEXT NOT NULL, `error` TEXT, `response` TEXT, `requestTimestamp` INTEGER, `responseTimestamp` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`name`) REFERENCES `request_item`(`name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "name",
@@ -83,16 +83,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "url",
-            "columnName": "url",
+            "fieldPath": "serviceKey",
+            "columnName": "serviceKey",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
-            "fieldPath": "js",
-            "columnName": "js",
+            "fieldPath": "data",
+            "columnName": "data",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "error",
@@ -205,7 +205,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ea742800ad53c00d2b492b56d38cc47c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e329960f1b6a2e6eb6262671970f2c7f')"
     ]
   }
 }

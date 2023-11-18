@@ -12,10 +12,8 @@ import org.gradle.kotlin.dsl.dependencies
  */
 interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
 
-  /**
-   * 单模块依赖配置
-   */
-  override fun dependModules() {
+  override fun applicationDependModules() {
+    // 这里是为了处理单模块的依赖关系
     // 因为为了隔绝对其他模块的依赖，所以使用第三方模块采用 implementation 去依赖实现模块(singlemodule 模块已经自动被依赖)
     // 为什么不使用 runtimeOnly 呢？因为 runtimeOnly 不会加入编译环境(会编译，但不能找到依赖关系)，只能运行时加载模块启动类
     val singleModuleProject = project.project(":cyxbs-components:singlemodule")

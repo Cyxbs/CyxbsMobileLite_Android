@@ -1,4 +1,5 @@
 import config.AndroidConfig
+import extensions.ModuleConfigExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -37,6 +38,8 @@ internal object AndroidModule {
         _dependAndroidKtx()
         _dependLifecycleKtx()
       }
+      // 创建 moduleConfig 闭包
+      extensions.create("moduleConfig", ModuleConfigExtension::class.java, project)
     }
     config.config()
   }

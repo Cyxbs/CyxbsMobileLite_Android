@@ -14,62 +14,58 @@ dependencies {
 ///////////  生成 depend* 方法  /////////////
 
 // 用于排除模块，写模块名即可
-val include: List<String> = listOf(
+val excludeList: List<String> = listOf(
 )
 
 val taskProvider = tasks.register("generateCyxbsDepend") {
   group = "cyxbs"
-  val moduleFiles = listOf(
-    rootDir.parentFile.resolve("cyxbs-components"),
-    rootDir.parentFile.resolve("cyxbs-functions"),
-    rootDir.parentFile.resolve("cyxbs-pages"),
-  ).map { groupFile ->
-    groupFile to groupFile.listFiles { file ->
-      file.resolve("build.gradle.kts").exists()
-    }!!.mapNotNull { file ->
-      when (groupFile.name) {
-        "cyxbs-components" -> file
-        "cyxbs-functions" -> file.resolve("api-${file.name}").let { if (it.exists()) it else file }
-        "cyxbs-pages" -> file.resolve("api-${file.name}").let { if (it.exists()) it else null }
-        else -> null
-      }
-    }.filter {
-      !include.contains(it.name)
-    }
+  val allModulePaths = mutableMapOf(
+    "cyxbs-components" to mutableListOf<String>(),
+    "cyxbs-functions" to mutableListOf(),
+    "cyxbs-pages" to mutableListOf(),
+  ).onEach {
+    getAllModulePath(it.value, it.key, rootDir.parentFile.resolve(it.key))
   }
   val outputDir = layout.buildDirectory.dir(
     "generated/source/depend/${SourceSet.MAIN_SOURCE_SET_NAME}"
   )
+  val dependModuleFile = projectDir.resolve("src")
+    .resolve("main")
+    .resolve("kotlin")
+    .resolve("utils")
+    .resolve("DependModule.kt")
   // inputs 用于缓存 task
-  inputs.property("moduleNames", moduleFiles.toString())
+  inputs.property("allModulePaths", allModulePaths)
+  inputs.file(dependModuleFile)
   // outputs 会作为 srcDir
   outputs.dir(outputDir)
   doLast {
     val outputDirFile = outputDir.get().asFile
     outputDirFile.deleteRecursively()
     outputDirFile.mkdirs()
-    moduleFiles.forEach { pair ->
-      val text = pair.second.joinToString("\n") { file ->
-        val functionName = file.name
-          .split("-")
-          .joinToString("", "DependModuleScope.depend") {
-            it.capitalized()
-          }
-        val projectPath = if (file.name.startsWith("api-")) {
-          ":${pair.first.name}:${file.parentFile.name}:${file.name}"
-        } else {
-          ":${pair.first.name}:${file.name}"
+    // 排除 DependModule 中已经包含的函数
+    val includeFunctionName = dependModuleFile.readLines()
+      .filter { it.startsWith("fun DependModuleScope.depend") }
+      .map { it.substringAfter("fun ").substringBefore("(") }
+    allModulePaths.forEach { entry ->
+      val text = entry.value
+        .map { path ->
+          // 转换为函数名字
+          path to path.substringAfterLast(":")
+            .split("-")
+            .joinToString("", "DependModuleScope.depend") { it.capitalized() }
+        }.filter { it.second !in includeFunctionName }
+        .joinToString("\n") {
+          """
+            
+            fun ${it.second}() {
+              dependencies {
+                "implementation"(project("${it.first}"))
+              }
+            }
+          """.trimIndent()
         }
-        """
-        
-        fun $functionName() {
-          dependencies {
-            "implementation"(project("$projectPath"))
-          }
-        }
-      """.trimIndent()
-      }
-      val fileName = "${pair.first.name.split("-").joinToString("") { it.capitalized() }}Depend.kt"
+      val fileName = "${entry.key.split("-").joinToString("") { it.capitalized() }}Depend.kt"
       outputDirFile.resolve(fileName)
         .writeText(
           "// 使用 gradle 脚本生成，task 为 $name \n" +
@@ -85,6 +81,29 @@ sourceSets {
   main {
     // 将上面的 task 的输出作为编译目录
     kotlin.srcDir(taskProvider)
+  }
+}
+
+// 递归得到所有模块的路径
+fun getAllModulePath(result: MutableList<String>, topName: String, file: File) {
+  if (!file.resolve("settings.gradle.kts").exists()) {
+    if (file.resolve("build.gradle.kts").exists()) {
+      var path = ":${file.name}"
+      var parentFile = file.parentFile
+      do {
+        path = ":${parentFile.name}$path"
+        parentFile = parentFile.parentFile
+      } while (parentFile.name == topName)
+      result.add(path)
+    }
+  }
+  // 递归寻找所有子模块
+  file.listFiles()?.filter {
+    it.name != "src" // 去掉 src 文件夹
+        && !it.resolve("settings.gradle.kts").exists() // 去掉独立的项目模块，比如 build-logic
+        && !excludeList.contains(it.name) // 去掉被忽略的模块
+  }?.forEach {
+    getAllModulePath(result, topName, it)
   }
 }
 ///////////  生成 depend* 方法  /////////////

@@ -1,6 +1,7 @@
 package config
 
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.dependencies
 
 /**
@@ -25,43 +26,54 @@ interface ApplicationConfig : AndroidConfig {
   /**
    * 设置 application 模块的依赖
    *
-   * 如果你的 applications 子模块依赖有特殊要求，请重些该方法
+   * 如果你的 applications 子模块依赖有特殊要求，请重写该方法
    */
-  fun dependModules() {
-    val mainProject = project
-    mainProject.project(":cyxbs-components").subprojects {
-      when (name) {
-        "singlemodule" -> Unit // singlemodule 不依赖
-        else -> dependChildModules(mainProject, this)
-      }
-    }
-    mainProject.project(":cyxbs-functions").subprojects {
-      val thisProject = this
-      when (name) {
-        "debug" -> mainProject.dependencies { "debugImplementation"(thisProject) }
-        else -> dependChildModules(mainProject, this)
-      }
-    }
-    mainProject.project(":cyxbs-pages").subprojects {
-      when (name) {
-        else -> dependChildModules(mainProject, this)
-      }
-    }
+  fun applicationDependModules() {
+    dependChildModules(
+      project,
+      project.project(":cyxbs-components"),
+      mapOf(
+        "singlemodule" to { }, // singlemodule 不依赖
+      )
+    )
+    dependChildModules(
+      project,
+      project.project(":cyxbs-functions"),
+      mapOf(
+        "debug" to { "debugImplementation"(it) },
+      )
+    )
+    dependChildModules(
+      project,
+      project.project(":cyxbs-pages"),
+      mapOf(
+      )
+    )
   }
 
   companion object {
     /**
-     * 递归依赖 [parentProject] 以及其子模块
+     * 递归依赖 [thisProject] 以及其子模块
+     * @param exclude 排除依赖
      */
-    private fun dependChildModules(mainProject: Project, parentProject: Project) {
-      if (mainProject != parentProject) {
-        mainProject.dependencies {
-          "implementation"(parentProject)
+    fun dependChildModules(
+      mainProject: Project,
+      thisProject: Project,
+      exclude: Map<String, DependencyHandlerScope.(Project) -> Unit>,
+    ) {
+      mainProject.dependencies {
+        val action = exclude[thisProject.name]
+        if (action == null) {
+          if (thisProject.projectDir.resolve("build.gradle.kts").exists()) {
+            "implementation"(thisProject)
+          }
+        } else {
+          action.invoke(this, thisProject)
         }
       }
-      parentProject.subprojects {
+      thisProject.subprojects {
         // 递归依赖子模块
-        dependChildModules(mainProject, this)
+        dependChildModules(mainProject, this, exclude)
       }
     }
   }
