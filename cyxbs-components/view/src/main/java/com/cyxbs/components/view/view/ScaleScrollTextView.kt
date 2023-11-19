@@ -226,22 +226,54 @@ open class ScaleScrollTextView(
   private var mLastMoveX = 0F
   private var mLastMoveY = 0F
 
+  private var mIsFirstMove = false
+  private var mIsDisallowIntercept = false
+
   override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
     val x = ev.x
     val y = ev.y
     when (ev.actionMasked) {
       MotionEvent.ACTION_DOWN -> {
+        mLockCount = 0
         mInitialX = x
         mInitialY = y
         mLastMoveX = x
         mLastMoveY = y
         mIsClick = true
+        mIsFirstMove = true
+        mIsDisallowIntercept = false
+        if (mTvContent.translationX < 0F) {
+          // 还可以向右滑动
+          // 先禁止父布局拦截，之后再允许拦截，不然会因为第一 move 移动距离大于 mTouchSlop 而直接拦截
+          mIsDisallowIntercept = true
+          requestParentDisallowIntercept(true)
+        } else if (mTvContent.translationX + mTvContent.width > width - mTvLineNum.width) {
+          // 还可以向左滑动
+          mIsDisallowIntercept = true
+          requestParentDisallowIntercept(true)
+        }
+      }
+
+      MotionEvent.ACTION_MOVE -> {
+        if (mIsFirstMove) {
+          mIsFirstMove = false
+          if (mIsDisallowIntercept) {
+            if (x - mLastMoveX > 0 && mTvContent.translationX == 0F) {
+              // 已经处于左边界并向右滑动
+              requestParentDisallowIntercept(false)
+            } else if (x - mLastMoveX < 0
+              && mTvContent.translationX + mTvContent.width <= width - mTvLineNum.width) {
+              // 已经处于右边界并向左滑动
+              requestParentDisallowIntercept(false)
+            }
+          }
+        }
       }
 
       MotionEvent.ACTION_POINTER_DOWN -> {
         if (mIsClick) {
           mIsClick = false
-//          requestParentDisallowIntercept(true)
+          requestParentDisallowIntercept(true)
         }
       }
     }
@@ -261,18 +293,6 @@ open class ScaleScrollTextView(
     val x = ev.x
     val y = ev.y
     when (ev.actionMasked) {
-      MotionEvent.ACTION_DOWN -> {
-        if (mTvContent.translationX < 0F) {
-          // 还可以向右滑动
-          parent.requestDisallowInterceptTouchEvent(true)
-        } else if (mTvContent.translationX != 0F
-          && mTvContent.translationX + mTvContent.width < width - mTvLineNum.width
-        ) {
-          // 还可以向左滑动
-          parent.requestDisallowInterceptTouchEvent(true)
-        }
-      }
-
       MotionEvent.ACTION_POINTER_DOWN -> {
         return true
       }
@@ -285,6 +305,24 @@ open class ScaleScrollTextView(
       }
     }
     return false
+  }
+
+  private var mLockCount = 0
+
+  protected fun requestParentDisallowIntercept(disallowIntercept: Boolean) {
+    if (disallowIntercept) {
+      mLockCount++
+      if (mLockCount == 1) {
+        parent.requestDisallowInterceptTouchEvent(true)
+      }
+    } else {
+      if (mLockCount > 0) {
+        mLockCount--
+        if (mLockCount == 0) {
+          parent.requestDisallowInterceptTouchEvent(false)
+        }
+      }
+    }
   }
 
 
@@ -341,12 +379,12 @@ open class ScaleScrollTextView(
     if (mTvLineNum.height > height) {
       mTvContent.translationY += dy
       mTvLineNum.translationY += dy
-      if (mTvLineNum.y + mTvLineNum.height < height) {
-        mTvContent.translationY = (height - mTvContent.height).toFloat()
+      if (mTvLineNum.translationY + mTvLineNum.height < height) {
+        mTvContent.translationY = (height - mTvLineNum.height).toFloat()
         mTvLineNum.translationY = (height - mTvLineNum.height).toFloat()
       }
     }
-    if (mTvContent.translationY > 0) {
+    if (mTvLineNum.translationY > 0) {
       mTvContent.translationY = 0F
       mTvLineNum.translationY = 0F
     }
