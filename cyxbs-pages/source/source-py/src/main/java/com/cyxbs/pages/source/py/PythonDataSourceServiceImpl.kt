@@ -47,7 +47,12 @@ internal object PythonDataSourceServiceImpl : IDataSourceService {
             return result
         print(getCourse("114514"))
         端上会截取print输出流从而获取getCourse("114514")的返回值
-        
+      
+      目前已安装的py库:
+        requests(用于网络请求)
+        lxml(用于解析html)
+      如果有其他必要的三方库请联系开发者
+      
       该面板支持双指放大缩小
     """.trimIndent()
     view.text = data
