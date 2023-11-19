@@ -44,19 +44,11 @@ class ScaleScrollEditText(
     }
   }
 
-  private var mEnableFocusEditText = true
-
   @SuppressLint("ClickableViewAccessibility")
   override fun onTouchEvent(event: MotionEvent): Boolean {
     when (event.actionMasked) {
-      MotionEvent.ACTION_DOWN -> {
-        mEnableFocusEditText = true
-      }
-      MotionEvent.ACTION_POINTER_DOWN -> {
-        mEnableFocusEditText = false
-      }
       MotionEvent.ACTION_UP -> {
-        if (mEnableFocusEditText && event.eventTime - event.downTime < mLongPressTimeout) {
+        if (mIsClick && event.eventTime - event.downTime < mLongPressTimeout) {
           mTvContent.requestFocus()
           context.getSystemService(InputMethodManager::class.java)
             .showSoftInput(mTvContent, 0)

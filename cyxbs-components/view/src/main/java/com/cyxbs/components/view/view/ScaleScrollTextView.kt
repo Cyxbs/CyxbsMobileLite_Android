@@ -242,13 +242,9 @@ open class ScaleScrollTextView(
         mIsClick = true
         mIsFirstMove = true
         mIsDisallowIntercept = false
-        if (mTvContent.translationX < 0F) {
-          // 还可以向右滑动
-          // 先禁止父布局拦截，之后再允许拦截，不然会因为第一 move 移动距离大于 mTouchSlop 而直接拦截
-          mIsDisallowIntercept = true
-          requestParentDisallowIntercept(true)
-        } else if (mTvContent.translationX + mTvContent.width > width - mTvLineNum.width) {
-          // 还可以向左滑动
+        if (canScrollHorizontally(1) || canScrollHorizontally(-1)
+          || canScrollVertically(1) || canScrollHorizontally(-1)
+        ) {
           mIsDisallowIntercept = true
           requestParentDisallowIntercept(true)
         }
@@ -258,13 +254,26 @@ open class ScaleScrollTextView(
         if (mIsFirstMove) {
           mIsFirstMove = false
           if (mIsDisallowIntercept) {
-            if (x - mLastMoveX > 0 && mTvContent.translationX == 0F) {
-              // 已经处于左边界并向右滑动
-              requestParentDisallowIntercept(false)
-            } else if (x - mLastMoveX < 0
-              && mTvContent.translationX + mTvContent.width <= width - mTvLineNum.width) {
-              // 已经处于右边界并向左滑动
-              requestParentDisallowIntercept(false)
+            if (x > mLastMoveX) {
+              // 手指右移
+              if (!canScrollHorizontally(-1)) {
+                requestParentDisallowIntercept(false)
+              }
+            } else if (x < mLastMoveX) {
+              // 手指左移
+              if (!canScrollHorizontally(1)) {
+                requestParentDisallowIntercept(false)
+              }
+            } else if (y > mLastMoveY) {
+              // 手指下移
+              if (!canScrollVertically(-1)) {
+                requestParentDisallowIntercept(false)
+              }
+            } else if (y < mLastMoveY) {
+              // 手指上移
+              if (!canScrollVertically(1)) {
+                requestParentDisallowIntercept(false)
+              }
             }
           }
         }
@@ -294,13 +303,21 @@ open class ScaleScrollTextView(
     val y = ev.y
     when (ev.actionMasked) {
       MotionEvent.ACTION_POINTER_DOWN -> {
+        mIsClick = false
         return true
       }
 
       MotionEvent.ACTION_MOVE -> {
-        if (abs(mInitialX - x) > mTouchSlop || abs(mInitialY - y) > mTouchSlop) {
-          // 这里使用 mInitialX - x，mLastMoveX - x 会有跳变
-          return true
+        if (abs(mLastMoveX - x) > mTouchSlop || abs(mLastMoveY - y) > mTouchSlop) {
+          if (x > mLastMoveX && canScrollHorizontally(-1)
+            || x < mLastMoveX && canScrollHorizontally(1)
+            || y > mLastMoveY && canScrollVertically(-1)
+            || y < mLastMoveY && canScrollVertically(1)
+          ) {
+            requestParentDisallowIntercept(true)
+            mIsClick = false
+            return true
+          }
         }
       }
     }
@@ -326,7 +343,7 @@ open class ScaleScrollTextView(
   }
 
 
-  private var mIsClick = true
+  protected var mIsClick = true
 
   private val mTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
   private val mLongPressTimeout = ViewConfiguration.getLongPressTimeout().toLong()
@@ -363,31 +380,63 @@ open class ScaleScrollTextView(
     mTvContent.translationX += dx
     if (dx > 0) {
       // 手指向右移动
-      if (mTvContent.translationX > 0) {
+      if (!canScrollHorizontally(-1)) {
         mTvContent.translationX = 0F
       }
     } else {
       // 手指向左移动
       if (mTvContent.width > width - mTvLineNum.width) {
-        if (mTvContent.translationX + mTvContent.width < width - mTvLineNum.width) {
+        if (!canScrollHorizontally(1)) {
           mTvContent.translationX = (width - mTvLineNum.width - mTvContent.width).toFloat()
         }
       } else {
         mTvContent.translationX = 0F
       }
     }
-    if (mTvLineNum.height > height) {
-      mTvContent.translationY += dy
-      mTvLineNum.translationY += dy
-      if (mTvLineNum.translationY + mTvLineNum.height < height) {
-        mTvContent.translationY = (height - mTvLineNum.height).toFloat()
-        mTvLineNum.translationY = (height - mTvLineNum.height).toFloat()
+    mTvContent.translationY += dy
+    mTvLineNum.translationY += dy
+    if (dy > 0) {
+      // 手指向下移动
+      if (!canScrollVertically(-1)) {
+        mTvLineNum.translationY = 0F
+        mTvContent.translationY = 0F
+      }
+    } else {
+      // 手指向上移动
+      if (mTvLineNum.height > height) {
+        if (!canScrollVertically(1)) {
+          mTvLineNum.translationY = (height - mTvLineNum.height).toFloat()
+          mTvContent.translationY = (height - mTvLineNum.height).toFloat()
+        }
+      } else {
+        mTvLineNum.translationY = 0F
+        mTvContent.translationY = 0F
       }
     }
-    if (mTvLineNum.translationY > 0) {
-      mTvContent.translationY = 0F
-      mTvLineNum.translationY = 0F
-    }
+  }
+
+  /**
+   * > 0: 手指能否向上滑动
+   * < 0: 手指能都向下滑动
+   */
+  override fun canScrollVertically(direction: Int): Boolean {
+    return if (direction > 0) {
+      mTvLineNum.translationY + mTvLineNum.height < height
+    } else if (direction < 0) {
+      mTvLineNum.translationY < 0F
+    } else false
+  }
+
+  /**
+   * > 0: 手指能否向左滑动
+   * < 0: 手指能都向右滑动
+   */
+  override fun canScrollHorizontally(direction: Int): Boolean {
+    return if (direction > 0) {
+      mTvContent.translationX + mTvContent.width > width - mTvLineNum.width
+    } else if (direction < 0) {
+      mTvContent.translationX < 0F
+    } else false
   }
 
   private fun isDaytimeMode(): Boolean {
