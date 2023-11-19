@@ -80,7 +80,7 @@ object RequestManager {
         .getImplOrThrow(IDataSourceService::class, content.serviceKey)
       var response: String? = null
       val requestTimestamp = System.currentTimeMillis()
-      var error: String? = null
+      var error: Throwable? = null
       var responseTimestamp: Long? = null
       try {
         response = flow {
@@ -89,11 +89,9 @@ object RequestManager {
         responseTimestamp = System.currentTimeMillis()
         return response
       } catch (e: Exception) {
+        error = e
         if (e is CancellationException) {
-          error = "协程被取消, message = ${e.message}"
           throw e
-        } else {
-          error = e.message
         }
       } finally {
         db.requestDao.change(

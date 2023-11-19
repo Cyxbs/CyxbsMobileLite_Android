@@ -5,10 +5,12 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cyxbs.components.base.ui.CyxbsBaseActivity
+import com.cyxbs.components.config.route.SOURCE_ENTRY
 import com.cyxbs.components.view.view.JToolbar
 import com.cyxbs.pages.source.R
 import com.cyxbs.pages.source.page.adapter.SourceAdapter
 import com.cyxbs.pages.source.page.viewmodel.SourceViewModel
+import com.g985892345.provider.annotation.KClassProvider
 
 /**
  * .
@@ -16,6 +18,7 @@ import com.cyxbs.pages.source.page.viewmodel.SourceViewModel
  * @author 985892345
  * @date 2023/10/21 14:44
  */
+@KClassProvider(name = SOURCE_ENTRY)
 class SourceActivity : CyxbsBaseActivity(R.layout.source_activity_source) {
 
   private val mViewModel: SourceViewModel by viewModels()

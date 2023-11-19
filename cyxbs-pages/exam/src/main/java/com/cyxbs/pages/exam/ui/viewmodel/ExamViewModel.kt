@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cyxbs.components.base.ui.CyxbsBaseViewModel
 import com.cyxbs.components.router.impl
+import com.cyxbs.components.view.crash.CrashDialog
 import com.cyxbs.functions.api.account.IAccountService
 import com.cyxbs.pages.exam.bean.ExamBean
 import com.cyxbs.pages.exam.bean.toExamBean
 import com.cyxbs.pages.exam.model.ExamRepository
+import com.g985892345.android.utils.context.topActivity
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch

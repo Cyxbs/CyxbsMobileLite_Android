@@ -4,6 +4,7 @@
   <!--config 模块放置通用权限的申请-->
   <uses-permission android:name="android.permission.INTERNET" />
 
-  <application>
+  <application
+    android:usesCleartextTraffic="true" >
   </application>
 </manifest>

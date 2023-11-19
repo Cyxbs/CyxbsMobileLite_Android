@@ -77,7 +77,7 @@ abstract class BaseChooseDialog<T : BaseChooseDialog<T, D>, D: BaseChooseDialog.
     super.onCreate(savedInstanceState)
 
     val view = LayoutInflater.from(context).inflate(data.type.layoutId, null)
-    val parent = view.findViewWithTag<FrameLayout>("choose_dialog_content")
+    val parent = view.findViewById<FrameLayout>(R.id.config_fl_choose_dialog_btn_content)
     val insertView = createContentView(parent)
     parent.addView(insertView)
     setContentView(

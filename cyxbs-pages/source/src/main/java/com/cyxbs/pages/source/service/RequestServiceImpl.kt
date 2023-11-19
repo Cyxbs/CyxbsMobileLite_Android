@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * .
@@ -54,10 +55,12 @@ object RequestServiceImpl : IRequestService, IInitialService {
 
   override suspend fun getLastResponseTimestamp(dataSource: AbstractDataService): Long? {
     val name = findName(dataSource)
-    return SourceDataBase.INSTANCE
-      .requestDao
-      .findItemByName(name)
-      ?.responseTimestamp
+    return withContext(Dispatchers.IO) {
+      SourceDataBase.INSTANCE
+        .requestDao
+        .findItemByName(name)
+        ?.responseTimestamp
+    }
   }
 
   override fun observeUpdate(dataSource: AbstractDataService): Flow<Boolean> {

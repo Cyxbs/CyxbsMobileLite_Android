@@ -23,11 +23,10 @@ object ApplicationModule {
           versionName = config.versionName
         }
       }
-
-      // 设置 application 模块需要的模块
-      config.applicationDependModules()
     }
     // 其他通用的配置在这里面
     AndroidModule.config(config)
+    // 设置 application 模块需要的模块
+    config.applicationDependModules()
   }
 }

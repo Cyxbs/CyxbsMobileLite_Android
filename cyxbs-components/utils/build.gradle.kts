@@ -9,6 +9,7 @@ dependencies {
   api("io.github.985892345:utils-context:$androidWheelVersion")
   api("io.github.985892345:utils-adapter:$androidWheelVersion")
   api("io.github.985892345:utils-view:$androidWheelVersion")
+  api("io.github.985892345:utils-impl:$androidWheelVersion")
   api("io.github.985892345:extensions-android:$androidWheelVersion")
   api("io.github.985892345:extensions-rxjava:$androidWheelVersion")
 }

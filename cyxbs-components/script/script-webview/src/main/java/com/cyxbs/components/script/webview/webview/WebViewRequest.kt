@@ -32,7 +32,7 @@ internal class WebViewRequest {
       // 支持 js
       @SuppressLint("SetJavaScriptEnabled")
       settings.javaScriptEnabled = true
-      addJavascriptInterface(mAndroidBridge, "androidBridge")
+      addJavascriptInterface(mAndroidBridge, "cyxbsBridge")
     }
   }
 

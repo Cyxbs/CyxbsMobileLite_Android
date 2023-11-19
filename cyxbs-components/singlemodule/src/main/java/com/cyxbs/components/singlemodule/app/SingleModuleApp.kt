@@ -2,6 +2,8 @@ package com.cyxbs.components.singlemodule.app
 
 import android.util.Log
 import com.cyxbs.components.base.app.CyxbsBaseApp
+import com.cyxbs.components.router.ServiceManager
+import com.cyxbs.components.singlemodule.internal.IApiParentKtProvider
 import com.g985892345.android.extensions.android.toastLong
 import com.g985892345.provider.init.KtProviderInitializer
 import ktProviderEntryClassName
@@ -19,8 +21,21 @@ class SingleModuleApp : CyxbsBaseApp() {
   }
 
   override fun initRouter() {
+    loadKtProviderInitializer(ktProviderEntryClassName)
+    // 加载 api 模块的 KtProvider 实现类
+    val apiParentKtProvider = ServiceManager.getImplOrNull(IApiParentKtProvider::class)
+    if (apiParentKtProvider == null) {
+      toastLong("初始化 api 实现模块失效 !")
+    } else {
+      apiParentKtProvider.entryClassNames.forEach {
+        loadKtProviderInitializer(it)
+      }
+    }
+  }
+
+  private fun loadKtProviderInitializer(className: String) {
     try {
-      val ktProviderInitializer = Class.forName(ktProviderEntryClassName)
+      val ktProviderInitializer = Class.forName(className)
         .getField("INSTANCE")
         .get(null) as KtProviderInitializer
       ktProviderInitializer.tryInitKtProvider()

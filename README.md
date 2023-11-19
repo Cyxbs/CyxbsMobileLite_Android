@@ -29,5 +29,5 @@ https://www.processon.com/view/link/650a6e022e87a366062e0479
 - [x] 服务提供框架 (路由框架) ([KtProvider](https://github.com/985892345/KtProvider))
 - [x] 单模块功能搭建
 - [x] 数据源层搭建
+- [x] 移植考试
 - [ ] 移植课表
-- [ ] 移植考试

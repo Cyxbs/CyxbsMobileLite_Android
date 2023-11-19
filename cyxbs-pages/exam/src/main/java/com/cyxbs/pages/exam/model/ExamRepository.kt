@@ -1,12 +1,14 @@
 package com.cyxbs.pages.exam.model
 
 import com.cyxbs.components.router.impl
+import com.cyxbs.components.view.crash.CrashDialog
 import com.cyxbs.functions.api.account.IAccountService
 import com.cyxbs.pages.exam.bean.ExamBean
 import com.cyxbs.pages.exam.room.ExamDataBase
 import com.cyxbs.pages.exam.room.ExamEntity
 import com.cyxbs.pages.exam.service.ExamDataServiceImpl
 import com.g985892345.android.extensions.android.lazyUnlock
+import com.g985892345.android.utils.context.topActivity
 import com.g985892345.jvm.rxjava.unsafeSubscribeBy
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -49,7 +51,11 @@ object ExamRepository {
     if (stuNum.isBlank()) return Observable.just(emptyList())
     return mExamDao.observeExam(stuNum)
       .doOnSubscribe {
-        refreshLesson(stuNum, false).unsafeSubscribeBy()
+        refreshLesson(stuNum, false)
+          .doOnError {
+            CrashDialog.Builder(topActivity!!, it)
+              .show()
+          }.unsafeSubscribeBy()
       }.distinctUntilChanged()
       .subscribeOn(Schedulers.io())
   }
@@ -69,6 +75,7 @@ object ExamRepository {
         Json.decodeFromString<List<ExamBean>>(it)
       }.map { list ->
         list.map { it.toExamEntity(stuNum) }
+      }.doOnError {
       }.doOnSuccess {
         mExamDao.resetData(stuNum, it)
       }.subscribeOn(Schedulers.io())

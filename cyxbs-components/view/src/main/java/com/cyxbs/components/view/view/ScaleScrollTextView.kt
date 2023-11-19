@@ -75,7 +75,7 @@ open class ScaleScrollTextView(
    * 自动侧边显示的行数
    */
   fun adjustSlideLine() {
-    val textLine = mTvContent.text?.count { it == '\n' }?.plus(1) ?: 0
+    val textLine = mTvContent.lineCount
     val hintLine = mTvContent.hint?.count { it == '\n' }?.plus(1) ?: 0
     // 即使 hint 没有显示也不建议直接以 text 来计算行数，因为可能出现跳变
     setSideLine(maxOf(textLine, hintLine))
@@ -163,6 +163,8 @@ open class ScaleScrollTextView(
         mTvContent,
         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
       )
+    }
+    mTvContent.post {
       adjustSlideLine()
     }
   }
@@ -219,6 +221,7 @@ open class ScaleScrollTextView(
     mTvLineNum.layout(0, 0, mTvLineNum.measuredWidth, mTvLineNum.measuredHeight)
     val left = mTvLineNum.measuredWidth + 6.dp2px
     mTvContent.layout(left, 0, left + mTvContent.measuredWidth, mTvContent.measuredHeight)
+    adjustSlideLine()
   }
 
   private var mInitialX = 0F

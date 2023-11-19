@@ -15,11 +15,15 @@ import com.cyxbs.components.view.view.JToolbar
 import com.cyxbs.pages.exam.R
 import com.cyxbs.pages.exam.adapter.ExamHeadAdapter
 import com.cyxbs.pages.exam.adapter.ExamListAdapter
+import com.cyxbs.pages.exam.service.ExamDataServiceImpl
 import com.cyxbs.pages.exam.ui.viewmodel.ExamViewModel
 import com.g985892345.android.extensions.android.gone
+import com.g985892345.android.extensions.android.launch
 import com.g985892345.android.extensions.android.toast
 import com.g985892345.android.extensions.android.visible
 import com.g985892345.provider.annotation.KClassProvider
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 
 @KClassProvider(name = EXAM_ENTRY)
 class ExamActivity : CyxbsBaseActivity() {
@@ -66,6 +70,17 @@ class ExamActivity : CyxbsBaseActivity() {
   }
   
   private fun initRefresh() {
+    mRefresh.isEnabled = false
+    launch {
+      val oldText = mTvNoData.text
+      if (ExamDataServiceImpl.getLastResponseTimestamp() == null) {
+        mTvNoData.text = "请先设置请求"
+        ExamDataServiceImpl.observeUpdate()
+          .first { it }
+      }
+      mRefresh.isEnabled = true
+      mTvNoData.text = oldText
+    }
     mRefresh.setOnRefreshListener {
       if (mNoDataIndex < mNoDataTexts.size) {
         mViewModel.refreshExam()

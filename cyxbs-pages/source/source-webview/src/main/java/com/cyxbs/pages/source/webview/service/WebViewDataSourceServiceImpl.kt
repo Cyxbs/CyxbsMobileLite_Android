@@ -96,9 +96,9 @@ internal object WebViewDataSourceServiceImpl : IDataSourceService {
       
       与端上交互规则:
         // 调用 success() 返回结果，只允许调用一次
-        androidBridge.success('...'); 
+        cyxbsBridge.success('...'); 
         // 调用 error() 返回异常，只允许调用一次
-        androidBridge.error('...');
+        cyxbsBridge.error('...');
         
       端上传递请求参数规则:
         端上可以传递参数到 url 和 js 上

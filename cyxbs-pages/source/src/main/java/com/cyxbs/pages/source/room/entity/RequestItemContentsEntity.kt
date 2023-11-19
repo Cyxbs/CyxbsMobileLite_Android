@@ -10,7 +10,12 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.io.Serializable
+import java.lang.Exception
 
 /**
  * .
@@ -52,12 +57,13 @@ data class RequestItemEntity(
     )
   ],
 )
+@TypeConverters(RequestEntityConverter::class)
 data class RequestContentEntity(
   val name: String,
   val title: String,
   val serviceKey: String,
   val data: String,
-  val error: String?,
+  val error: Throwable?,
   val response: String?,
   val requestTimestamp: Long?, // 每次请求触发时的时间戳
   val responseTimestamp: Long?, // 最后请求成功时的时间戳
@@ -110,5 +116,51 @@ class RequestEntityConverter {
   @TypeConverter
   fun stringToListPair(string: String): List<Pair<String, String>> {
     return Json.decodeFromString(string)
+  }
+
+  @TypeConverter
+  fun throwableToByteArray(throwable: Throwable?): ByteArray? {
+    return toByteArray(throwable)
+  }
+
+  @TypeConverter
+  fun byteArrayToThrowable(byteArray: ByteArray?): Throwable? {
+    return toSerializable(byteArray) as? Throwable
+  }
+
+  private fun toByteArray(serializable: Serializable?): ByteArray? {
+    serializable?:return null
+    var byteArrayOutputStream: ByteArrayOutputStream? = null
+    var objectOutputStream: ObjectOutputStream? = null
+    try {
+      byteArrayOutputStream = ByteArrayOutputStream()
+      objectOutputStream = ObjectOutputStream(byteArrayOutputStream)
+      objectOutputStream.writeObject(serializable)
+      objectOutputStream.flush()
+      return byteArrayOutputStream.toByteArray()
+    } catch (e: Exception) {
+      e.printStackTrace()
+    } finally {
+      byteArrayOutputStream?.close()
+      objectOutputStream?.close()
+    }
+    return null
+  }
+
+  private fun toSerializable(byteArray: ByteArray?): Serializable? {
+    byteArray ?: return null
+    var byteArrayOutputStream: ByteArrayInputStream? = null
+    var objectInputStream: ObjectInputStream? = null
+    try {
+      byteArrayOutputStream = ByteArrayInputStream(byteArray)
+      objectInputStream = ObjectInputStream(byteArrayOutputStream)
+      return objectInputStream.readObject() as Serializable
+    } catch (e: Exception) {
+      e.printStackTrace()
+    } finally {
+      byteArrayOutputStream?.close()
+      objectInputStream?.close()
+    }
+    return null
   }
 }

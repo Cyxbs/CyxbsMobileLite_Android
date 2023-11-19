@@ -18,7 +18,7 @@ abstract class AbstractDataService(
   val output: String, // 应该返回的数据格式，建议写成 json
 ) {
 
-  private val mSourceService = ServiceManager(IRequestService::class)
+  private val mSourceService = ServiceManager.getImplOrThrow(IRequestService::class)
 
   /**
    * @param isForce 是否强制重新请求，如果不强制，则在未到更新间时隔会返回缓存值

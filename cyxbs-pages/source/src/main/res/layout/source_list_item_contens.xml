@@ -52,18 +52,31 @@
       app:layout_constraintStart_toEndOf="@id/source_tv_list_item_contents_state_title"
       tools:ignore="HardcodedText" />
 
-    <TextView
-      android:id="@+id/source_tv_list_item_contents_fail_result"
+    <ImageView
+      android:id="@+id/source_iv_list_item_contents_error"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:maxEms="10"
-      android:ellipsize="end"
-      android:maxLines="1"
-      app:layout_constraintStart_toEndOf="@id/source_tv_list_item_contents_state"
-      app:layout_constraintTop_toTopOf="@id/source_tv_list_item_contents_state"
-      app:layout_constraintBottom_toBottomOf="@id/source_tv_list_item_contents_state"
-      tools:text="失败原因" />
+      android:layout_marginEnd="46dp"
+      android:src="@drawable/source_baseline_error_24"
+      android:visibility="gone"
+      tools:visibility="visible"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:importantForAccessibility="no" />
+
+    <ImageView
+      android:id="@+id/source_iv_list_item_contents_data"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="46dp"
+      android:src="@drawable/source_baseline_data_object_24"
+      android:visibility="gone"
+      tools:visibility="visible"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:importantForAccessibility="no" />
 
     <View
       android:layout_width="24dp"

@@ -11,4 +11,5 @@ package com.cyxbs.components.config.route
  *     这里只放共用的路由地址
  */
 
+const val SOURCE_ENTRY = "/source/entry"
 const val EXAM_ENTRY = "/exam/entry"
