@@ -165,8 +165,6 @@ class ItemContentsActivity : CyxbsBaseActivity(R.layout.source_activity_item_con
   private val mFloatChildViews by lazy {
     mDataSourceServices
       .map { (key, service) ->
-        android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-          "key = $key")
         FloatingActionButton(this).apply {
           setImageDrawable(service.drawable)
           backgroundTintList = AppCompatResources.getColorStateList(

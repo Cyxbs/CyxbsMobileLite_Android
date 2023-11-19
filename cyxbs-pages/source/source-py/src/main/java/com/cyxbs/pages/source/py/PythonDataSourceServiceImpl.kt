@@ -22,11 +22,7 @@ internal object PythonDataSourceServiceImpl : IDataSourceService {
 
   override val drawable: Drawable = R.drawable.py_ic_python.drawable
 
-  override fun config(
-    data: String,
-    view: ScaleScrollEditText,
-    parent: ViewGroup
-  ): List<View> {
+  override fun config(data: String?, view: ScaleScrollEditText, parent: ViewGroup): List<View> {
     view.hint = """
       请输入 py
       
@@ -54,9 +50,7 @@ internal object PythonDataSourceServiceImpl : IDataSourceService {
         
       该面板支持双指放大缩小
     """.trimIndent()
-    if (data.isNotBlank()) {
-      view.text = data
-    }
+    view.text = data
     return emptyList()
   }
 

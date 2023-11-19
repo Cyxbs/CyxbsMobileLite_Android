@@ -10,3 +10,5 @@ package com.cyxbs.components.config.route
  * 注意：如果你的 api 模块只有父模块实现，请把路由地址放在你的 api 模块中！！！
  *     这里只放共用的路由地址
  */
+
+const val EXAM_ENTRY = "/exam/entry"

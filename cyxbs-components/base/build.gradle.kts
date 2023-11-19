@@ -7,6 +7,7 @@ plugins {
 dependModule {
   dependInit()
   dependRouter()
+  dependUtils()
 }
 
 dependLibrary {

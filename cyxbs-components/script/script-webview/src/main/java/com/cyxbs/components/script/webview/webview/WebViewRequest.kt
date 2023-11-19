@@ -40,10 +40,10 @@ internal class WebViewRequest {
 
   private val mAndroidBridge = Android2JsBridge { result ->
     mContinuation?.let {
+      mContinuation = null
       mainHandler.post {
         clearWebView()
         it.resumeWith(result)
-        mContinuation = null
       }
     }
   }

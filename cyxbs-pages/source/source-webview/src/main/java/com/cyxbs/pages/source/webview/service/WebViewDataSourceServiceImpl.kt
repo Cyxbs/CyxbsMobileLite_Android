@@ -35,8 +35,8 @@ internal object WebViewDataSourceServiceImpl : IDataSourceService {
 
   override val drawable: Drawable = R.drawable.webview_ic_baseline_web_24.drawable
 
-  override fun config(data: String, view: ScaleScrollEditText, parent: ViewGroup): List<View> {
-    val webViewData = if (data.isEmpty()) {
+  override fun config(data: String?, view: ScaleScrollEditText, parent: ViewGroup): List<View> {
+    val webViewData = if (data.isNullOrEmpty()) {
       WebViewData(null, null)
     } else {
       Json.decodeFromString(data)

@@ -44,6 +44,12 @@ open class ScaleScrollTextView(
       mTvContent.hint = value
     }
 
+  var maxTextWidth: Int
+    get() = mTvContent.maxWidth
+    set(value) {
+      mTvContent.maxWidth = value
+    }
+
   /**
    * 设置字体大小，默认大小为 12F，单位 SP
    */
@@ -81,21 +87,21 @@ open class ScaleScrollTextView(
   fun setSideTextColor(color: Int) {
     mTvLineNum.setTextColor(color)
   }
-  
+
   /**
    * 设置侧边显示行数的背景颜色
    */
   fun setSideBackgroundColor(color: Int) {
     mTvLineNum.setBackgroundColor(color)
   }
-  
+
   private val mScaleGestureDetector = ScaleGestureDetector(
     context,
     object : ScaleGestureDetector.OnScaleGestureListener {
-      
+
       private var mLastFocusX = 0F
       private var mLastFocusY = 0F
-      
+
       override fun onScale(detector: ScaleGestureDetector): Boolean {
         mTvLineNum.setTextSize(
           TypedValue.COMPLEX_UNIT_PX,
@@ -110,18 +116,18 @@ open class ScaleScrollTextView(
         mLastFocusY = detector.focusY
         return true
       }
-      
+
       override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
         mLastFocusX = detector.focusX
         mLastFocusY = detector.focusY
         return true
       }
-      
+
       override fun onScaleEnd(detector: ScaleGestureDetector) {
       }
     }
   )
-  
+
   protected val mTvLineNum = TextView(context).apply {
     textSize = 12F
     setTextColor(if (isDaytimeMode()) 0xFF595959.toInt() else 0xFFDFDFDF.toInt())
@@ -130,7 +136,7 @@ open class ScaleScrollTextView(
     gravity = Gravity.END
     elevation = 1F // 显示在 mTvContent 之上
   }
-  
+
   protected val mTvContent by lazyUnlock {
     createContentView(context).apply {
       textSize = 12F
@@ -145,7 +151,7 @@ open class ScaleScrollTextView(
   protected open fun createContentView(context: Context): TextView {
     return TextView(context)
   }
-  
+
   init {
     super.addView(
       mTvLineNum,
@@ -160,7 +166,7 @@ open class ScaleScrollTextView(
       adjustSlideLine()
     }
   }
-  
+
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     val wSize = MeasureSpec.getSize(widthMeasureSpec)
     val wMode = MeasureSpec.getMode(widthMeasureSpec)
@@ -181,11 +187,13 @@ open class ScaleScrollTextView(
           min(mTvLineNum.measuredWidth + mTvContent.measuredWidth, wSize),
           MeasureSpec.EXACTLY
         )
+
       MeasureSpec.UNSPECIFIED ->
         MeasureSpec.makeMeasureSpec(
           max(mTvLineNum.measuredWidth + mTvContent.measuredWidth, wSize),
           MeasureSpec.EXACTLY
         )
+
       else -> error("")
     }
     val hSpec = when (hMode) {
@@ -195,16 +203,18 @@ open class ScaleScrollTextView(
           min(max(mTvLineNum.measuredHeight, mTvContent.measuredHeight), hSize),
           MeasureSpec.EXACTLY
         )
+
       MeasureSpec.UNSPECIFIED ->
         MeasureSpec.makeMeasureSpec(
           maxOf(mTvLineNum.measuredHeight, mTvContent.measuredHeight, hSize),
           MeasureSpec.EXACTLY
         )
+
       else -> error("")
     }
     super.onMeasure(wSpec, hSpec)
   }
-  
+
   override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
     mTvLineNum.layout(0, 0, mTvLineNum.measuredWidth, mTvLineNum.measuredHeight)
     val left = mTvLineNum.measuredWidth + 6.dp2px
@@ -225,6 +235,14 @@ open class ScaleScrollTextView(
         mInitialY = y
         mLastMoveX = x
         mLastMoveY = y
+        mIsClick = true
+      }
+
+      MotionEvent.ACTION_POINTER_DOWN -> {
+        if (mIsClick) {
+          mIsClick = false
+//          requestParentDisallowIntercept(true)
+        }
       }
     }
     // 因为 onInterceptTouchEvent 和 onTouchEvent 事件的不完整性，所以只能在这里处理
@@ -238,14 +256,27 @@ open class ScaleScrollTextView(
       }
     }
   }
-  
+
   override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
     val x = ev.x
     val y = ev.y
     when (ev.actionMasked) {
+      MotionEvent.ACTION_DOWN -> {
+        if (mTvContent.translationX < 0F) {
+          // 还可以向右滑动
+          parent.requestDisallowInterceptTouchEvent(true)
+        } else if (mTvContent.translationX != 0F
+          && mTvContent.translationX + mTvContent.width < width - mTvLineNum.width
+        ) {
+          // 还可以向左滑动
+          parent.requestDisallowInterceptTouchEvent(true)
+        }
+      }
+
       MotionEvent.ACTION_POINTER_DOWN -> {
         return true
       }
+
       MotionEvent.ACTION_MOVE -> {
         if (abs(mInitialX - x) > mTouchSlop || abs(mInitialY - y) > mTouchSlop) {
           // 这里使用 mInitialX - x，mLastMoveX - x 会有跳变
@@ -256,24 +287,19 @@ open class ScaleScrollTextView(
     return false
   }
 
+
   private var mIsClick = true
 
   private val mTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
   private val mLongPressTimeout = ViewConfiguration.getLongPressTimeout().toLong()
 
   private val mClickRunnable = Runnable { performClick() }
-  
+
   @SuppressLint("ClickableViewAccessibility")
   override fun onTouchEvent(event: MotionEvent): Boolean {
     val x = event.x
     val y = event.y
     when (event.actionMasked) {
-      MotionEvent.ACTION_DOWN -> {
-        mIsClick = true
-      }
-      MotionEvent.ACTION_POINTER_DOWN -> {
-        mIsClick = false
-      }
       MotionEvent.ACTION_MOVE -> {
         // 多根手指时交给 mScaleGestureDetector 处理
         if (event.pointerCount == 1) {
@@ -283,6 +309,7 @@ open class ScaleScrollTextView(
           mIsClick = false
         }
       }
+
       MotionEvent.ACTION_UP -> {
         if (mIsClick && event.eventTime - event.downTime < mLongPressTimeout) {
           if (!post(mClickRunnable)) { // 遵循官方做法，在 post 中调用防止堵塞
@@ -293,7 +320,7 @@ open class ScaleScrollTextView(
     }
     return true
   }
-  
+
   private fun move(dx: Float, dy: Float) {
     mTvContent.translationX += dx
     if (dx > 0) {
@@ -303,9 +330,9 @@ open class ScaleScrollTextView(
       }
     } else {
       // 手指向左移动
-      if (mTvContent.width > width) {
-        if (mTvContent.translationX + mTvContent.width < width - 200) {
-          mTvContent.translationX = (width - 200 - mTvContent.width).toFloat()
+      if (mTvContent.width > width - mTvLineNum.width) {
+        if (mTvContent.translationX + mTvContent.width < width - mTvLineNum.width) {
+          mTvContent.translationX = (width - mTvLineNum.width - mTvContent.width).toFloat()
         }
       } else {
         mTvContent.translationX = 0F
@@ -324,7 +351,7 @@ open class ScaleScrollTextView(
       mTvLineNum.translationY = 0F
     }
   }
-  
+
   private fun isDaytimeMode(): Boolean {
     val uiMode = context.resources.configuration.uiMode
     return (uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO

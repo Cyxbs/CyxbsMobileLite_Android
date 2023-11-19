@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="12dp">
+
+    <com.ndhzs.module.exam.widget.DashGapLine
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/exam_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/exam_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <TextView
+        android:id="@+id/exam_tv_rv_item_week_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/config_level_two_font_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/exam_cl_rv_item_item"
+        tools:text="十一周周一" />
+
+    <TextView
+        android:id="@+id/exam_tv_rv_item_remain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/exam_rv_item_day_remain"
+        android:textSize="13sp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@id/exam_cl_rv_item_item"
+        app:layout_constraintBottom_toBottomOf="@+id/exam_tv_rv_item_week_day"
+        app:layout_constraintTop_toTopOf="@id/exam_tv_rv_item_week_day"
+        tools:text="还剩5天考试" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exam_cl_rv_item_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/exam_shape_rv_item_round"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/exam_guideline"
+        app:layout_constraintTop_toBottomOf="@id/exam_tv_rv_item_week_day">
+
+        <TextView
+            android:id="@+id/exam_tv_rv_item_exam_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/config_level_two_font_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/exam_rv_tv_exam_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="工程管理与经济决策" />
+
+        <TextView
+            android:id="@+id/exam_rv_tv_exam_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="18dp"
+            android:textColor="@color/config_level_two_font_color"
+            android:textSize="13sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/exam_tv_rv_item_exam_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="半期" />
+
+        <TextView
+            android:id="@+id/exam_tv_rv_item_exam_month_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="6dp"
+            android:drawablePadding="10dp"
+            android:textColor="@color/exam_rv_item_text_time"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/exam_ic_rv_item_time"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exam_tv_rv_item_exam_name"
+            tools:text="12月27号" />
+
+        <View
+            android:id="@+id/exam_view_rv_item_exam_divide1"
+            android:layout_width="0.1dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="9dp"
+            android:background="@color/exam_rv_item_divide"
+            app:layout_constraintBottom_toBottomOf="@id/exam_tv_rv_item_exam_month_day"
+            app:layout_constraintLeft_toRightOf="@id/exam_tv_rv_item_exam_month_day"
+            app:layout_constraintTop_toTopOf="@id/exam_tv_rv_item_exam_month_day" />
+
+        <TextView
+            android:id="@+id/exam_tv_rv_item_exam_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:textColor="@color/exam_rv_item_text_time"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/exam_view_rv_item_exam_divide1"
+            app:layout_constraintLeft_toRightOf="@id/exam_view_rv_item_exam_divide1"
+            app:layout_constraintTop_toTopOf="@id/exam_view_rv_item_exam_divide1"
+            tools:text="10:10-12:10" />
+
+        <TextView
+            android:id="@+id/exam_tv_rv_item_exam_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="16dp"
+            android:drawablePadding="10dp"
+            android:textColor="@color/exam_rv_item_text_time"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/exam_ic_rv_item_location"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exam_tv_rv_item_exam_month_day"
+            tools:text="3109" />
+
+        <View
+            android:id="@+id/exam_view_rv_item_divide2"
+            android:layout_width="0.1dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="9dp"
+            android:background="@color/exam_rv_item_divide"
+            app:layout_constraintBottom_toBottomOf="@id/exam_tv_rv_item_exam_room"
+            app:layout_constraintLeft_toRightOf="@id/exam_tv_rv_item_exam_room"
+            app:layout_constraintTop_toTopOf="@id/exam_tv_rv_item_exam_room" />
+
+        <TextView
+            android:id="@+id/exam_tv_rv_item_exam_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:textColor="@color/exam_rv_item_text_time"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/exam_view_rv_item_divide2"
+            app:layout_constraintLeft_toRightOf="@id/exam_view_rv_item_divide2"
+            app:layout_constraintTop_toTopOf="@id/exam_view_rv_item_divide2"
+            tools:text="47号" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

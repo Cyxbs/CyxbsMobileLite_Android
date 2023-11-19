@@ -32,18 +32,18 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
     fun start(
       context: Context,
       content: RequestContentEntity,
-      parameterWithValue: List<Pair<String, String>>
+      parameters: List<Pair<String, String>>
     ) {
       context.startActivity(
         Intent(context, TestRequestActivity::class.java)
           .putExtra(TestRequestActivity::mRequestContentEntity.name, content)
-          .putExtra(TestRequestActivity::mParameterWithValue.name, ArrayList(parameterWithValue))
+          .putExtra(TestRequestActivity::mParameters.name, ArrayList(parameters))
       )
     }
   }
 
   private val mRequestContentEntity by intent<RequestContentEntity>()
-  private val mParameterWithValue by intent<List<Pair<String, String>>>()
+  private val mParameters by intent<List<Pair<String, String>>>()
   private val mEtParameters = mutableListOf<EditText>()
 
   private val mLlParameter: LinearLayout by R.id.source_ll_test_parameter.view()
@@ -58,7 +58,7 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
   }
 
   private fun initParameter() {
-    mParameterWithValue.forEach {
+    mParameters.forEach {
       val layout = LayoutInflater.from(this)
         .inflate(R.layout.source_item_parameter, mLlParameter, false)
       val tv: TextView = layout.findViewById(R.id.source_tv_parameter_name)
@@ -71,6 +71,9 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
   }
 
   private fun initTvResult() {
+    mTvResult.post {
+      mTvResult.maxTextWidth = mTvResult.width
+    }
     mTvResult.hint = "点击该面板进行请求，之后将显示结果"
     mTvResult.setOnSingleClickListener {
       if (mRequestJob != null) {
@@ -82,8 +85,12 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
               .getImplOrThrow(IDataSourceService::class, mRequestContentEntity.serviceKey)
             try {
               toast("开始测试...")
-              val result = service.request(mRequestContentEntity.data,
-                mParameterWithValue.associate { it })
+              val result = service.request(
+                mRequestContentEntity.data,
+                mParameters.mapIndexed { index, pair ->
+                  pair.first to mEtParameters[index].text.toString()
+                }.associate { it }
+              )
               mTvResult.text = result
             } catch (e: Exception) {
               if (e is CancellationException) throw e

@@ -28,7 +28,6 @@ rootProject.name = "CyxbsMobileLite_Android"
 
 // 需要删除模块时写这里面，将不再进行 include，直接写模块名即可
 val excludeList: List<String> = listOf(
-  "script1"
 )
 
 fun includeModule(topName: String, file: File) {
@@ -63,8 +62,6 @@ includeModule("cyxbs-pages", rootDir.resolve("cyxbs-pages"))
  * - 对于普通的模块请使用配套的 idea 插件: CyxbsModuleBuilder
  * - 如果是比较特殊的模块，请单独 include()
  */
-
-
 
 
 

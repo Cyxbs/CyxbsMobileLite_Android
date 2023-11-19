@@ -12,6 +12,9 @@ import com.cyxbs.pages.source.room.entity.RequestItemEntity
 import com.g985892345.android.extensions.android.processLifecycleScope
 import com.g985892345.provider.annotation.ImplProvider
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
 /**
@@ -37,8 +40,9 @@ object RequestServiceImpl : IRequestService, IInitialService {
     val item = SourceDataBase.INSTANCE
       .requestDao
       .findItemByName(name) ?: throw IllegalStateException("不存在对应的 RequestItemEntity")
-    return if (isForce || item.responseTimestamp == null ||
-      System.currentTimeMillis() > item.responseTimestamp + item.interval * 60 * 60 * 1000) {
+    return if (isForce || item.responseTimestamp == null
+      || System.currentTimeMillis() > item.responseTimestamp + item.interval * 60 * 60 * 1000
+    ) {
       RequestManager.request(item, values)
     } else {
       SourceDataBase.INSTANCE
@@ -47,6 +51,23 @@ object RequestServiceImpl : IRequestService, IInitialService {
         ?: RequestManager.request(item, values)
     }
   }
+
+  override suspend fun getLastResponseTimestamp(dataSource: AbstractDataService): Long? {
+    val name = findName(dataSource)
+    return SourceDataBase.INSTANCE
+      .requestDao
+      .findItemByName(name)
+      ?.responseTimestamp
+  }
+
+  override fun observeUpdate(dataSource: AbstractDataService): Flow<Boolean> {
+    val name = findName(dataSource)
+    return SourceDataBase.INSTANCE
+      .requestDao
+      .observeItem(name)
+      .mapNotNull { it?.isSuccess }
+  }
+
 
   private fun findName(dataSource: AbstractDataService): String {
     mDataSourceServices.forEach {
@@ -61,6 +82,7 @@ object RequestServiceImpl : IRequestService, IInitialService {
     processLifecycleScope.launch(Dispatchers.IO) {
       SourceDataBase.INSTANCE.apply {
         withTransaction {
+          // 读取所有 AbstractDataService 实现类，注册请求服务
           val map = mDataSourceServices.toMutableMap()
           requestDao.getItems().forEach { item ->
             val service = map.remove(item.name)
@@ -73,16 +95,18 @@ object RequestServiceImpl : IRequestService, IInitialService {
             }
           }
           map.forEach { entry ->
-            requestDao.insert(RequestItemEntity(
-              name = entry.key,
-              interval = 12F,
-              requestTimestamp = null,
-              responseTimestamp = null,
-              isSuccess = null,
-              sort = emptyList(),
-              parameters = entry.value.parameters.map { it.key to it.value },
-              output = entry.value.output,
-            ))
+            requestDao.insert(
+              RequestItemEntity(
+                name = entry.key,
+                interval = 12F,
+                requestTimestamp = null,
+                responseTimestamp = null,
+                isSuccess = null,
+                sort = emptyList(),
+                parameters = entry.value.parameters.map { it.key to it.value },
+                output = entry.value.output,
+              )
+            )
           }
         }
       }

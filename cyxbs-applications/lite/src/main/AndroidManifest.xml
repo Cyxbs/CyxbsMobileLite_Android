@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools">
   <application
+    android:name=".CyxbsLiteApp"
     android:allowBackup="true"
     android:icon="@mipmap/config_ic_launcher"
     android:label="@string/lite_app_name"

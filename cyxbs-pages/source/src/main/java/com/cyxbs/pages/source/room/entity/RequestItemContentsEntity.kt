@@ -37,7 +37,7 @@ data class RequestItemEntity(
   val isSuccess: Boolean?, // 上一次请求是否成功, null: 请求中或者未设置请求体或者第一次设置时未请求
   val sort: List<Long>, // 请求顺序, RequestContentEntity 的 id
   val parameters: List<Pair<String, String>>, // 参数名+描述 (不使用 LinkedHashMap 是因为不支持反序列化)
-  val output: String, // js 应该输出的格式，该格式将用于端上处理
+  val output: String, // 数据源应该输出的格式，该格式将用于端上处理
 ) : Serializable
 
 @Entity(

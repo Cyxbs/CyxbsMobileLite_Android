@@ -73,10 +73,13 @@ class CodeFragment : CyxbsBaseFragment(R.layout.source_fragment_code) {
     }
     mEtTitle = title.findViewById(com.cyxbs.api.source.R.id.source_et_header)
     mEtTitle.setText(mRequestContent.title)
-    mHeader = mDataSourceService.config(mRequestContent.data, mScaleScrollEditText, mLlHeader)
-      .onEach {
-        mLlHeader.addView(it)
-      }
+    mHeader = mDataSourceService.config(
+      mRequestContent.data.ifBlank { null },
+      mScaleScrollEditText,
+      mLlHeader
+    ).onEach {
+      mLlHeader.addView(it)
+    }
   }
 
   private fun initBtn() {

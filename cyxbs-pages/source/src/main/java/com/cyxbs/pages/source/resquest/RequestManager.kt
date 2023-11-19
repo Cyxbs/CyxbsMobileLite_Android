@@ -52,16 +52,13 @@ object RequestManager {
       return@withContext response
     } catch (e: Exception) {
       isSuccess = false
-      if (e is CancellationException) {
-        isSuccess = null
-      }
       throw e
     } finally {
       db.withTransaction {
         dao.change(
           item.copy(
             requestTimestamp = requestTimestamp,
-            responseTimestamp = responseTimestamp,
+            responseTimestamp = responseTimestamp ?: item.responseTimestamp,
             isSuccess = isSuccess
           )
         )

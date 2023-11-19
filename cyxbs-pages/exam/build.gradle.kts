@@ -10,9 +10,11 @@ dependModule {
   dependView()
   dependApiNetwork()
   dependApiSource()
+  dependApiAccount()
 }
 
 dependLibrary {
   dependRoom()
+  dependRoomRxjava()
   dependSerializationJson()
 }

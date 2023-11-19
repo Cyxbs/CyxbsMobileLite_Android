@@ -3,11 +3,12 @@ package com.cyxbs.functions.api.network
 import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.functions.api.network.internal.IRequestService
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.rx3.asObservable
 
 /**
- * .
+ * 业务模块实现该模块，并提供对应的参数，之后使用 [request] 方法即可发起请求
  *
  * @author 985892345
  * @date 2023/10/25 20:00
@@ -30,5 +31,19 @@ abstract class AbstractDataService(
       emit(mSourceService.request(this@AbstractDataService, isForce, values.toList()))
     }.asObservable()
       .singleOrError()
+  }
+
+  /**
+   * 得到上一次更新的时间戳
+   */
+  suspend fun getLastResponseTimestamp(): Long? {
+    return mSourceService.getLastResponseTimestamp(this)
+  }
+
+  /**
+   * 观察更新
+   */
+  fun observeUpdate(): Flow<Boolean> {
+    return mSourceService.observeUpdate(this)
   }
 }
