@@ -35,6 +35,22 @@ internal object PythonDataSourceServiceImpl : IDataSourceService {
         引用规则: 
           以 {TEXT} 的方式进行引用, 在请求前会进行字符串替换
         但请注意这只是简单的替换字符串
+        例子:
+          比如端上设置参数为: stu_num, 取值为: 114514
+          则对于如下代码:
+          print("{stu_num}")
+          会被替换成:
+          print("114514")
+        并不是所有请求都会有参数，是否存在参数请点击 TEST 按钮进行查看
+      
+      端上获取python请求结果规则:
+        请将要返回给端上的结果用print打印
+        例如:
+        def getCourse(id=None):
+            # 你的获取课表数据逻辑
+            return result
+        print(getCourse("114514"))
+        端上会截取print输出流从而获取getCourse("114514")的返回值
         
       该面板支持双指放大缩小
     """.trimIndent()

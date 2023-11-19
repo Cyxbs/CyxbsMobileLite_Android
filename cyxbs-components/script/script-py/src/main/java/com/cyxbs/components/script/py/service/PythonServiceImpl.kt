@@ -19,6 +19,6 @@ object PythonServiceImpl : IPythonService {
     if (!Python.isStarted()) {
       Python.start(AndroidPlatform(appContext))
     }
-    TODO()
+    return Python.getInstance().getModule("run_py").callAttr("getByPyScript", py).toString()
   }
 }
