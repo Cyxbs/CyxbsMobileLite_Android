@@ -5,8 +5,6 @@ import com.chaquo.python.android.AndroidPlatform
 import com.cyxbs.components.script.py.IPythonService
 import com.g985892345.android.utils.context.appContext
 import com.g985892345.provider.annotation.ImplProvider
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
 
 /**
  * .
@@ -17,16 +15,11 @@ import kotlin.coroutines.resume
 @ImplProvider
 object PythonServiceImpl : IPythonService {
 
-  override suspend fun evaluatePy(py: String): String =
-    suspendCancellableCoroutine { continuation->
-      if (!Python.isStarted()) {
-        Python.start(AndroidPlatform(appContext))
-      }
-      val runPyModule = Python.getInstance().getModule("run_py")
-      continuation.invokeOnCancellation {
-        //当请求超时协程取消，停止py程序运行
-        runPyModule.callAttr("cancel")
-      }
-      continuation.resume(runPyModule.callAttr("getByPyScript", py).toString())
+  override suspend fun evaluatePy(py: String): String {
+    if (!Python.isStarted()) {
+      Python.start(AndroidPlatform(appContext))
     }
+    val runPyModule = Python.getInstance().getModule("run_py")
+    return runPyModule.callAttr("getByPyScript", py).toString()
+  }
 }

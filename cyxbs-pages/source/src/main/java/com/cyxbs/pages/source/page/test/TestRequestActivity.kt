@@ -18,7 +18,12 @@ import com.g985892345.android.extensions.android.launch
 import com.g985892345.android.extensions.android.setOnSingleClickListener
 import com.g985892345.android.extensions.android.toast
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.timeout
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * .
@@ -70,6 +75,7 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
     }
   }
 
+  @OptIn(FlowPreview::class)
   private fun initTvResult() {
     mTvResult.post {
       mTvResult.maxTextWidth = mTvResult.width
@@ -85,14 +91,16 @@ class TestRequestActivity : CyxbsBaseActivity(R.layout.source_activity_test) {
               .getImplOrThrow(IDataSourceService::class, mRequestContentEntity.serviceKey)
             try {
               toast("开始测试...")
-              val result = service.request(
-                mRequestContentEntity.data,
-                mParameters.mapIndexed { index, pair ->
-                  pair.first to mEtParameters[index].text.toString()
-                }.associate { it }
-              )
+              val result = flow {
+                emit(service.request(
+                  mRequestContentEntity.data,
+                  mParameters.mapIndexed { index, pair ->
+                    pair.first to mEtParameters[index].text.toString()
+                  }.associate { it }))
+              }.timeout(1.seconds)
+                .single()
               mTvResult.text = result
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
               if (e is CancellationException) throw e
               mTvResult.text = null
               CrashDialog.Builder(this@TestRequestActivity, e)

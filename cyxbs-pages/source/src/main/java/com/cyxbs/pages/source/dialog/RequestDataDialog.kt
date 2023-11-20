@@ -34,7 +34,7 @@ class RequestDataDialog private constructor(
   ) : ChooseDialog.Builder(
     context,
     DataImpl(
-      positiveButtonText = "关闭",
+      positiveButtonText = "复制",
       negativeButtonText = "关闭",
       buttonWidth = 110,
       buttonHeight = 38,
@@ -45,7 +45,7 @@ class RequestDataDialog private constructor(
     override fun buildInternal(): RequestDataDialog {
       setPositiveClick {
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.setPrimaryClip(ClipData.newPlainText("json", data.content))
+        cm.setPrimaryClip(ClipData.newPlainText(itemData.content.title, data.content))
         toast("复制成功！")
       }.setNegativeClick {
         dismiss()

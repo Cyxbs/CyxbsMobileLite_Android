@@ -88,7 +88,7 @@ object RequestManager {
         }.timeout(500.milliseconds).single()
         responseTimestamp = System.currentTimeMillis()
         return response
-      } catch (e: Exception) {
+      } catch (e: Throwable) {
         error = e
         if (e is CancellationException) {
           throw e

@@ -32,10 +32,3 @@ def getByPyScript(code: str):
     '''
     return __run(code)
 
-
-def cancel():
-    '''
-    停止当前进程运行
-    '''
-    pid = os.getpid()  # 获取当前进程的PID
-    os.kill(pid, signal.SIGTERM)  # 主动结束指定ID的程序运行

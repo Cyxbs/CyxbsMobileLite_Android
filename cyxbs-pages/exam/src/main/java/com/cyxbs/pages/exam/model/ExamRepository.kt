@@ -10,6 +10,7 @@ import com.cyxbs.pages.exam.service.ExamDataServiceImpl
 import com.g985892345.android.extensions.android.lazyUnlock
 import com.g985892345.android.utils.context.topActivity
 import com.g985892345.jvm.rxjava.unsafeSubscribeBy
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -52,6 +53,7 @@ object ExamRepository {
     return mExamDao.observeExam(stuNum)
       .doOnSubscribe {
         refreshLesson(stuNum, false)
+          .observeOn(AndroidSchedulers.mainThread())
           .doOnError {
             CrashDialog.Builder(topActivity!!, it)
               .show()
@@ -75,7 +77,6 @@ object ExamRepository {
         Json.decodeFromString<List<ExamBean>>(it)
       }.map { list ->
         list.map { it.toExamEntity(stuNum) }
-      }.doOnError {
       }.doOnSuccess {
         mExamDao.resetData(stuNum, it)
       }.subscribeOn(Schedulers.io())
