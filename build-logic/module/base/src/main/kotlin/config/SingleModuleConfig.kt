@@ -18,11 +18,16 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
 
   override fun applicationDependModules() {
     // 单模块需要依赖 api 模块的实现模块，这里分为三个步骤
-    // 1、查找所有直接或间接依赖的所有 api 模块，使用 runtimeOnly 让其父模块加入编译
-    // 2、创建一个 task 用于编译时生成所有父模块 KtProviderInitializer 的类名
+    // 1、查找所有直接或间接依赖的 api 模块，使用 runtimeOnly 让其父模块加入编译
+    // 2、创建一个 task 用于编译时生成所有父模块 KtProviderInitializer 实现类的类全称
     // 3、singlemodule 模块在 Application 初始化时反射加载父模块的 KtProviderInitializer 实现类
     runtimeOnlyApiParentModule(project, project)
     createApiParentKtProviderTask()
+
+    // debugImplementation 依赖 debug 模块
+    project.dependencies {
+      "debugImplementation"(project.project(":cyxbs-functions:debug"))
+    }
   }
 
   private fun createApiParentKtProviderTask() {
@@ -59,6 +64,7 @@ interface SingleModuleConfig : LibraryConfig, ApplicationConfig {
               }
             """.trimIndent()
           )
+        // 因为单模块自身的 KtProvider 已被初始化，所以这里直接生成一个 singlemodule 模块中实现类
       }
     }
     project.kotlinBlock {

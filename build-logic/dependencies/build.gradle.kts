@@ -15,6 +15,7 @@ dependencies {
 
 // 用于排除模块，写模块名即可
 val excludeList: List<String> = listOf(
+  "debug", // debug 模块单独依赖，不生成 depend 方法
 )
 
 val taskProvider = tasks.register("generateCyxbsDepend") {
