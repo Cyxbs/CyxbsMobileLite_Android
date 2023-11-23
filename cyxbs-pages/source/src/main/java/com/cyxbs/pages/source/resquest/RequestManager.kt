@@ -39,7 +39,9 @@ object RequestManager {
     }
     val db = SourceDataBase.INSTANCE
     val dao = db.requestDao
-    val contents = dao.findContentsByName(item.name)
+    val contents = dao.findContentsByName(item.name).sortedBy {
+      item.sort.indexOf(it.id)
+    }
     if (contents.isEmpty()) throw IllegalStateException("未设置请求")
     var response: String? = null
     val requestTimestamp = System.currentTimeMillis()
