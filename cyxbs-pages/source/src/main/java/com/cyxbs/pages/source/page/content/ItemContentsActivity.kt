@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cyxbs.components.base.ui.CyxbsBaseActivity
 import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.components.view.view.JToolbar
-import com.cyxbs.functions.api.network.internal.IRequestService
 import com.cyxbs.pages.api.source.IDataSourceService
 import com.cyxbs.pages.source.R
 import com.cyxbs.pages.source.data.RequestContentItemData

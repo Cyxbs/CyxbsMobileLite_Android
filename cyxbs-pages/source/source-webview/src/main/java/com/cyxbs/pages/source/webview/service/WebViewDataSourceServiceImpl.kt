@@ -109,7 +109,7 @@ internal object WebViewDataSourceServiceImpl : IDataSourceService {
           则对于如下 url: https://test/{stu_num}
           会被替换为: https://test/abc
           js 同样如此，但请注意这只是简单的替换字符串
-        并不是所有请求都会有参数，是否存在参数请点击 TEST 按钮进行查看
+        并不是所有请求都会有参数，是否存在参数请查看请求格式
         
       该面板支持双指放大缩小
     """.trimIndent()

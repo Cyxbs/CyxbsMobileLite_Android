@@ -1,4 +1,4 @@
-package com.cyxbs.pages.source.single
+package com.cyxbs.pages.source.service
 
 import com.cyxbs.functions.api.network.AbstractDataService
 import com.g985892345.provider.annotation.ImplProvider

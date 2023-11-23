@@ -37,20 +37,20 @@ internal object PythonDataSourceServiceImpl : IDataSourceService {
           print("{stu_num}")
           会被替换成:
           print("114514")
-        并不是所有请求都会有参数，是否存在参数请点击 TEST 按钮进行查看
+        并不是所有请求都会有参数，是否存在参数请查看请求格式
       
-      端上获取python请求结果规则:
-        请将要返回给端上的结果用print打印
+      端上获取 python 请求结果规则:
+        请将要返回给端上的结果用 print 打印
         例如:
         def getCourse(id=None):
             # 你的获取课表数据逻辑
             return result
         print(getCourse("114514"))
-        端上会截取print输出流从而获取getCourse("114514")的返回值
+        端上会截取 print 输出流从而获取 getCourse("114514") 的返回值
       
       目前已安装的py库:
-        requests(用于网络请求)
-        lxml(用于解析html)
+        requests     用于网络请求
+        lxml         用于解析 html
       如果有其他必要的三方库请联系开发者
       
       该面板支持双指放大缩小
