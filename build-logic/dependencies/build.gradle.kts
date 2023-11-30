@@ -59,9 +59,9 @@ val taskProvider = tasks.register("generateCyxbsDepend") {
         .joinToString("\n") {
           """
             
-            fun ${it.second}() {
+            fun ${it.second}(type: DependType = DependType.Implementation) {
               dependencies {
-                "implementation"(project("${it.first}"))
+                type.value(project("${it.first}"))
               }
             }
           """.trimIndent()
