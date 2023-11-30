@@ -9,10 +9,8 @@ dependModule {
   dependUtils()
   dependView()
   dependApiNetwork()
-  dependApiSource()
 }
 
 dependLibrary {
   dependSerializationJson()
 }
-

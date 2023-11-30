@@ -36,6 +36,7 @@ object ExamSingleModuleEntry : ISingleModuleEntry {
   }
 
   private fun registerActivityCallback() {
+    // 添加设置按钮
     application.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacksImpl  {
       override fun onActivityPostCreated(activity: Activity, savedInstanceState: Bundle?) {
         super.onActivityPostCreated(activity, savedInstanceState)

@@ -3,6 +3,7 @@ import com.g985892345.provider.plugin.gradle.generator.KtProviderInitializerGene
 import config.SingleModuleConfig
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
+import org.gradle.kotlin.dsl.extra
 import utils.androidApp
 import utils.kotlinBlock
 
@@ -15,6 +16,8 @@ import utils.kotlinBlock
 object SingleModule {
 
   fun config(config: SingleModuleConfig) {
+    // 使用 Project.isSingleModule 进行判断
+    config.project.extra.set("isSingleModule", true)
     ApplicationModule.config(config)
     LibraryModule.dependChildModule(config)
     with(config.project) {

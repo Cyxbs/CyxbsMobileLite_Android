@@ -12,6 +12,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 

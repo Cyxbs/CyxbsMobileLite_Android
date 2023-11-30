@@ -67,6 +67,10 @@
             <option value="$PROJECT_DIR$/cyxbs-functions/debug" />
             <option value="$PROJECT_DIR$/cyxbs-functions/network" />
             <option value="$PROJECT_DIR$/cyxbs-functions/network/api-network" />
+            <option value="$PROJECT_DIR$/cyxbs-functions/source" />
+            <option value="$PROJECT_DIR$/cyxbs-functions/source/api-source" />
+            <option value="$PROJECT_DIR$/cyxbs-functions/source/source-py" />
+            <option value="$PROJECT_DIR$/cyxbs-functions/source/source-webview" />
             <option value="$PROJECT_DIR$/cyxbs-pages" />
             <option value="$PROJECT_DIR$/cyxbs-pages/affair" />
             <option value="$PROJECT_DIR$/cyxbs-pages/affair/api-affair" />
@@ -78,10 +82,6 @@
             <option value="$PROJECT_DIR$/cyxbs-pages/find/api-find" />
             <option value="$PROJECT_DIR$/cyxbs-pages/main" />
             <option value="$PROJECT_DIR$/cyxbs-pages/main/api-main" />
-            <option value="$PROJECT_DIR$/cyxbs-pages/source" />
-            <option value="$PROJECT_DIR$/cyxbs-pages/source/api-source" />
-            <option value="$PROJECT_DIR$/cyxbs-pages/source/source-py" />
-            <option value="$PROJECT_DIR$/cyxbs-pages/source/source-webview" />
           </set>
         </option>
       </GradleProjectSettings>

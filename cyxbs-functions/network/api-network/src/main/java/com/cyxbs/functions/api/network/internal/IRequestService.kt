@@ -4,7 +4,8 @@ import com.cyxbs.functions.api.network.AbstractDataService
 import kotlinx.coroutines.flow.Flow
 
 /**
- * 用于实现数据源的请求接口，由 source 模块实现，其他模块不需要实现
+ * 用于实现数据源的请求接口，由数据源模块实现，其他模块不需要实现，
+ * 其他模块实现 [AbstractDataService] 进行网络请求
  *
  * @author 985892345
  * @date 2023/10/25 20:27

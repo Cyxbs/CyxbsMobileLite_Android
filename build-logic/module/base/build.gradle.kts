@@ -4,8 +4,9 @@ plugins {
 
 dependencies {
   implementation(project(":plugins:checker"))
-  implementation(project(":dependencies"))
   implementation(libs.ktProvider.gradlePlugin)
+
+  api(project(":dependencies"))
 
   api(libs.android.gradlePlugin)
   api(libs.kotlin.gradlePlugin)

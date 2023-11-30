@@ -89,13 +89,16 @@ sourceSets {
 fun getAllModulePath(result: MutableList<String>, topName: String, file: File) {
   if (!file.resolve("settings.gradle.kts").exists()) {
     if (file.resolve("build.gradle.kts").exists()) {
-      var path = ":${file.name}"
-      var parentFile = file.parentFile
-      do {
-        path = ":${parentFile.name}$path"
-        parentFile = parentFile.parentFile
-      } while (parentFile.name == topName)
-      result.add(path)
+      if (!file.resolve("api-${file.name}").exists()) {
+        // 如果有 api 模块则不生成父模块依赖
+        var path = ":${file.name}"
+        var parentFile = file.parentFile
+        do {
+          path = ":${parentFile.name}$path"
+          parentFile = parentFile.parentFile
+        } while (parentFile.name == topName)
+        result.add(path)
+      }
     }
   }
   // 递归寻找所有子模块

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.cyxbs.components.config.config.SchoolCalendar
 import com.cyxbs.components.config.route.SOURCE_ENTRY
 import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.components.router.impl
@@ -31,20 +32,23 @@ class AccountDialog private constructor(
   class Builder(context: Context) : BaseChooseDialog.Builder<AccountDialog, Data>(context, Data()) {
     override fun buildInternal(): AccountDialog {
       setPositiveClick {
-        if (mEtStuNum.text.isNotBlank()) {
+        val nowWeek = mEtWeek.text.toString().toIntOrNull()
+        if (mEtStuNum.text.isNotBlank() && nowWeek != null) {
           IAccountService::class.impl
             .setStuNum(mEtStuNum.text.toString())
+          SchoolCalendar.updateFirstCalendar(nowWeek)
           ServiceManager.activity(SOURCE_ENTRY)
           dismiss()
         } else {
-          toast("请先输入学号")
+          toast("请输入完整")
         }
       }
       return AccountDialog(context)
     }
   }
 
-  private val mEtStuNum: EditText by R.id.exam_et_dialog_setting.view()
+  private val mEtWeek: EditText by R.id.exam_et_dialog_week.view()
+  private val mEtStuNum: EditText by R.id.exam_et_dialog_stu_num.view()
 
   override fun createContentView(parent: ViewGroup): View {
     return LayoutInflater.from(parent.context)
@@ -52,6 +56,7 @@ class AccountDialog private constructor(
   }
 
   override fun initContentView(view: View) {
+    mEtWeek.setText(SchoolCalendar.getWeekOfTerm()?.toString())
     mEtStuNum.setText(IAccountService::class.impl.getStuNum())
   }
 }

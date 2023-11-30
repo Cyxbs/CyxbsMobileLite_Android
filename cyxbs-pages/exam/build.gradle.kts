@@ -9,7 +9,6 @@ dependModule {
   dependUtils()
   dependView()
   dependApiNetwork()
-  dependApiSource()
   dependApiAccount()
 }
 
