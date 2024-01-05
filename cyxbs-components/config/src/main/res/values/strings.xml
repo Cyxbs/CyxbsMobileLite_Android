@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="config_week_mon">周一</string>
+  <string name="config_week_tue">周二</string>
+  <string name="config_week_wed">周三</string>
+  <string name="config_week_thu">周四</string>
+  <string name="config_week_fri">周五</string>
+  <string name="config_week_sat">周六</string>
+  <string name="config_week_sun">周天</string>
+  <string-array name="config_week_array">
+    <item>@string/config_week_mon</item>
+    <item>@string/config_week_tue</item>
+    <item>@string/config_week_wed</item>
+    <item>@string/config_week_thu</item>
+    <item>@string/config_week_fri</item>
+    <item>@string/config_week_sat</item>
+    <item>@string/config_week_sun</item>
+  </string-array>
+
+  <string name="config_week_all">整学期</string>
+  <string name="config_week_1">第一周</string>
+  <string name="config_week_2">第二周</string>
+  <string name="config_week_3">第三周</string>
+  <string name="config_week_4">第四周</string>
+  <string name="config_week_5">第五周</string>
+  <string name="config_week_6">第六周</string>
+  <string name="config_week_7">第七周</string>
+  <string name="config_week_8">第八周</string>
+  <string name="config_week_9">第九周</string>
+  <string name="config_week_10">第十周</string>
+  <string name="config_week_11">第十一周</string>
+  <string name="config_week_12">第十二周</string>
+  <string name="config_week_13">第十三周</string>
+  <string name="config_week_14">第十四周</string>
+  <string name="config_week_15">第十五周</string>
+  <string name="config_week_16">第十六周</string>
+  <string name="config_week_17">第十七周</string>
+  <string name="config_week_18">第十八周</string>
+  <string name="config_week_19">第十九周</string>
+  <string name="config_week_20">第二十周</string>
+  <string name="config_week_21">第二十一周</string>
+  <string-array name="config_week_num_array">
+    <item>@string/config_week_1</item>
+    <item>@string/config_week_2</item>
+    <item>@string/config_week_3</item>
+    <item>@string/config_week_4</item>
+    <item>@string/config_week_5</item>
+    <item>@string/config_week_6</item>
+    <item>@string/config_week_7</item>
+    <item>@string/config_week_8</item>
+    <item>@string/config_week_9</item>
+    <item>@string/config_week_10</item>
+    <item>@string/config_week_11</item>
+    <item>@string/config_week_12</item>
+    <item>@string/config_week_13</item>
+    <item>@string/config_week_14</item>
+    <item>@string/config_week_15</item>
+    <item>@string/config_week_16</item>
+    <item>@string/config_week_17</item>
+    <item>@string/config_week_18</item>
+    <item>@string/config_week_19</item>
+    <item>@string/config_week_20</item>
+    <item>@string/config_week_21</item>
+  </string-array>
+
+  <string name="config_month_1">1月</string>
+  <string name="config_month_2">2月</string>
+  <string name="config_month_3">3月</string>
+  <string name="config_month_4">4月</string>
+  <string name="config_month_5">5月</string>
+  <string name="config_month_6">6月</string>
+  <string name="config_month_7">7月</string>
+  <string name="config_month_8">8月</string>
+  <string name="config_month_9">9月</string>
+  <string name="config_month_10">10月</string>
+  <string name="config_month_11">11月</string>
+  <string name="config_month_12">12月</string>
+  <string-array name="config_month_array">
+    <item>@string/config_month_1</item>
+    <item>@string/config_month_2</item>
+    <item>@string/config_month_3</item>
+    <item>@string/config_month_4</item>
+    <item>@string/config_month_5</item>
+    <item>@string/config_month_6</item>
+    <item>@string/config_month_7</item>
+    <item>@string/config_month_8</item>
+    <item>@string/config_month_9</item>
+    <item>@string/config_month_10</item>
+    <item>@string/config_month_11</item>
+    <item>@string/config_month_12</item>
+  </string-array>
+  
+  <string name="config_month_num_1">1日</string>
+  <string name="config_month_num_2">2日</string>
+  <string name="config_month_num_3">3日</string>
+  <string name="config_month_num_4">4日</string>
+  <string name="config_month_num_5">5日</string>
+  <string name="config_month_num_6">6日</string>
+  <string name="config_month_num_7">7日</string>
+  <string name="config_month_num_8">8日</string>
+  <string name="config_month_num_9">9日</string>
+  <string name="config_month_num_10">10日</string>
+  <string name="config_month_num_11">11日</string>
+  <string name="config_month_num_12">12日</string>
+  <string name="config_month_num_13">13日</string>
+  <string name="config_month_num_14">14日</string>
+  <string name="config_month_num_15">15日</string>
+  <string name="config_month_num_16">16日</string>
+  <string name="config_month_num_17">17日</string>
+  <string name="config_month_num_18">18日</string>
+  <string name="config_month_num_19">19日</string>
+  <string name="config_month_num_20">20日</string>
+  <string name="config_month_num_21">21日</string>
+  <string name="config_month_num_22">22日</string>
+  <string name="config_month_num_23">23日</string>
+  <string name="config_month_num_24">24日</string>
+  <string name="config_month_num_25">25日</string>
+  <string name="config_month_num_26">26日</string>
+  <string name="config_month_num_27">27日</string>
+  <string name="config_month_num_28">28日</string>
+  <string name="config_month_num_29">29日</string>
+  <string name="config_month_num_30">30日</string>
+  <string name="config_month_num_31">31日</string>
+  <string-array name="config_month_num_array">
+    <item>@string/config_month_num_1</item>
+    <item>@string/config_month_num_2</item>
+    <item>@string/config_month_num_3</item>
+    <item>@string/config_month_num_4</item>
+    <item>@string/config_month_num_5</item>
+    <item>@string/config_month_num_6</item>
+    <item>@string/config_month_num_7</item>
+    <item>@string/config_month_num_8</item>
+    <item>@string/config_month_num_9</item>
+    <item>@string/config_month_num_10</item>
+    <item>@string/config_month_num_11</item>
+    <item>@string/config_month_num_12</item>
+    <item>@string/config_month_num_13</item>
+    <item>@string/config_month_num_14</item>
+    <item>@string/config_month_num_15</item>
+    <item>@string/config_month_num_16</item>
+    <item>@string/config_month_num_17</item>
+    <item>@string/config_month_num_18</item>
+    <item>@string/config_month_num_19</item>
+    <item>@string/config_month_num_20</item>
+    <item>@string/config_month_num_21</item>
+    <item>@string/config_month_num_22</item>
+    <item>@string/config_month_num_23</item>
+    <item>@string/config_month_num_24</item>
+    <item>@string/config_month_num_25</item>
+    <item>@string/config_month_num_26</item>
+    <item>@string/config_month_num_27</item>
+    <item>@string/config_month_num_28</item>
+    <item>@string/config_month_num_29</item>
+    <item>@string/config_month_num_30</item>
+    <item>@string/config_month_num_31</item>
+  </string-array>
+
+</resources>

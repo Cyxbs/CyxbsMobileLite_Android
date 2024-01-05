@@ -1,5 +1,3 @@
-import utils.libsVersion
-
 plugins {
   id("module-manager")
 }
@@ -16,7 +14,10 @@ dependLibrary {
 }
 
 dependencies {
-  val androidWheelVersion = libsVersion("androidWheel").requiredVersion
-  api("io.github.985892345:base-ui:$androidWheelVersion")
-  api("io.github.985892345:base-databinding:$androidWheelVersion")
+  api(libs.androidWheel.base.ui)
+  api(libs.androidWheel.base.databinding)
 }
+
+//configurations.all {
+//  resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
+//}

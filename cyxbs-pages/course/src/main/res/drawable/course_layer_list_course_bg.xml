@@ -42,7 +42,7 @@
                 android:topLeftRadius="6dp"
                 android:topRightRadius="6dp" />
             <solid
-                android:color="@color/course_tip_color"/>
+                android:color="@color/course_page_tip_color"/>
         </shape>
     </item>
 

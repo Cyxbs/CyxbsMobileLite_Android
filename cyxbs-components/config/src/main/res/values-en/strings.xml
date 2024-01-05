@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="config_week_mon">Mon</string>
+  <string name="config_week_tue">Tue</string>
+  <string name="config_week_wed">Wed</string>
+  <string name="config_week_thu">Thu</string>
+  <string name="config_week_fri">Fri</string>
+  <string name="config_week_sat">Sat</string>
+  <string name="config_week_sun">Sun</string>
+
+  <string name="config_week_all">Overview</string>
+  <string name="config_week_1">1st Week</string>
+  <string name="config_week_2">2nd Week</string>
+  <string name="config_week_3">3rd Week</string>
+  <string name="config_week_4">4th Week</string>
+  <string name="config_week_5">5th Week</string>
+  <string name="config_week_6">6th Week</string>
+  <string name="config_week_7">7th Week</string>
+  <string name="config_week_8">8th Week</string>
+  <string name="config_week_9">9th Week</string>
+  <string name="config_week_10">10th Week</string>
+  <string name="config_week_11">11th Week</string>
+  <string name="config_week_12">12th Week</string>
+  <string name="config_week_13">13th Week</string>
+  <string name="config_week_14">14th Week</string>
+  <string name="config_week_15">15th Week</string>
+  <string name="config_week_16">16th Week</string>
+  <string name="config_week_17">17th Week</string>
+  <string name="config_week_18">18th Week</string>
+  <string name="config_week_19">19th Week</string>
+  <string name="config_week_20">20th Week</string>
+  <string name="config_week_21">21st Week</string>
+  
+  <string name="config_month_1">Jan</string>
+  <string name="config_month_2">Feb</string>
+  <string name="config_month_3">Mar</string>
+  <string name="config_month_4">Apr</string>
+  <string name="config_month_5">May</string>
+  <string name="config_month_6">Jun</string>
+  <string name="config_month_7">Jul</string>
+  <string name="config_month_8">Aug</string>
+  <string name="config_month_9">Sep</string>
+  <string name="config_month_10">Oct</string>
+  <string name="config_month_11">Nov</string>
+  <string name="config_month_12">Dec</string>
+
+  <string name="config_month_num_1">1st</string>
+  <string name="config_month_num_2">2st</string>
+  <string name="config_month_num_3">3st</string>
+  <string name="config_month_num_4">4st</string>
+  <string name="config_month_num_5">5st</string>
+  <string name="config_month_num_6">6st</string>
+  <string name="config_month_num_7">7st</string>
+  <string name="config_month_num_8">8st</string>
+  <string name="config_month_num_9">9st</string>
+  <string name="config_month_num_10">10st</string>
+  <string name="config_month_num_11">11st</string>
+  <string name="config_month_num_12">12st</string>
+  <string name="config_month_num_13">13st</string>
+  <string name="config_month_num_14">14st</string>
+  <string name="config_month_num_15">15st</string>
+  <string name="config_month_num_16">16st</string>
+  <string name="config_month_num_17">17st</string>
+  <string name="config_month_num_18">18st</string>
+  <string name="config_month_num_19">19st</string>
+  <string name="config_month_num_20">20st</string>
+  <string name="config_month_num_21">21st</string>
+  <string name="config_month_num_22">22st</string>
+  <string name="config_month_num_23">23st</string>
+  <string name="config_month_num_24">24st</string>
+  <string name="config_month_num_25">25st</string>
+  <string name="config_month_num_26">26st</string>
+  <string name="config_month_num_27">27st</string>
+  <string name="config_month_num_28">28st</string>
+  <string name="config_month_num_29">29st</string>
+  <string name="config_month_num_30">30st</string>
+  <string name="config_month_num_31">31st</string>
+
+</resources>

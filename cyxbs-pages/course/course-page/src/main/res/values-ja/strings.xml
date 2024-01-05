@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="course_page_empty_course_text">授業はもうないよ～www</string>
+  <string name="course_page_this_week">(今週)</string>
+  <string name="course_page_back_now_week">今週に戻る</string>
+</resources>

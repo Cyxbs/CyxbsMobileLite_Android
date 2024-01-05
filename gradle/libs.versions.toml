@@ -5,19 +5,35 @@
 [versions]
 # 在 kts 中可以直接写 lib.version.xxx 获取版本号
 # 如果是在 build-logic 中的 kt 类中获取，请使用封装好的 Project.libVersion(...) 扩展方法
-androidGradlePlugin = "8.1.4"
-kotlin = "1.9.10"
-ksp = "1.9.10-1.0.13" # ksp 版本与 kotlin 版本强绑定，升级 kotlin 记得去更 ksp (https://github.com/google/ksp/releases)
+androidGradlePlugin = "8.2.0"
+kotlin = "1.9.21"
+ksp = "1.9.21-1.0.16" # ksp 版本与 kotlin 版本强绑定，升级 kotlin 记得去更 ksp (https://github.com/google/ksp/releases)
 javaTarget = "11"
 kotlinJvmTarget = "11"
-ktProvider = "1.2.0-alpha07-SNAPSHOT" # 985892345 的服务提供库 (https://github.com/985892345/KtProvider)
-androidWheel = "0.0.1-alpha15-SNAPSHOT" # 985892345 的 Android 轮子库 (https://github.com/985892345/AndroidWheel)
+ktProvider = "1.3.0" # 985892345 的服务提供库 (https://github.com/985892345/KtProvider)
+androidWheel = "0.0.1-alpha16-SNAPSHOT" # 985892345 的 Android 轮子库 (https://github.com/985892345/AndroidWheel)
 
 [libraries]
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+# KtProvider 985892345 的服务提供库 (https://github.com/985892345/KtProvider)
 ktProvider-gradlePlugin = { group = "io.github.985892345", name = "provider-plugin-gradle", version.ref = "ktProvider" }
+ktProvider-manager = { module = "io.github.985892345:provider-manager-jvm", version.ref = "ktProvider" }
+# AndroidWheel 985892345 的 Android 轮子库 (https://github.com/985892345/AndroidWheel)
+androidWheel-base-ui = { module = "io.github.985892345:base-ui", version.ref = "androidWheel" }
+androidWheel-base-databinding = { module = "io.github.985892345:base-databinding", version.ref = "androidWheel" }
+androidWheel-extensions-android = { module = "io.github.985892345:extensions-android", version.ref = "androidWheel" }
+androidWheel-extensions-rxjava = { module = "io.github.985892345:extensions-rxjava", version.ref = "androidWheel" }
+androidWheel-utils-adapter = { module = "io.github.985892345:utils-adapter", version.ref = "androidWheel" }
+androidWheel-utils-context = { module = "io.github.985892345:utils-context", version.ref = "androidWheel" }
+androidWheel-utils-impl = { module = "io.github.985892345:utils-impl", version.ref = "androidWheel" }
+androidWheel-utils-view = { module = "io.github.985892345:utils-view", version.ref = "androidWheel" }
+androidWheel-jvm-exception = { module = "io.github.985892345:jvm-exception", version.ref = "androidWheel" }
+androidWheel-jvm-flow = { module = "io.github.985892345:jvm-flow", version.ref = "androidWheel" }
+androidWheel-jvm-generics = { module = "io.github.985892345:jvm-generics", version.ref = "androidWheel" }
+androidWheel-jvm-impl = { module = "io.github.985892345:jvm-impl", version.ref = "androidWheel" }
+androidWheel-jvm-rxjava = { module = "io.github.985892345:jvm-rxjava", version.ref = "androidWheel" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

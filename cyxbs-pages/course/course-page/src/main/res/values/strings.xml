@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="course_page_empty_course_text">一片寂静</string>
+  <string name="course_page_this_week">(本周)</string>
+  <string name="course_page_back_now_week">回到本周</string>
+</resources>

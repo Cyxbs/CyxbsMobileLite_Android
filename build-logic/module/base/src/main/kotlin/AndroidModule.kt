@@ -22,8 +22,9 @@ internal object AndroidModule {
     AndroidProjectChecker.config(config.project)
     with(config.project) {
       apply(plugin = "kotlin-android")
-      // KtProvider 路由框架，使用 ir 插桩实现，默认给所有模块引入
+      // KtProvider 路由框架，使用 ksp 实现，默认给所有模块引入
       // 虽然有些模块不包含注解，但是 kotlin 的缓存做得比较好，支持增量编译，所以除了第一次外，后续对编译时间影响不大
+      apply(plugin = libsPlugin("ksp").pluginId)
       apply(plugin = libsPlugin("ktProvider").pluginId)
       // 配置 android 闭包
       configAndroid(config)
@@ -80,7 +81,11 @@ internal object AndroidModule {
       }
 
       // 命名规范设置，因为多模块相同资源名在打包时会合并，所以必须强制开启
-      resourcePrefix = project.name.substringAfter("-")
+      resourcePrefix = if (project.name.startsWith("api-")) {
+        project.name.substringAfter("api-")
+      } else if (project.name.contains("-")) {
+        project.name.replace("-", "_")
+      } else project.name
 
       packaging {
         jniLibs.excludes += AndroidConfig.jniExclude

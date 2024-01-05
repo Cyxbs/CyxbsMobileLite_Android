@@ -1,15 +1,17 @@
-import utils.libsVersion
-
 plugins {
   id("module-manager")
 }
 
 dependencies {
-  val androidWheelVersion = libsVersion("androidWheel").requiredVersion
-  api("io.github.985892345:utils-context:$androidWheelVersion")
-  api("io.github.985892345:utils-adapter:$androidWheelVersion")
-  api("io.github.985892345:utils-view:$androidWheelVersion")
-  api("io.github.985892345:utils-impl:$androidWheelVersion")
-  api("io.github.985892345:extensions-android:$androidWheelVersion")
-  api("io.github.985892345:extensions-rxjava:$androidWheelVersion")
+  api(libs.androidWheel.extensions.android)
+  api(libs.androidWheel.extensions.rxjava)
+  api(libs.androidWheel.utils.adapter)
+  api(libs.androidWheel.utils.context)
+  api(libs.androidWheel.utils.impl)
+  api(libs.androidWheel.utils.view)
+  api(libs.androidWheel.jvm.exception)
+  api(libs.androidWheel.jvm.flow)
+  api(libs.androidWheel.jvm.generics)
+  api(libs.androidWheel.jvm.impl)
+  api(libs.androidWheel.jvm.rxjava)
 }

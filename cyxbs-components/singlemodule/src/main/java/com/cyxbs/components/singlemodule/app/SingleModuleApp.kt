@@ -21,11 +21,12 @@ class SingleModuleApp : CyxbsBaseApp() {
   }
 
   override fun initRouter() {
+    // 加载启动模块的 KtProvider 实现类
     loadKtProviderInitializer(ktProviderEntryClassName)
-    // 加载 api 模块的 KtProvider 实现类
+    // 加载 runtimeOnly api 实现模块的 KtProvider 实现类
     val apiParentKtProvider = ServiceManager.getImplOrNull(IApiParentKtProvider::class)
     if (apiParentKtProvider == null) {
-      toastLong("初始化 api 实现模块失效 !")
+      toastLong("初始化 api 实现模块失败 !")
     } else {
       apiParentKtProvider.entryClassNames.forEach {
         loadKtProviderInitializer(it)

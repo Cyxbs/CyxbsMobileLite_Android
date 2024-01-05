@@ -22,7 +22,6 @@ import com.g985892345.android.extensions.android.launch
 import com.g985892345.android.extensions.android.toast
 import com.g985892345.android.extensions.android.visible
 import com.g985892345.provider.annotation.KClassProvider
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 
 @KClassProvider(name = EXAM_ENTRY)
@@ -57,6 +56,8 @@ class ExamActivity : CyxbsBaseActivity() {
     initRv()
     initRefresh()
     initObserve()
+    android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
+      "activity = ${this.hashCode()}")
   }
   
   private fun initToolbar() {

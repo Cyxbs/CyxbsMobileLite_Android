@@ -1,6 +1,7 @@
 package com.cyxbs.components.base.app
 
 import android.app.Application
+import android.content.res.Configuration
 import com.cyxbs.components.base.app.utils.InitialManagerImpl
 
 /**
@@ -21,5 +22,9 @@ abstract class CyxbsBaseApp : Application() {
 
   private fun initInitialManager() {
     InitialManagerImpl(this).init()
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
   }
 }
