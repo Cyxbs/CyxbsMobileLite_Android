@@ -4,7 +4,7 @@ import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.functions.api.network.INetworkService
 import com.cyxbs.functions.api.network.IOkHttpService
 import com.cyxbs.functions.api.network.utils.getBaseUrl
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

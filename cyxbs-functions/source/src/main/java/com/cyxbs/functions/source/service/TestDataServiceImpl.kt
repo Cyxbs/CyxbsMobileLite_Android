@@ -1,7 +1,7 @@
 package com.cyxbs.functions.source.service
 
 import com.cyxbs.functions.api.network.AbstractDataService
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 
 /**
  * .

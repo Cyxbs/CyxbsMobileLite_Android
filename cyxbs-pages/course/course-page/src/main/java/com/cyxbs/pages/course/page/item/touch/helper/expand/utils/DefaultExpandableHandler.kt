@@ -3,7 +3,7 @@ package com.cyxbs.pages.course.page.item.touch.helper.expand.utils
 import android.view.View
 import com.cyxbs.pages.course.page.ICoursePage
 import com.cyxbs.pages.course.page.item.touch.ITouchItem
-import com.mredrock.cyxbs.lib.course.item.touch.helper.expand.IExpandableItemHandler
+import com.cyxbs.pages.course.page.item.touch.helper.expand.IExpandableItemHandler
 import com.ndhzs.netlayout.touch.multiple.event.IPointerEvent
 
 /**

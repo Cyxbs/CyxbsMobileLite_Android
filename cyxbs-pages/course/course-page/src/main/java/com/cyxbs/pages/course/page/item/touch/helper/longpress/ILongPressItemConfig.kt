@@ -1,8 +1,8 @@
-package com.mredrock.cyxbs.lib.course.item.touch.helper.longpress
+package com.cyxbs.pages.course.page.item.touch.helper.longpress
 
 import android.view.View
-import com.mredrock.cyxbs.lib.course.fragment.page.ICoursePage
-import com.mredrock.cyxbs.lib.course.item.touch.ITouchItem
+import com.cyxbs.pages.course.page.ICoursePage
+import com.cyxbs.pages.course.page.item.touch.ITouchItem
 import com.ndhzs.netlayout.touch.multiple.event.IPointerEvent
 
 /**

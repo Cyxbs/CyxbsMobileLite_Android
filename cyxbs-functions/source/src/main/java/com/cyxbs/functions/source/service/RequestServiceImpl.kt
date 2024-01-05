@@ -10,7 +10,7 @@ import com.cyxbs.functions.source.resquest.RequestManager
 import com.cyxbs.functions.source.room.SourceDataBase
 import com.cyxbs.functions.source.room.entity.RequestItemEntity
 import com.g985892345.android.extensions.android.processLifecycleScope
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull

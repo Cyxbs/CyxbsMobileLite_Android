@@ -8,8 +8,6 @@ import androidx.annotation.CallSuper
 import com.cyxbs.pages.course.page.ICoursePage
 import com.cyxbs.pages.course.page.item.touch.ITouchItem
 import com.cyxbs.pages.course.page.item.touch.ITouchItemHelper
-import com.mredrock.cyxbs.lib.course.item.touch.helper.longpress.ILongPressItemConfig
-import com.mredrock.cyxbs.lib.course.item.touch.helper.longpress.ILongPressItemListener
 import com.ndhzs.netlayout.touch.multiple.event.IPointerEvent
 import kotlin.math.abs
 

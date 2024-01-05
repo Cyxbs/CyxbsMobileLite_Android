@@ -10,7 +10,7 @@ import com.cyxbs.components.view.view.JToolbar
 import com.cyxbs.functions.source.R
 import com.cyxbs.functions.source.page.adapter.SourceAdapter
 import com.cyxbs.functions.source.page.viewmodel.SourceViewModel
-import com.g985892345.provider.annotation.KClassProvider
+import com.g985892345.provider.api.annotation.KClassProvider
 
 /**
  * .

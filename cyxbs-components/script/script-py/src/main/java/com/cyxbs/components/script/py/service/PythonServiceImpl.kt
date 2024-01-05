@@ -4,7 +4,7 @@ import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.cyxbs.components.script.py.IPythonService
 import com.g985892345.android.utils.context.appContext
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 
 /**
  * .

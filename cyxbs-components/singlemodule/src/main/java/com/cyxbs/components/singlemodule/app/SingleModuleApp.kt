@@ -5,7 +5,7 @@ import com.cyxbs.components.base.app.CyxbsBaseApp
 import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.components.singlemodule.internal.IApiParentKtProvider
 import com.g985892345.android.extensions.android.toastLong
-import com.g985892345.provider.init.KtProviderInitializer
+import com.g985892345.provider.api.init.KtProviderInitializer
 import ktProviderEntryClassName
 
 /**

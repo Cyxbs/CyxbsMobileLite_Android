@@ -21,7 +21,7 @@ import com.g985892345.android.extensions.android.gone
 import com.g985892345.android.extensions.android.launch
 import com.g985892345.android.extensions.android.toast
 import com.g985892345.android.extensions.android.visible
-import com.g985892345.provider.annotation.KClassProvider
+import com.g985892345.provider.api.annotation.KClassProvider
 import kotlinx.coroutines.flow.first
 
 @KClassProvider(name = EXAM_ENTRY)

@@ -10,7 +10,7 @@ import com.cyxbs.functions.source.py.R
 import com.cyxbs.pages.api.source.IDataSourceService
 import com.g985892345.android.extensions.android.drawable
 import com.g985892345.android.extensions.android.toast
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 
 /**
  * .

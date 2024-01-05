@@ -4,7 +4,7 @@ import androidx.core.content.edit
 import com.cyxbs.components.config.sp.defaultSp
 import com.cyxbs.components.utils.Nullable
 import com.cyxbs.functions.api.account.IAccountService
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject

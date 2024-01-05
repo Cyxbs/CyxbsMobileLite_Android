@@ -17,7 +17,7 @@ import com.g985892345.android.extensions.android.setOnSingleClickListener
 import com.g985892345.android.extensions.android.size.dp2px
 import com.g985892345.android.utils.context.application
 import com.g985892345.android.utils.impl.ActivityLifecycleCallbacksImpl
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @ImplProvider

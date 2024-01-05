@@ -2,7 +2,7 @@ package com.cyxbs.functions.debug.crash
 
 import com.cyxbs.components.init.IInitialManager
 import com.cyxbs.components.init.IInitialService
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 
 /**
  * .

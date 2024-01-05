@@ -8,9 +8,7 @@ import com.cyxbs.pages.course.page.item.touch.helper.longpress.AbstractLongPress
 import com.cyxbs.pages.course.page.utils.VibratorUtil
 import com.cyxbs.pages.course.view.course.ICourseScrollControl
 import com.cyxbs.pages.course.view.utils.forEachReversed
-import com.mredrock.cyxbs.lib.course.item.touch.helper.expand.IExpandableItemConfig
-import com.mredrock.cyxbs.lib.course.item.touch.helper.expand.IExpandableItemListener
-import com.mredrock.cyxbs.lib.course.item.touch.helper.longpress.ILongPressItemListener
+import com.cyxbs.pages.course.page.item.touch.helper.longpress.ILongPressItemListener
 import com.ndhzs.netlayout.draw.ItemDecoration
 import com.ndhzs.netlayout.touch.multiple.event.IPointerEvent
 import kotlin.math.min

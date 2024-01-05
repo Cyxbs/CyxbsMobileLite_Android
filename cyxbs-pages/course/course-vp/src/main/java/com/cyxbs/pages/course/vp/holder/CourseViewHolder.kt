@@ -12,7 +12,6 @@ import com.cyxbs.pages.course.page.CoursePage
  */
 class CourseViewHolder(
   itemView: View,
-
 ) : RecyclerView.ViewHolder(itemView) {
 
   private val mCoursePage = CoursePage()

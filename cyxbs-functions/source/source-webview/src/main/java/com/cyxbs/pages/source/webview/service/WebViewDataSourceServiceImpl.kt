@@ -14,7 +14,7 @@ import com.cyxbs.functions.source.webview.R
 import com.cyxbs.pages.api.source.IDataSourceService
 import com.g985892345.android.extensions.android.drawable
 import com.g985892345.android.extensions.android.toast
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.single

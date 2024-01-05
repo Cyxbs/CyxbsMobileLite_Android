@@ -2,7 +2,7 @@ package com.cyxbs.components.script.webview.service
 
 import com.cyxbs.components.script.webview.IWebViewSpiderService
 import com.cyxbs.components.script.webview.webview.WebViewRequest
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 import kotlinx.coroutines.channels.Channel
 
 /**

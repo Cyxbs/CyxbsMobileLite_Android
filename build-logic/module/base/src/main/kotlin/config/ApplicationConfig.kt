@@ -54,7 +54,7 @@ interface ApplicationConfig : AndroidConfig {
   companion object {
     /**
      * 递归依赖 [thisProject] 以及其子模块
-     * @param exclude 排除依赖
+     * @param exclude 排除依赖，key 为需要排除的 project.name
      */
     fun dependChildModules(
       mainProject: Project,

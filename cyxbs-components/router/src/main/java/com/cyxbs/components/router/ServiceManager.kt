@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.g985892345.android.utils.context.appContext
-import com.g985892345.provider.init.wrapper.ImplProviderWrapper
-import com.g985892345.provider.init.wrapper.KClassProviderWrapper
+import com.g985892345.provider.api.init.wrapper.ImplProviderWrapper
+import com.g985892345.provider.api.init.wrapper.KClassProviderWrapper
 import com.g985892345.provider.manager.KtProviderManager
 import kotlin.reflect.KClass
 

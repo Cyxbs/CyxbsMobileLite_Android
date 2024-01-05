@@ -1,4 +1,4 @@
-package com.mredrock.cyxbs.lib.course.item.touch.helper.expand
+package com.cyxbs.pages.course.page.item.touch.helper.expand
 
 import com.cyxbs.pages.course.page.item.touch.helper.move.utils.DefaultMovableHandler
 
