@@ -27,13 +27,13 @@ fun Project.dependModule(action: DependModuleScope.() -> Unit) {
 
 // 单模块时进行依赖
 fun Project.singleDependLibrary(action: DependLibraryScope.() -> Unit) {
-  if (isSingleModule) {
+  if (isSingleModuleDebugging) {
     dependLibrary(action)
   }
 }
 
 fun Project.singleDependModule(action: DependModuleScope.() -> Unit) {
-  if (isSingleModule) {
+  if (isSingleModuleDebugging) {
     dependModule(action)
   }
 }
@@ -42,5 +42,6 @@ fun Project.singleDependModule(action: DependModuleScope.() -> Unit) {
 class DependLibraryScope(project: Project): Project by project
 class DependModuleScope(project: Project): Project by project
 
-val Project.isSingleModule: Boolean
-  get() = extra.has("isSingleModule") && extra.get("isSingleModule") as Boolean? == true
+// 是否处于单模块调试中，只有开启了单模块的主模块才有效，其他因为依赖参与的模块会为 false
+val Project.isSingleModuleDebugging: Boolean
+  get() = extra.has("isSingleModuleDebugging") && extra.get("isSingleModuleDebugging") as Boolean? == true

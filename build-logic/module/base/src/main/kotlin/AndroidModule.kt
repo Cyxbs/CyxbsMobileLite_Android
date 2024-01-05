@@ -1,8 +1,11 @@
+import com.g985892345.provider.plugin.gradle.extensions.KtProviderExtensions
 import config.AndroidConfig
 import extensions.ModuleConfigExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 import utils.androidBase
 import utils.kotlinBlock
 import utils.kotlinOptionsBlock
@@ -26,6 +29,7 @@ internal object AndroidModule {
       // 虽然有些模块不包含注解，但是 kotlin 的缓存做得比较好，支持增量编译，所以除了第一次外，后续对编译时间影响不大
       apply(plugin = libsPlugin("ksp").pluginId)
       apply(plugin = libsPlugin("ktProvider").pluginId)
+      val ktProvider = extensions.getByType<KtProviderExtensions>()
       // 配置 android 闭包
       configAndroid(config)
       // 配置 kotlin 闭包
@@ -38,6 +42,9 @@ internal object AndroidModule {
         _dependAndroidView()
         _dependAndroidKtx()
         _dependLifecycleKtx()
+      }
+      dependencies {
+        add("ksp", ktProvider.ksp)
       }
       // 创建 moduleConfig 闭包
       extensions.create("moduleConfig", ModuleConfigExtension::class.java, project)

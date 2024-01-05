@@ -2,11 +2,9 @@ package com.cyxbs.components.singlemodule.app
 
 import android.util.Log
 import com.cyxbs.components.base.app.CyxbsBaseApp
-import com.cyxbs.components.router.ServiceManager
-import com.cyxbs.components.singlemodule.internal.IApiParentKtProvider
 import com.g985892345.android.extensions.android.toastLong
 import com.g985892345.provider.api.init.KtProviderInitializer
-import ktProviderEntryClassName
+import ktProviderEntries
 
 /**
  * .
@@ -21,25 +19,13 @@ class SingleModuleApp : CyxbsBaseApp() {
   }
 
   override fun initRouter() {
-    // 加载启动模块的 KtProvider 实现类
-    loadKtProviderInitializer(ktProviderEntryClassName)
-    // 加载 runtimeOnly api 实现模块的 KtProvider 实现类
-    val apiParentKtProvider = ServiceManager.getImplOrNull(IApiParentKtProvider::class)
-    if (apiParentKtProvider == null) {
-      toastLong("初始化 api 实现模块失败 !")
-    } else {
-      apiParentKtProvider.entryClassNames.forEach {
-        loadKtProviderInitializer(it)
-      }
-    }
-  }
-
-  private fun loadKtProviderInitializer(className: String) {
     try {
-      val ktProviderInitializer = Class.forName(className)
-        .getField("INSTANCE")
-        .get(null) as KtProviderInitializer
-      ktProviderInitializer.tryInitKtProvider()
+      ktProviderEntries.forEach {
+        val ktProviderInitializer = Class.forName(it)
+          .getField("INSTANCE")
+          .get(null) as KtProviderInitializer
+        ktProviderInitializer.tryInitKtProvider()
+      }
     } catch (e: Exception) {
       toastLong("单模块初始化失败\n详细请查看 log")
       Log.e(TAG, "单模块初始化失败，可能是因为开启单模块调试的模块未生成 KtProviderInitializer 实现类\n" +
