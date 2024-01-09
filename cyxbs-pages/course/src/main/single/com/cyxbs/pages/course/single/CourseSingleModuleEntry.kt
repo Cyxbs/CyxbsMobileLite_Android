@@ -3,7 +3,7 @@ package com.cyxbs.pages.course.single
 import android.content.Context
 import com.cyxbs.components.singlemodule.ISingleModuleEntry
 import com.cyxbs.pages.course.TestFragment
-import com.g985892345.provider.annotation.ImplProvider
+import com.g985892345.provider.api.annotation.ImplProvider
 
 @ImplProvider
 object CourseSingleModuleEntry : ISingleModuleEntry {
