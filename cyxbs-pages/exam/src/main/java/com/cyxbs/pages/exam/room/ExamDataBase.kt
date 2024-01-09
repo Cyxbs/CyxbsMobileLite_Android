@@ -2,7 +2,7 @@ package com.cyxbs.pages.exam.room
 
 import androidx.room.*
 import com.g985892345.android.utils.context.appContext
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.flow.Flow
 
 /**
  * .
@@ -49,7 +49,7 @@ data class ExamEntity(
 abstract class ExamDao {
   
   @Query("SELECT * FROM exam WHERE stuNum = :stuNum")
-  abstract fun observeExam(stuNum: String): Observable<List<ExamEntity>>
+  abstract fun observeExam(stuNum: String): Flow<List<ExamEntity>>
   
   @Query("SELECT * FROM exam WHERE stuNum = :stuNum")
   abstract fun getExam(stuNum: String): List<ExamEntity>

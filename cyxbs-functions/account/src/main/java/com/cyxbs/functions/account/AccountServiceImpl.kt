@@ -2,12 +2,15 @@ package com.cyxbs.functions.account
 
 import androidx.core.content.edit
 import com.cyxbs.components.config.sp.defaultSp
-import com.cyxbs.components.utils.Nullable
 import com.cyxbs.functions.api.account.IAccountService
+import com.g985892345.android.extensions.android.processLifecycleScope
 import com.g985892345.provider.api.annotation.ImplProvider
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.PublishSubject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 /**
  * .
@@ -18,28 +21,27 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 @ImplProvider
 object AccountServiceImpl : IAccountService {
 
-  private val stuNumState = BehaviorSubject.create<Nullable<String>>()
-  private val stuNumEvent = PublishSubject.create<Nullable<String>>()
+  private val stuNumState = MutableStateFlow<String?>(null)
 
-  override fun observeStuNumState(): Observable<Nullable<String>> {
-    return stuNumState.distinctUntilChanged()
+  override fun observeStuNumState(): StateFlow<String?> {
+    return stuNumState.asStateFlow()
   }
 
-  override fun observeStuNumEvent(): Observable<Nullable<String>> {
-    return stuNumEvent.distinctUntilChanged()
+  override fun observeStuNumEvent(): SharedFlow<String?> {
+    return stuNumState.asSharedFlow()
   }
 
   override fun setStuNum(stuNum: String?) {
-    val value = Nullable(stuNum)
-    stuNumState.onNext(value)
-    stuNumEvent.onNext(value)
+    processLifecycleScope.launch {
+      stuNumState.emit(stuNum)
+    }
     defaultSp.edit {
       putString("学号", stuNum)
     }
   }
 
   override fun getStuNum(): String? {
-    return stuNumState.value?.value
+    return stuNumState.value
   }
 
   init {

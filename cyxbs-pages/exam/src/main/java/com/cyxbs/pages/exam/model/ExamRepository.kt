@@ -8,12 +8,18 @@ import com.cyxbs.pages.exam.room.ExamDataBase
 import com.cyxbs.pages.exam.room.ExamEntity
 import com.cyxbs.pages.exam.service.ExamDataServiceImpl
 import com.g985892345.android.extensions.android.lazyUnlock
+import com.g985892345.android.extensions.android.processLifecycleScope
 import com.g985892345.android.utils.context.topActivity
-import com.g985892345.jvm.rxjava.unsafeSubscribeBy
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
 /**
@@ -32,34 +38,30 @@ object ExamRepository {
    * - 使用了 distinctUntilChanged()，只会在数据更改了才会回调
    * - 没登录时发送 emptyList()
    */
-  fun observeSelfExam(): Observable<List<ExamEntity>> {
+  fun observeSelfExam(): Flow<List<ExamEntity>> {
     return IAccountService::class.impl
       .observeStuNumState()
-      .observeOn(Schedulers.io())
-      .switchMap { value ->
-        // 使用 switchMap 可以停止之前学号的订阅
-        value.nullUnless(Observable.just(emptyList())) {
-          observeExam(it)
-        }
+      .flatMapLatest {
+        if (it == null) emptyFlow() else observeExam(it)
       }
   }
 
   /**
    * 观察考试数据
    */
-  fun observeExam(stuNum: String): Observable<List<ExamEntity>> {
+  fun observeExam(stuNum: String): Flow<List<ExamEntity>> {
     // 如果学号为空就发送空数据给下游
-    if (stuNum.isBlank()) return Observable.just(emptyList())
+    if (stuNum.isBlank()) return emptyFlow()
     return mExamDao.observeExam(stuNum)
-      .doOnSubscribe {
-        refreshLesson(stuNum, false)
-          .observeOn(AndroidSchedulers.mainThread())
-          .doOnError {
-            CrashDialog.Builder(topActivity!!, it)
-              .show()
-          }.unsafeSubscribeBy()
+      .onStart {
+        processLifecycleScope.launch {
+          runCatching {
+            refreshLesson(stuNum, false)
+          }.onFailure {
+            CrashDialog.Builder(topActivity!!, it).show()
+          }
+        }
       }.distinctUntilChanged()
-      .subscribeOn(Schedulers.io())
   }
   
   /**
@@ -67,19 +69,21 @@ object ExamRepository {
    *
    * 需要内网
    */
-  fun refreshLesson(
+  suspend fun refreshLesson(
     stuNum: String,
     isForce: Boolean,
-  ): Single<List<ExamEntity>> {
-    if (stuNum.isBlank()) return Single.error(IllegalArgumentException("学号不能为空！"))
+  ): List<ExamEntity> {
+    if (stuNum.isBlank()) throw IllegalArgumentException("学号不能为空！")
     return ExamDataServiceImpl.request(isForce, stuNum)
-      .map {
+      .let {
         Json.decodeFromString<List<ExamBean>>(it)
-      }.map { list ->
+      }.let { list ->
         list.map { it.toExamEntity(stuNum) }
-      }.doOnSuccess {
-        mExamDao.resetData(stuNum, it)
-      }.subscribeOn(Schedulers.io())
+      }.also {
+        withContext(Dispatchers.IO) {
+          mExamDao.resetData(stuNum, it)
+        }
+      }
   }
 
   /**

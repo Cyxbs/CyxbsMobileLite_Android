@@ -1,8 +1,9 @@
 package com.cyxbs.functions.api.account
 
 import com.cyxbs.components.router.IService
-import com.cyxbs.components.utils.Nullable
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * .
@@ -56,7 +57,7 @@ interface IAccountService : IService {
    *
    * - 更多注意事项请看 [observeStuNumEvent]
    */
-  fun observeStuNumState(): Observable<Nullable<String>>
+  fun observeStuNumState(): StateFlow<String?>
 
   /**
    * 观察学号的改变（事件）
@@ -65,7 +66,7 @@ interface IAccountService : IService {
    *
    * ## 更多注意事项请看 [observeStuNumState]
    */
-  fun observeStuNumEvent(): Observable<Nullable<String>>
+  fun observeStuNumEvent(): SharedFlow<String?>
 
   /**
    * 设置学号

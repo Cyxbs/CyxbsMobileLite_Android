@@ -2,10 +2,7 @@ package com.cyxbs.functions.api.network
 
 import com.cyxbs.components.router.ServiceManager
 import com.cyxbs.functions.api.network.internal.IRequestService
-import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.rx3.asObservable
 
 /**
  * 业务模块实现该模块，并提供对应的参数，之后使用 [request] 方法即可发起请求
@@ -23,14 +20,11 @@ abstract class AbstractDataService(
   /**
    * @param isForce 是否强制重新请求，如果不强制，则在未到更新间时隔会返回缓存值
    */
-  fun request(isForce: Boolean, vararg values: String): Single<String> {
+  suspend fun request(isForce: Boolean, vararg values: String): String {
     if (values.size != parameters.size) {
       throw IllegalArgumentException("参数个数不对应，应有 ${parameters.size}, 实有: ${values.size}")
     }
-    return flow {
-      emit(mSourceService.request(this@AbstractDataService, isForce, values.toList()))
-    }.asObservable()
-      .singleOrError()
+    return mSourceService.request(this@AbstractDataService, isForce, values.toList())
   }
 
   /**

@@ -56,8 +56,6 @@ class ExamActivity : CyxbsBaseActivity() {
     initRv()
     initRefresh()
     initObserve()
-    android.util.Log.d("ggg", "(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-      "activity = ${this.hashCode()}")
   }
   
   private fun initToolbar() {

@@ -84,6 +84,8 @@ class ExamListAdapter : ListAdapter<ExamBean, ExamListAdapter.ListVH>(
       } else {
         "考试已结束"
       }
+    } else if (a - b <= 2 ) {
+      if (a - b == 1) "明天考试" else "后天考试"
     } else {
       "还剩${a - b}天考试"
     }

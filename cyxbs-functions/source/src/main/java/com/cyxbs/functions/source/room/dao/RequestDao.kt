@@ -63,7 +63,7 @@ abstract class RequestDao {
   abstract fun findContentsByName(name: String): List<RequestContentEntity>
 
   @Query("SELECT * FROM request_cache WHERE name = :name AND `values` = :values")
-  abstract fun findCache(name: String, values: List<String>): RequestCacheEntity?
+  abstract suspend fun findCache(name: String, values: List<String>): RequestCacheEntity?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   abstract fun changeOrInsertCache(cache: RequestCacheEntity)

@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cyxbs.components.base.ui.CyxbsBaseViewModel
 import com.cyxbs.components.router.impl
-import com.cyxbs.components.view.crash.CrashDialog
 import com.cyxbs.functions.api.account.IAccountService
 import com.cyxbs.pages.exam.bean.ExamBean
 import com.cyxbs.pages.exam.bean.toExamBean
 import com.cyxbs.pages.exam.model.ExamRepository
-import com.g985892345.android.utils.context.topActivity
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -36,22 +34,21 @@ class ExamViewModel : CyxbsBaseViewModel() {
         _refreshEvent.emit(IllegalStateException("学号为空"))
       }
     } else {
-      ExamRepository.refreshLesson(stuNum, true)
-        .doOnError {
-          viewModelScope.launch {
-            _refreshEvent.emit(it)
-          }
-        }.safeSubscribeBy {
-          viewModelScope.launch {
-            _refreshEvent.emit(null)
-          }
+      launch {
+        runCatching {
+          ExamRepository.refreshLesson(stuNum, true)
+        }.onSuccess {
+          _refreshEvent.emit(null)
+        }.onFailure {
+          _refreshEvent.emit(it)
         }
+      }
     }
   }
   
   init {
     ExamRepository.observeSelfExam()
-      .safeSubscribeBy {
+      .collectLaunch {
         _examBean.postValue(it.toExamBean())
       }
   }

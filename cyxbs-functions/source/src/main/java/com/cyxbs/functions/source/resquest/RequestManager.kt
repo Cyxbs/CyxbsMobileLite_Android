@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.withContext
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * .
@@ -87,7 +87,7 @@ object RequestManager {
       try {
         response = flow {
           emit(service.request(content.data, parameterWithValue))
-        }.timeout(500.milliseconds).single()
+        }.timeout(1.seconds).single()
         responseTimestamp = System.currentTimeMillis()
         return response
       } catch (e: Throwable) {

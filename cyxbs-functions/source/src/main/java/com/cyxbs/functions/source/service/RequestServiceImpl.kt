@@ -37,9 +37,11 @@ object RequestServiceImpl : IRequestService, IInitialService {
     values: List<String>,
   ): String {
     val name = findName(dataSource)
-    val item = SourceDataBase.INSTANCE
-      .requestDao
-      .findItemByName(name) ?: throw IllegalStateException("不存在对应的 RequestItemEntity")
+    val item = withContext(Dispatchers.IO) {
+      SourceDataBase.INSTANCE
+        .requestDao
+        .findItemByName(name) ?: throw IllegalStateException("不存在对应的 RequestItemEntity")
+    }
     return if (isForce || item.responseTimestamp == null
       || System.currentTimeMillis() > item.responseTimestamp + item.interval * 60 * 60 * 1000
     ) {
