@@ -49,7 +49,6 @@ internal object AndroidModule {
       // 创建 moduleConfig 闭包
       extensions.create("moduleConfig", ModuleConfigExtension::class.java, project)
     }
-    config.config()
   }
 
   private fun Project.configAndroid(config: AndroidConfig) {

@@ -6,4 +6,5 @@ dependModule {
   dependBase()
   dependConfig()
   dependRouter()
+  dependView()
 }

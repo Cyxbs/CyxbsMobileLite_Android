@@ -36,7 +36,9 @@ class SingleModuleRouterHelper(
     createKtProviderEntryTask()
   }
 
-  private val ktProviderEntryOutputDir = getKtProviderEntryOutputDir(project)
+  private val ktProviderEntryOutputDir = project.layout.buildDirectory.dir(
+    "generated/ktProviderEntry/${SourceSet.MAIN_SOURCE_SET_NAME}"
+  )
 
   // 创建一个 task 用于在 singlemodule 模块下生成根节点模块路由加载类和所有 runtimeOnly 模块的路由加载类
   private fun createKtProviderEntryTask() {
@@ -45,6 +47,7 @@ class SingleModuleRouterHelper(
       // 根节点模块的 KtProviderInitializer 实现类 + 所有 runtimeOnly 模块的 KtProviderInitializer 实现类
       val ktProviderProjects = listOf(project) + getAllRuntimeOnlyProjects()
       inputs.property("ktProviderProjects", ktProviderProjects.map { it.path })
+      outputs.dir(ktProviderEntryOutputDir)
       doFirst {
         // 这里需要所有模块都引入了 KtProvider 都存在 KtProviderInitializer 实现类
         // 如果后续有一个模块不引入的话这里需要单独做黑名单处理
@@ -57,7 +60,7 @@ class SingleModuleRouterHelper(
         }.resolve("KtProviderEntries.kt")
           .writeText(
             "// 自动生成，task 为 ${this@doFirst.name} 代码位置在 ${this@SingleModuleRouterHelper::class.simpleName}\n" +
-            "internal val ktProviderEntries = arrayOf(\n" + ktProviderClassNames + "\n)"
+            "val _ktProviderEntries = arrayOf(\n" + ktProviderClassNames + "\n)"
           )
       }
     }

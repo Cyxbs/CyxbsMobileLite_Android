@@ -17,6 +17,7 @@ object CyxbsFunctionsGroup {
     } else {
       LibraryModule.config(config)
     }
+    config.config()
   }
 
   private fun createConfig(project: Project): SingleModuleConfig {

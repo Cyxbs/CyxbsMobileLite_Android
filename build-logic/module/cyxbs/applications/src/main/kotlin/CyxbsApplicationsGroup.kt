@@ -16,5 +16,6 @@ object CyxbsApplicationsGroup {
       else -> error("未知 cyxbs-applications 子模块，请实现自己的 ApplicationConfig 接口")
     }
     ApplicationModule.config(config)
+    config.config()
   }
 }
